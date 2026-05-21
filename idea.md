@@ -1,52 +1,60 @@
 # Korpotron
 
-## Main problem
+## Problem
 
-I often use LLM tools to rewrite and polish text such as emails, documentation, and comments.
+I regularly use LLM tools to rewrite and polish text — emails, documentation, comments, and similar short-form content.
 
-Today, I store reusable prompts in text files, but using them is slow and inconvenient:
-* I need to copy and paste prompts into a chat tool every time
-* I often adjust prompts slightly (for tone, style, or context)
-* This makes simple, repetitive tasks take more time than needed
+Currently, I store reusable prompts in text files, but the workflow is slow and inconvenient:
 
-I want a faster and easier way to transform text using predefined instructions.
+- Every use requires copying and pasting a prompt into a chat tool.
+- Prompts often need small adjustments for tone, style, or context.
+- This turns simple, repetitive tasks into friction-heavy chores.
 
-## Main Features
+I want a faster, purpose-built tool to transform text using predefined instructions.
 
-* Create and manage templates for common use cases (e.g. email, Jira ticket, announcement, documentation).  Each template defines:
- * A display name
- * A base prompt
- * A "generate title" flag, which specifies whether a title/subject should be generated
- * A "is reponse" flag, which specifies whether the text is a response to another message
-* Create reusable extra option groups (e.g. tone, style, language).  Each option group contains:
- * A display name
- * A set of selectable options that inject specific instructions into the prompt.  Each of them has:
-   * A display name
-   * The instructions themselves
-* Primary feature is to allow users to:
- * Select a template
- * Optionally add any number of extra options
- * Enter the text they want to transform
- * Provide the original message (for templates with the "is response" flag)
- * Hit a button to generate rewritten text using an LLM
- * Show the result in a simple text box
- * Allow quick copy to clipboard
+## Features
 
-## Additional Requirements
+### Templates
 
-* The tool should be fast and easy to use
-* The main flow should require only a few clicks
-* No need to edit prompts during normal use
-* UI should be clean and minimal
-* Optimized for short, practical text (emails, comments, messages)
-* The full process (select → input → generate → copy) should take less than a minute
+Users can create and manage templates for common use cases (e.g. email, Jira ticket, announcement, documentation). Each template defines:
+
+- **Name** — a human-readable label
+- **Base prompt** — the core instruction sent to the LLM
+- **Generate title** — whether a title or subject line should be produced
+- **Is response** — whether the text is a reply to another message
+
+### Option Groups
+
+Users can create reusable option groups to layer additional instructions on top of a template (e.g. tone, style, language). Each group contains:
+
+- **Name** — a human-readable label
+- **Options** — a set of selectable items, each with:
+  - A display name
+  - The instruction text to inject into the prompt
+
+### Core Workflow
+
+The primary user flow:
+
+1. Select a template.
+2. Optionally select options from any number of option groups.
+3. Enter the text to transform.
+4. Provide the original message (only for templates marked as a response).
+5. Click a button to generate the rewritten text.
+6. Review the result and copy it to the clipboard.
+
+## Non-Functional Requirements
+
+- Fast and easy to use — the full flow (select → input → generate → copy) should take under a minute.
+- Minimal UI with no unnecessary chrome.
+- No prompt editing during normal use.
+- Optimized for short, practical content (emails, comments, messages).
 
 ## Out of Scope (MVP)
 
-* Mobile app
-* Mobile-first browser experience
-* Integrations with external systems (email, Jira, Teams, etc.)
-* Multiple user roles or shared workspaces
-* Import/export functionality
-* Sharing templates or options between users
-* Advanced workflow features (history, automation, etc.)
+- Mobile app or mobile-first browser experience
+- Integrations with external systems (email, Jira, Teams, etc.)
+- Multiple user roles or shared workspaces
+- Import/export functionality
+- Sharing templates or option groups between users
+- Advanced workflow features (history, automation, etc.)
