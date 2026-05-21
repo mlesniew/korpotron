@@ -1,6 +1,8 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+## Critical
+
+Note taht `SECRET_KEY` in `korpotron/settings.py` is the insecure Django scaffold default.  This needs updated before any production deployment.
 
 ## Stack
 
@@ -43,5 +45,3 @@ Tests use **pytest + pytest-django**.
 ## Deployment
 
 Fly.io with GitHub Actions auto-deploy on merge to `master`. No deploy workflow is wired yet.
-
-Note taht `SECRET_KEY` in `korpotron/settings.py` is the insecure Django scaffold default.  This needs updated before any production deployment.
