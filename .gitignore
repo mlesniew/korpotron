@@ -1,2 +1,7 @@
 CLAUDE.md
 .claude/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+db.sqlite3
