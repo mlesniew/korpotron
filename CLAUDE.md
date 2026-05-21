@@ -40,7 +40,6 @@ Tests use **pytest + pytest-django**.
 ## Commit style
 
 * Imperative first line: `Add login view`, `Fix migration conflict`, `Update settings for Fly`
-* If needed, more details are in clear paragraphs, using simple language and short sentences
 
 ## Deployment
 
