@@ -310,7 +310,6 @@ Run these after all code changes are committed and pushed:
    ```
    fly secrets set SECRET_KEY="$(python -c "import secrets; print(secrets.token_urlsafe(50))")"
    fly secrets set DATABASE_URL="postgresql://..."   # from Supabase (Step 0.6)
-   fly secrets set DJANGO_SETTINGS_MODULE="korpotron.settings"
    ```
    Note: `ALLOWED_HOSTS` is **not** needed — `FLY_APP_NAME` is injected automatically by Fly.io.
 
