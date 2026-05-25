@@ -1,107 +1,102 @@
 ---
 project: korpotron
-researched_at: 2026-05-22
+researched_at: 2026-05-25
 recommended_platform: Fly.io
 runner_up: Railway
 context_type: mvp
 tech_stack:
   language: Python 3.12
-  framework: Django 6.0.5
+  framework: Django
   runtime: Gunicorn (WSGI)
-  database: Supabase (PostgreSQL, external)
   package_manager: uv
-  llm_provider: OpenRouter (external)
+  database: Supabase (external PostgreSQL)
+  llm_provider: OpenRouter (external API)
 ---
 
 ## Recommendation
 
-**Deploy on Fly.io with Supabase as the external database.**
+**Deploy on Fly.io.**
 
-Fly.io runs the Django app as a persistent Gunicorn process on a micro-VM — the exact execution model Django expects, with no serverless cold-start penalties on ORM connections or app registry initialization. Supabase provides managed PostgreSQL with a generous free tier and connects via a standard `DATABASE_URL`. The combination is the deployment target already identified in `tech-stack.md`, and the CLI (`flyctl`) covers all routine operations non-interactively. Estimated total cost: ~$5–10/month for the VM + shared IPv4; Supabase free tier at ~$0 for MVP traffic.
+Fly.io runs Django as a persistent micro-VM process — the same Gunicorn WSGI model that Django expects — with no serverless cold-start compromise. The `flyctl` CLI covers every routine operation without interactive prompts, the docs publish `llms.txt` for agent consumption, and Supabase as the external database means the most complex co-location concern is already solved before the platform is involved. Estimated cost is $5–10/month for a single always-on instance. The one setup cost vs. the runner-up is a custom Dockerfile (required because `fly launch` does not auto-detect uv), but this is a one-time investment that gives full control over the build environment.
 
 ## Platform Comparison
 
 | Platform | CLI-first | Managed/Serverless | Agent-readable docs | Stable deploy API | MCP/Integration | Total |
 |---|---|---|---|---|---|---|
-| **Fly.io** | Pass | Partial | Pass | Pass | Partial (experimental) | 3.5/5 |
-| **Railway** | Pass | Pass | Partial | Pass | Pass (GA) | 4/5 |
-| **Render** | Partial | Pass | Pass | Partial | Partial | 3/5 |
-| Vercel | Pass | Pass | Pass | Pass | Pass | 5/5* |
-| Netlify | — | FAIL (no WSGI) | — | — | — | Dropped |
-| Cloudflare Workers | — | FAIL (Python beta, Django unsupported) | — | — | — | Dropped |
+| **Fly.io** | Pass | Partial | Pass | Pass | Partial | 3.5 |
+| **Railway** | Pass | Pass | Partial | Pass | Pass | 4 |
+| **Render** | Partial | Pass | Pass | Partial | Partial | 3 |
+| Vercel | Pass | Pass | Pass | Pass | Pass | 5* |
+| Netlify | — | Fail (hard filter) | Pass | Pass | Pass | dropped |
+| Cloudflare Workers | — | Fail (hard filter) | Pass | Pass | Pass | dropped |
 
-*Vercel scores 5/5 on generic agent-friendly criteria but ranks 4th on actual Django fit: Fluid Compute does not guarantee persistent state between requests, the Hobby CPU budget (4 hrs/month) is the binding constraint for Django apps, and the serverless model adds Django-specific configuration overhead that persistent-VM platforms avoid.
+*Vercel scores 5/5 on generic criteria but falls to 4th on Django fit: serverless Fluid Compute reduces cold starts but does not guarantee persistent state, and the Hobby plan's 4 CPU-hr/month cap is the binding constraint for a Django app.
 
-**Hard filters applied:** Netlify (serverless-only, no persistent WSGI process) and Cloudflare Workers (Python runtime in open beta, Django unsupported officially, V8 isolate model incompatible with WSGI) were dropped before scoring.
+**Hard filters applied:**
+- **Netlify**: serverless-only, no persistent WSGI process. Django via Lambda shims is fragile and community-unsupported. Dropped before scoring.
+- **Cloudflare Workers**: Python runtime is open beta (not GA), Django support is entirely community-maintained (`django-cf`), V8 isolate model provides no persistent process, and `psycopg2` availability in Pyodide for Supabase connections is unconfirmed. Dropped before scoring.
 
 ### Shortlisted Platforms
 
 #### 1. Fly.io (Recommended)
 
-Fly.io runs applications as persistent micro-VMs, not serverless functions. A Django/Gunicorn process stays alive between requests exactly as it would on a VPS. The `flyctl` CLI covers every routine operation (deploy, rollback via image tag, log tailing, secrets) with no interactive prompts and predictable exit codes. Official docs publish `llms.txt`; the `flyctl` source is open on GitHub. The main gaps vs. the runner-up: no free tier (trial only), `fly launch` does not auto-detect `uv` (a custom Dockerfile is required), and the MCP server is marked experimental. The `deployment_target: fly` hint in `tech-stack.md` reflects this being the intended destination from project inception.
+Fly.io runs applications on micro-VMs, not serverless lambdas — a Django/Gunicorn process stays alive between requests exactly as it would on a VPS. `flyctl` is comprehensive: `fly deploy`, `fly logs`, `fly secrets set`, and `fly releases` for rollback cover all routine operations non-interactively. The docs publish `llms.txt` and `flyctl` is open-source on GitHub. No free tier (deprecated), but a minimal always-on instance costs ~$5–10/month including shared IPv4. The MCP server (`fly mcp server`) exists but is marked experimental. The one setup gap for this stack: `fly launch` does not auto-detect uv; a custom multi-stage Dockerfile using the official `ghcr.io/astral-sh/uv:python3.12-bookworm-slim` base image is required.
 
 #### 2. Railway
 
-Railway's Nixpacks builder auto-detects `uv.lock` and provisions a Python 3.12 + uv environment with no Dockerfile required — the smoothest zero-to-deploy path for this stack. The CLI (`railway up`, `railway logs`, `railway variable set`) is comprehensive and non-interactive. An official MCP server is GA with Claude Code integration documented. Costs $5/month (Hobby). The one real gap is rollback: `railway rollback` does not exist as a CLI command; reverting a deploy requires the dashboard. This is Railway's primary operational weakness.
+Railway's Nixpacks builder auto-detects `uv.lock` and invokes `uv sync --no-dev --frozen` with no Dockerfile required — the smoothest first-deploy path for this exact stack. The official MCP server is GA and integrates directly with Claude Code (`claude mcp add railway-mcp-server -- npx -y @railway/mcp-server`). Hobby plan is $5/month. The key gap: there is no CLI rollback — reverting to a prior deployment requires the dashboard. The GitHub-hosted markdown docs are agent-readable but no `llms.txt` was confirmed published.
 
 #### 3. Render
 
-Render added native `uv` support to its Python runtime in June 2025 — `uv.lock` is auto-detected with no Dockerfile needed, the same as Railway. The `render` CLI covers deployments, logs, and env vars. `llms.txt` and `llms-full.txt` are published. An official MCP server is GA (August 2025) but has limited write operations: it cannot trigger deploys via MCP (CLI required). Cost is $7/month for the Starter web service tier; a free tier exists but spins down after 15 minutes of inactivity (~60s cold start on next request).
+Render added native uv support to its Python runtime in June 2025 (GA): it auto-detects `uv.lock` and runs `uv sync --no-dev` with no Dockerfile. Starter web service is $7/month (always-on, 512 MB RAM). Publishes `llms.txt` and `llms-full.txt`. Official MCP server (GA August 2025) exposes 20+ tools, but cannot trigger deploys — deploy triggering requires a separate CLI path. The free tier is available but spins down after 15 minutes of inactivity (~60-second cold start), making it suitable for testing only.
 
 ## Anti-Bias Cross-Check: Fly.io
 
 ### Devil's Advocate — Weaknesses
 
-1. **No free tier.** The Hobby plan was deprecated in 2025. A minimal always-on app (shared-cpu-1x 512 MB + shared IPv4) costs ~$6/month from the first request. Railway's Hobby plan includes $5 of resource credit that covers very-low-traffic apps.
-2. **`fly launch` does not detect uv.** The auto-generated Dockerfile uses pip/requirements.txt. A custom multi-stage Dockerfile (from the official `ghcr.io/astral-sh/uv:python3.12-bookworm-slim` base image) is required before the first deploy. This is a one-time cost, but it's an extra step Railway avoids entirely.
-3. **Auto-stop default causes cold starts.** `fly launch` generates `auto_stop_machines = "stop"` — the VM spins down after idle and restarts in several seconds on the next request. The fix (`min_machines_running = 1`, `auto_stop_machines = false`) is not prominent in the getting-started guide.
-4. **No `fly rollback` command.** Reverting requires running `fly releases` to find the prior image tag, then `fly deploy --image registry.fly.io/<app>:<tag>`. More steps than a single command.
-5. **MCP server is experimental.** `fly mcp server` carries the explicit `[experimental]` flag. Structured agent operations fall back to plain `flyctl` CLI, which works but lacks stable tool schemas.
+1. **No free tier.** The Hobby plan was deprecated. A minimal always-on instance (shared-cpu-1x 512 MB + shared IPv4) costs ~$6/month from day one, with no grace period beyond the initial 2-VM-hour trial.
+2. **uv is not auto-detected by `fly launch`.** The generated Dockerfile uses pip/requirements.txt conventions. A custom multi-stage Dockerfile is required before first deploy, adding 30–60 minutes of setup cost Railway eliminates entirely.
+3. **Auto-stop default causes production cold starts.** `fly launch` generates `auto_stop_machines = "stop"` — the VM spins down after idle and takes several seconds to restart. Overriding to `min_machines_running = 1` / `auto_stop_machines = false` is required but not obvious from defaults.
+4. **Rollback is not a first-class CLI command.** There is no `fly rollback`. Reverting requires identifying the previous image tag via `fly releases` and running `fly deploy --image registry.fly.io/<app>:<tag>` — more friction than a single command.
+5. **MCP server is experimental.** `fly mcp server` carries an explicit `[experimental]` label. Agent-driven operations fall back to plain CLI, losing structured-tool ergonomics.
 
 ### Pre-Mortem — How This Could Fail
 
-The team deployed korpotron to Fly.io. Six months later it is a persistent source of friction. The problems accumulated in layers. The first deploy required a hand-written Dockerfile because `fly launch` generated a pip-based image that ignored the `uv.lock` file — an hour of debugging before a community forum post surfaced the fix. The auto-stop default wasn't caught during setup; the first real user hit a 6-second cold start, and the developer didn't notice for a week because local dev never cold-starts. After disabling auto-stop, the always-on VM plus shared IPv4 came to $8/month instead of the mentally budgeted $5.
-
-When OpenRouter integration shipped, `fly secrets set OPENROUTER_API_KEY=...` worked fine but the running machine didn't pick up the new env var until a manual restart — a half-day of "why is the API key missing?" A migration failure mid-deploy left the schema in a forward-migrated state while the old container kept running, producing a 20-minute window of 500 errors. When an agent tried to instrument the platform, the experimental MCP server returned inconsistent results and the fallback CLI approach required ambient auth the agent didn't have in CI.
-
-The cumulative effect: each problem is individually solvable, but the barrier to smooth operation is higher than expected for an MVP.
+The team deployed korpotron to Fly.io. Six months later, the platform was a persistent source of friction. First deploy required a hand-written Dockerfile because `fly launch` generated a pip-based image that missed the `uv` lockfile — a community forum post found the fix after an hour. The auto-stop default wasn't caught in review; the first real user hit a 6-second cold start and the developer didn't notice for a week because local dev never cold-starts. After disabling auto-stop, the always-on machine plus shared IPv4 came to $8/month instead of the mentally-budgeted $5. When OpenRouter integration shipped, `fly secrets set OPENROUTER_API_KEY=...` worked but the running machine didn't pick up the new var until a manual restart — a half-day of "why is the API key missing?" A migration failure mid-deploy left the database in a forward-migrated state while the old container kept serving traffic, producing 20 minutes of 500 errors requiring an emergency redeploy. When an agent tried to instrument the platform via the MCP server, the experimental flag produced inconsistent results and the fallback CLI approach required ambient auth context the agent didn't have in CI.
 
 ### Unknown Unknowns
 
-- **IPv4 costs $2/month and is allocated by default.** Most new users are surprised when their "small app" costs $2 more than the VM price suggests. IPv6 is free but not universally supported.
-- **`fly secrets set` does not restart the running machine.** The new env var is not visible to the live process until `fly deploy` or an explicit `fly machines restart`. The CLI gives no warning.
-- **The `release_command` migration pattern has a partial-failure risk.** If a migration fails mid-deploy, Fly aborts starting the new version — but the schema change may already be applied. The old container continues running against a forward-migrated schema, which can cause errors until a rollback or fix is deployed.
-- **Supabase free-tier projects are paused after 1 week of inactivity.** For a personal tool used sporadically, a holiday or busy week can mean returning to a paused database that requires a manual "restore project" step before the app works again. The fix is to upgrade to Supabase Pro ($25/month) or set up an uptime ping to prevent pausing.
-- **`fly wireguard` required for local→Fly resource access.** Connecting a local dev environment to Fly-managed resources requires `fly proxy` or Wireguard tunnel setup. Not relevant with Supabase (external DB), but surprising the first time you need `fly ssh console`.
+- **IPv4 is $2/month and allocated by default.** Fly assigns a shared IPv4 automatically; IPv6 is free but not universally supported. Most new users are surprised when the "tiny app" costs $2 more than the VM price suggests.
+- **`fly secrets set` does not restart the running machine.** The new env var is not visible to the live process until `fly deploy` or an explicit machine restart. The CLI gives no warning about this.
+- **`fly launch` uv detection gap is known in the community but not prominent in official docs.** The recommended path — a custom Dockerfile from the uv base image — requires a community forum thread to discover.
+- **`release_command` migrations carry a partial-failure risk.** If a migration fails mid-deploy, Fly aborts starting the new version but the schema change may already be applied. The old container continues running against a forward-migrated schema, which can cause errors if the old code is incompatible.
+- **Wireguard required for some local→Fly resource access.** `fly ssh console` and certain proxy operations require the Fly Wireguard tunnel. Not a concern for Supabase-backed deploys, but surprising for developers who expect plain TCP access.
 
 ## Operational Story
 
-- **Preview deploys**: Fly.io does not create automatic preview URLs per branch. A staging environment requires provisioning a second Fly app (`fly launch --name korpotron-staging`). GitHub Actions CI can deploy to staging on PR branches using a separate `fly.toml` and `FLY_API_TOKEN` secret scoped to the staging app.
-- **Secrets**: All env vars live in Fly's encrypted secret store. Set with `fly secrets set KEY=value`; list with `fly secrets list`; remove with `fly secrets unset KEY`. Secrets are not readable after setting (write-only in the dashboard). Rotation: `fly secrets set KEY=new_value` followed by `fly deploy` (or `fly machines restart`) to apply to the running machine. Critical: `fly secrets set` alone does not restart the machine.
-- **Rollback**: `fly releases` lists all prior deployments with image tags. Revert with `fly deploy --image registry.fly.io/<app>:<image-id>`. Typical time-to-revert: ~60–90 seconds (re-deploy of existing image, no rebuild). Caveat: database migrations applied in the broken deploy do not roll back automatically — backward-compatible migration discipline is required.
-- **Approval**: An agent may run `fly deploy`, `fly secrets set`, `fly logs`, and `fly releases` unattended. Human approval required for: deleting the app (`fly destroy`), rotating the `FLY_API_TOKEN` itself, and any `fly postgres` or Supabase destructive operations. Database drops and secret rotation are panel-by-hand operations.
-- **Logs**: `fly logs` streams live logs from the running machine. `fly logs --no-tail` prints recent lines and exits (useful for CI). Log retention is limited; for persistent log storage, pipe to an external service or use `fly logs > deploy.log` in CI.
+- **Preview deploys**: No automatic PR preview URL out of the box. Branch deploys can be configured by creating a second Fly app (e.g., `korpotron-staging`) and deploying to it from CI on a feature branch. Fly offers no automatic per-PR preview environment like Vercel. For MVP, a single production app is sufficient.
+- **Secrets**: All env vars and tokens are set via `fly secrets set KEY=value`. Secrets are encrypted at rest and injected into the container as env vars at boot. They are not visible in `fly.toml` or the container image. Rotation: `fly secrets set KEY=new_value` followed by `fly deploy` (or `fly machines restart` for immediate pickup without a full deploy).
+- **Rollback**: No `fly rollback` command. Steps: (1) `fly releases` to list image tags, (2) `fly deploy --image registry.fly.io/<app>:<tag>` to redeploy a prior version. Typical time-to-revert: 2–4 minutes including image pull. Data caveat: DB migrations run via `release_command` do not automatically roll back — schema must be manually reverted if the migration was destructive.
+- **Approval**: Human-only actions: deleting the app, rotating the `SECRET_KEY` (requires updating Supabase sessions too), increasing machine count or size beyond the current tier. Agent-permissible unattended: `fly deploy`, `fly secrets set`, `fly logs`, `fly releases`, `fly scale`.
+- **Logs**: `fly logs` (streaming, follows new lines). `fly logs --no-tail` for a snapshot. `fly logs -i <machine-id>` for a specific machine. No retention limit noted for the CLI stream; dashboard log retention is 30 days.
 
 ## Risk Register
 
 | Risk | Source | Likelihood | Impact | Mitigation |
 |---|---|---|---|---|
-| Auto-stop default causes cold starts in production | Devil's advocate | High | Medium | Set `auto_stop_machines = false` and `min_machines_running = 1` in `fly.toml` immediately after `fly launch` |
-| `fly secrets set` doesn't apply to running machine without restart | Unknown unknowns | High | Medium | Always follow `fly secrets set` with `fly deploy` or document the restart step in the deploy runbook |
-| Custom Dockerfile required for uv (first-deploy friction) | Devil's advocate | High | Low | Write the Dockerfile before first deploy; use `ghcr.io/astral-sh/uv:python3.12-bookworm-slim` as base |
-| IPv4 allocation adds $2/month unexpectedly | Unknown unknowns | High | Low | Note the $2/month IPv4 cost in the budget; allocate a shared IPv4 explicitly and track it |
-| Supabase free-tier project pauses after 1 week of inactivity | Unknown unknowns | Medium | High | Set up a lightweight uptime monitor (e.g., UptimeRobot free tier) to ping the app every 24h; or upgrade to Supabase Pro if the app is used in production |
-| Migration failure leaves schema forward-migrated while old code runs | Pre-mortem | Low | High | Follow backward-compatible migration discipline: deploy schema changes separately from code changes; test migrations on staging before production |
-| `release_command` migrate runs on every deploy including rollbacks | Research finding | Low | Medium | Ensure all migrations are backward-compatible; test rollback procedure on staging |
-| No CLI rollback — incident response requires dashboard | Devil's advocate | Low | Medium | Document the `fly releases` + `fly deploy --image` rollback procedure; bookmark the Fly dashboard on mobile |
-| OpenRouter API key not visible after `fly secrets set` without restart | Pre-mortem | Medium | Medium | Include `fly deploy` in the secrets-rotation runbook; never set secrets and assume they're live without verifying |
-| Experimental MCP server unreliable for agent-driven operations | Devil's advocate | Medium | Low | Use `flyctl` CLI as the primary agent interface; treat MCP as supplementary until it reaches GA |
+| Auto-stop cold starts in production | Devil's advocate | H | M | Set `auto_stop_machines = false` and `min_machines_running = 1` in `fly.toml` before first production deploy |
+| IPv4 surprise cost ($2/month) | Unknown unknowns | H | L | Budget for $2/month shared IPv4 from the start; document it in ops notes |
+| `fly secrets set` not picked up by running machine | Unknown unknowns | M | M | Always follow `fly secrets set` with `fly deploy` or `fly machines restart`; add to ops runbook |
+| Custom Dockerfile setup cost (uv not auto-detected) | Devil's advocate | H | L | Write Dockerfile once using `ghcr.io/astral-sh/uv:python3.12-bookworm-slim`; commit and done |
+| Migration partial-failure leaves schema ahead of code | Pre-mortem | L | H | Use backward-compatible migrations (add column first, deploy, then drop old column in v2); never deploy destructive migration and new code in the same release |
+| Experimental MCP server unreliability | Devil's advocate | M | L | Use `flyctl` CLI directly for agent operations; treat MCP as supplemental when stable |
+| `SECRET_KEY` scaffold default in production | Research finding | H | H | `fly secrets set SECRET_KEY=$(python -c "import secrets; print(secrets.token_urlsafe(50))")` before first production deploy |
+| OpenRouter API key not propagating to live container | Pre-mortem | M | M | After setting any new secret, always trigger a deploy or machine restart; verify with `fly secrets list` |
 
 ## Getting Started
 
-1. **Install flyctl**: `curl -L https://fly.io/install.sh | sh` (Linux/macOS) or see [fly.io/docs/flyctl/install](https://fly.io/docs/flyctl/install/) for Windows. Authenticate: `fly auth login`.
-
-2. **Write a uv-aware Dockerfile** (do not rely on `fly launch` auto-generation for uv projects):
+1. **Install flyctl**: `curl -L https://fly.io/install.sh | sh` — or via Homebrew: `brew install flyctl`. Authenticate: `fly auth login`.
+2. **Write the uv Dockerfile**: Create a `Dockerfile` in the project root using the official uv base image (do not use `fly launch` auto-generation for uv projects):
    ```dockerfile
    FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS builder
    WORKDIR /app
@@ -110,36 +105,34 @@ The cumulative effect: each problem is individually solvable, but the barrier to
 
    FROM python:3.12-slim-bookworm
    WORKDIR /app
-   COPY --from=builder /app/.venv .venv
+   COPY --from=builder /app/.venv /app/.venv
    COPY . .
    ENV PATH="/app/.venv/bin:$PATH"
-   RUN python manage.py collectstatic --noinput
    CMD ["gunicorn", "korpotron.wsgi", "--bind", "0.0.0.0:8080"]
    ```
-
-3. **Initialize the Fly app**: `fly launch --no-deploy` — this creates `fly.toml` without deploying. Immediately edit `fly.toml` to set:
+3. **Initialise the Fly app**: `fly launch --no-deploy` — review and edit the generated `fly.toml`. Override the auto-stop default:
    ```toml
    [http_service]
      auto_stop_machines = false
      min_machines_running = 1
+   
    [deploy]
      release_command = "python manage.py migrate"
    ```
-
-4. **Set required secrets before first deploy**:
-   ```bash
-   fly secrets set SECRET_KEY="$(python -c 'import secrets; print(secrets.token_urlsafe(50))')"
-   fly secrets set DATABASE_URL="postgresql://..."   # Supabase connection string
-   fly secrets set OPENROUTER_API_KEY="sk-or-..."
-   fly secrets set DJANGO_ALLOWED_HOSTS="korpotron.fly.dev"
+4. **Set required secrets** before first deploy:
    ```
-
-5. **Deploy**: `fly deploy` — the `release_command` runs `manage.py migrate` before the new version starts. Verify with `fly logs` and `fly status`.
+   fly secrets set SECRET_KEY=$(python -c "import secrets; print(secrets.token_urlsafe(50))")
+   fly secrets set DATABASE_URL=<your-supabase-connection-string>
+   fly secrets set OPENROUTER_API_KEY=<your-openrouter-key>
+   fly secrets set DJANGO_SETTINGS_MODULE=korpotron.settings
+   ```
+5. **Deploy**: `fly deploy` — this builds the image, runs the `release_command` (migrate), and starts the machine. Verify with `fly logs` and `fly status`.
 
 ## Out of Scope
 
 The following were not evaluated in this research:
-- Docker image optimisation (layer caching, multi-stage size reduction)
-- CI/CD pipeline configuration (GitHub Actions workflow for auto-deploy)
-- Production-scale architecture (multi-region, HA, read replicas)
-- Supabase connection pooling configuration (PgBouncer / Supavisor for high-concurrency workloads)
+- Docker image optimisation (layer caching, multi-stage build tuning)
+- CI/CD pipeline setup (GitHub Actions auto-deploy workflow)
+- Production-scale architecture (multi-region, HA, DR)
+- Media file storage configuration (S3/R2 for user uploads)
+- Email delivery setup (transactional email provider)
