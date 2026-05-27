@@ -20,6 +20,10 @@ A user navigating to any protected URL is redirected to `/accounts/login/`. Afte
 - `pyproject.toml` — no `[tool.pytest.ini_options]` block; `DJANGO_SETTINGS_MODULE` must be added for pytest-django to work
 - Django 5+ / 6 — `LogoutView` only accepts POST requests; logout must be triggered by a form, not a link
 
+## Prerequisites
+
+Before starting Phase 1, ensure `SECRET_KEY` is available in the environment. Copy `.env.example` to `.env` and set `SECRET_KEY` to any non-empty string. Every `uv run manage.py` command and `pytest` invocation will fail with `KeyError` if this variable is absent — there is no default and no dotenv auto-loading.
+
 ## What We're NOT Doing
 
 - Custom auth backend for email-as-username (using Django's default username field)
@@ -49,7 +53,7 @@ Configure the settings Django needs to redirect correctly, wire auth routes into
 **Contract**:
 - `TEMPLATES[0]["DIRS"]` → `[BASE_DIR / "templates"]`
 - Add three constants after the existing `AUTH_PASSWORD_VALIDATORS` block:
-  `LOGIN_URL`, `LOGIN_REDIRECT_URL = "/"`, `LOGOUT_REDIRECT_URL`
+  `LOGIN_URL = "/accounts/login/"`, `LOGIN_REDIRECT_URL = "/"`, `LOGOUT_REDIRECT_URL = "/accounts/login/"`
 
 #### 2. URL conf — auth routes and home
 
@@ -158,12 +162,13 @@ Add pytest-django configuration and three functional tests that verify the criti
 - `test_unauthenticated_redirects_to_login` — `client.get("/")` → status 302, `Location` starts with `/accounts/login/`
 - `test_valid_login_redirects_to_home` — `client.post("/accounts/login/", {...}, follow=True)` → status 200, final URL is `/`
 - `test_invalid_login_returns_form` — `client.post("/accounts/login/", {wrong password})` → status 200 (form re-rendered with error)
+- `test_logout_redirects_to_login` — log in, then `client.post("/accounts/logout/")` → status 302, `Location` starts with `/accounts/login/`
 
 ### Success Criteria
 
 #### Automated Verification
 
-- `pytest` exits 0 with all 3 tests passing
+- `pytest` exits 0 with all 4 tests passing
 - `ruff check .` exits 0 on the new test file
 
 ---
@@ -229,5 +234,5 @@ No new models in this slice. `uv run manage.py migrate` applies the existing `dj
 
 #### Automated
 
-- [ ] 3.1 `pytest` exits 0, all 3 tests passing
+- [ ] 3.1 `pytest` exits 0, all 4 tests passing
 - [ ] 3.2 `ruff check .` exits 0 on test file
