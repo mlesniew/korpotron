@@ -234,5 +234,5 @@ No new models in this slice. `uv run manage.py migrate` applies the existing `dj
 
 #### Automated
 
-- [x] 3.1 `pytest` exits 0, all 4 tests passing
-- [x] 3.2 `ruff check .` exits 0 on test file
+- [x] 3.1 `pytest` exits 0, all 4 tests passing — d5b9993
+- [x] 3.2 `ruff check .` exits 0 on test file — d5b9993
