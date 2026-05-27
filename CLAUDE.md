@@ -1,9 +1,5 @@
 # CLAUDE.md
 
-## Critical
-
-Note taht `SECRET_KEY` in `korpotron/settings.py` is the insecure Django scaffold default.  This needs updated before any production deployment.
-
 ## Stack
 
 Django 6.0.5 · Python 3.12 · uv · SQLite (dev) · Fly.io (prod) · GitHub Actions CI
@@ -11,22 +7,29 @@ Django 6.0.5 · Python 3.12 · uv · SQLite (dev) · Fly.io (prod) · GitHub Act
 ## Setup
 
 ```
+cp .env.example .env   # then set SECRET_KEY to any non-empty string
 uv run manage.py migrate
 uv run manage.py runserver
 ```
 
 Use **uv** to add packages — not pip. Example: `uv add django-environ`
 
+### Environment variables
+
+The project reads configuration from a `.env` file in the project root (loaded automatically via `python-dotenv`). `.env` is gitignored and never committed.
+
+Copy `.env.example` to `.env` to get started. The only required variable for local dev is `SECRET_KEY`. In production (Fly.io) all variables are set as Fly secrets, not via `.env`.
+
 ## Commands
 
 | Task | Command |
 |------|---------|
-| Run dev server | `python manage.py runserver` |
-| Make migrations | `python manage.py makemigrations` |
-| Apply migrations | `python manage.py migrate` |
-| Run tests | `pytest` |
-| Lint | `ruff check .` |
-| Format | `ruff format .` |
+| Run dev server | `uv run manage.py runserver` |
+| Make migrations | `uv run manage.py makemigrations` |
+| Apply migrations | `uv run manage.py migrate` |
+| Run tests | `uv run pytest` |
+| Lint | `uv run ruff check .` |
+| Format | `uv run ruff format .` |
 
 ## Code conventions
 
@@ -35,11 +38,17 @@ Use **uv** to add packages — not pip. Example: `uv add django-environ`
 
 ## Testing
 
-Tests use **pytest + pytest-django**.
+Tests use **pytest + pytest-django**. `DJANGO_SETTINGS_MODULE` is configured in `pyproject.toml` so `uv run pytest` works with no extra setup.
 
 ## Commit style
 
-* Imperative first line: `Add login view`, `Fix migration conflict`, `Update settings for Fly`
+Use **Conventional Commits**: `feat:`, `fix:`, `chore:`, `refactor:`, `docs:`. Include a scope when the change is bounded to one area:
+
+```
+feat(auth): add password reset flow
+fix(templates): correct logout form CSRF handling
+chore: update dependencies
+```
 
 ## Deployment
 
