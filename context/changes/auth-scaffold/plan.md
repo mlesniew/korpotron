@@ -213,13 +213,13 @@ No new models in this slice. `uv run manage.py migrate` applies the existing `dj
 
 #### Automated
 
-- [ ] 1.1 `uv run manage.py check` exits 0
-- [ ] 1.2 `ruff check .` exits 0
+- [x] 1.1 `uv run manage.py check` exits 0
+- [x] 1.2 `ruff check .` exits 0
 
 #### Manual
 
-- [ ] 1.3 Dev server starts without error
-- [ ] 1.4 `GET /` redirects to login page (no 404 or 500)
+- [x] 1.3 Dev server starts without error
+- [x] 1.4 `GET /` redirects to login page (no 404 or 500)
 
 ### Phase 2: Templates
 
