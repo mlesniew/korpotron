@@ -225,14 +225,14 @@ No new models in this slice. `uv run manage.py migrate` applies the existing `dj
 
 #### Manual
 
-- [x] 2.1 Login page renders at `/accounts/login/` with form
-- [x] 2.2 Valid login redirects to `/` with username greeting
-- [x] 2.3 Unauthenticated `GET /` redirects to `/accounts/login/`
-- [x] 2.4 Logout returns to login page
+- [x] 2.1 Login page renders at `/accounts/login/` with form — d21b4a0
+- [x] 2.2 Valid login redirects to `/` with username greeting — d21b4a0
+- [x] 2.3 Unauthenticated `GET /` redirects to `/accounts/login/` — d21b4a0
+- [x] 2.4 Logout returns to login page — d21b4a0
 
 ### Phase 3: Tests
 
 #### Automated
 
-- [ ] 3.1 `pytest` exits 0, all 4 tests passing
-- [ ] 3.2 `ruff check .` exits 0 on test file
+- [x] 3.1 `pytest` exits 0, all 4 tests passing
+- [x] 3.2 `ruff check .` exits 0 on test file
