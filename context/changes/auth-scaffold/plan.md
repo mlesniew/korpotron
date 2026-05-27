@@ -213,22 +213,22 @@ No new models in this slice. `uv run manage.py migrate` applies the existing `dj
 
 #### Automated
 
-- [x] 1.1 `uv run manage.py check` exits 0
-- [x] 1.2 `ruff check .` exits 0
+- [x] 1.1 `uv run manage.py check` exits 0 — 9882667
+- [x] 1.2 `ruff check .` exits 0 — 9882667
 
 #### Manual
 
-- [x] 1.3 Dev server starts without error
-- [x] 1.4 `GET /` redirects to login page (no 404 or 500)
+- [x] 1.3 Dev server starts without error — 9882667
+- [x] 1.4 `GET /` redirects to login page (no 404 or 500) — 9882667
 
 ### Phase 2: Templates
 
 #### Manual
 
-- [ ] 2.1 Login page renders at `/accounts/login/` with form
-- [ ] 2.2 Valid login redirects to `/` with username greeting
-- [ ] 2.3 Unauthenticated `GET /` redirects to `/accounts/login/`
-- [ ] 2.4 Logout returns to login page
+- [x] 2.1 Login page renders at `/accounts/login/` with form
+- [x] 2.2 Valid login redirects to `/` with username greeting
+- [x] 2.3 Unauthenticated `GET /` redirects to `/accounts/login/`
+- [x] 2.4 Logout returns to login page
 
 ### Phase 3: Tests
 
