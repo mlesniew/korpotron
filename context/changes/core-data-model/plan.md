@@ -225,17 +225,17 @@ This is the first custom migration. It creates three new tables; no existing dat
 
 #### Automated
 
-- [ ] 1.1 Django system check passes: `uv run manage.py check`
-- [ ] 1.2 No unapplied migrations: `uv run manage.py makemigrations --check`
-- [ ] 1.3 Migration applies cleanly: `uv run manage.py migrate`
-- [ ] 1.4 Ruff lint passes: `uv run ruff check .`
-- [ ] 1.5 Existing test suite still passes: `uv run pytest`
+- [x] 1.1 Django system check passes: `uv run manage.py check`
+- [x] 1.2 No unapplied migrations: `uv run manage.py makemigrations --check`
+- [x] 1.3 Migration applies cleanly: `uv run manage.py migrate`
+- [x] 1.4 Ruff lint passes: `uv run ruff check .`
+- [x] 1.5 Existing test suite still passes: `uv run pytest`
 
 #### Manual
 
-- [ ] 1.6 `/admin/` shows Core section with all three models
-- [ ] 1.7 Can create Template, OptionGroup, and Option via admin without errors
-- [ ] 1.8 `list_display` columns visible in each admin list view
+- [x] 1.6 `/admin/` shows Core section with all three models
+- [x] 1.7 Can create Template, OptionGroup, and Option via admin without errors
+- [x] 1.8 `list_display` columns visible in each admin list view
 
 ### Phase 2: Tests
 
