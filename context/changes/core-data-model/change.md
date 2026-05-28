@@ -1,7 +1,7 @@
 ---
 change_id: core-data-model
 title: Core data model
-status: implemented
+status: impl_reviewed
 created: 2026-05-28
 updated: 2026-05-28
 archived_at: null
