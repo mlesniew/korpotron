@@ -22,7 +22,7 @@ A user navigating to any protected URL is redirected to `/accounts/login/`. Afte
 
 ## Prerequisites
 
-Before starting Phase 1, ensure `SECRET_KEY` is available in the environment. Copy `.env.example` to `.env` and set `SECRET_KEY` to any non-empty string. Every `uv run manage.py` command and `pytest` invocation will fail with `KeyError` if this variable is absent — there is no default and no dotenv auto-loading.
+Before starting Phase 1, ensure `SECRET_KEY` is available in the environment. Copy `.env.example` to `.env` and set `SECRET_KEY` to any non-empty string. ~~Every `uv run manage.py` command and `pytest` invocation will fail with `KeyError` if this variable is absent — there is no default and no dotenv auto-loading.~~ *(Superseded: settings.py now loads `.env` conditionally via python-dotenv; a missing `.env` no longer raises KeyError.)*
 
 ## What We're NOT Doing
 

@@ -4,11 +4,6 @@ from django.test import Client
 
 
 @pytest.fixture
-def client() -> Client:
-    return Client()
-
-
-@pytest.fixture
 def user(db: None) -> User:
     return User.objects.create_user(username="tester", password="pass1234")
 
@@ -38,6 +33,8 @@ def test_invalid_login_returns_form(client: Client, user: User) -> None:
         {"username": "tester", "password": "wrongpassword"},
     )
     assert response.status_code == 200
+    assert not response.wsgi_request.user.is_authenticated
+    assert response.context["form"].errors
 
 
 @pytest.mark.django_db
