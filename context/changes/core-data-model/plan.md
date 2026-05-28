@@ -241,11 +241,11 @@ This is the first custom migration. It creates three new tables; no existing dat
 
 #### Automated
 
-- [x] 2.1 New model tests pass: `uv run pytest tests/test_core_models.py`
-- [x] 2.2 Full test suite passes: `uv run pytest`
-- [x] 2.3 Ruff lint passes: `uv run ruff check .`
-- [x] 2.4 Docker build succeeds: `docker build .`
+- [x] 2.1 New model tests pass: `uv run pytest tests/test_core_models.py` — 30250d6
+- [x] 2.2 Full test suite passes: `uv run pytest` — 30250d6
+- [x] 2.3 Ruff lint passes: `uv run ruff check .` — 30250d6
+- [x] 2.4 Docker build succeeds: `docker build .` — 30250d6
 
 #### Manual
 
-- [x] 2.5 No regressions in existing auth tests
+- [x] 2.5 No regressions in existing auth tests — 30250d6
