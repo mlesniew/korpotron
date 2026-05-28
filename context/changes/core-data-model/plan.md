@@ -225,27 +225,27 @@ This is the first custom migration. It creates three new tables; no existing dat
 
 #### Automated
 
-- [x] 1.1 Django system check passes: `uv run manage.py check`
-- [x] 1.2 No unapplied migrations: `uv run manage.py makemigrations --check`
-- [x] 1.3 Migration applies cleanly: `uv run manage.py migrate`
-- [x] 1.4 Ruff lint passes: `uv run ruff check .`
-- [x] 1.5 Existing test suite still passes: `uv run pytest`
+- [x] 1.1 Django system check passes: `uv run manage.py check` — 4f0f3b6
+- [x] 1.2 No unapplied migrations: `uv run manage.py makemigrations --check` — 4f0f3b6
+- [x] 1.3 Migration applies cleanly: `uv run manage.py migrate` — 4f0f3b6
+- [x] 1.4 Ruff lint passes: `uv run ruff check .` — 4f0f3b6
+- [x] 1.5 Existing test suite still passes: `uv run pytest` — 4f0f3b6
 
 #### Manual
 
-- [x] 1.6 `/admin/` shows Core section with all three models
-- [x] 1.7 Can create Template, OptionGroup, and Option via admin without errors
-- [x] 1.8 `list_display` columns visible in each admin list view
+- [x] 1.6 `/admin/` shows Core section with all three models — 4f0f3b6
+- [x] 1.7 Can create Template, OptionGroup, and Option via admin without errors — 4f0f3b6
+- [x] 1.8 `list_display` columns visible in each admin list view — 4f0f3b6
 
 ### Phase 2: Tests
 
 #### Automated
 
-- [ ] 2.1 New model tests pass: `uv run pytest tests/test_core_models.py`
-- [ ] 2.2 Full test suite passes: `uv run pytest`
-- [ ] 2.3 Ruff lint passes: `uv run ruff check .`
-- [ ] 2.4 Docker build succeeds: `docker build .`
+- [x] 2.1 New model tests pass: `uv run pytest tests/test_core_models.py`
+- [x] 2.2 Full test suite passes: `uv run pytest`
+- [x] 2.3 Ruff lint passes: `uv run ruff check .`
+- [x] 2.4 Docker build succeeds: `docker build .`
 
 #### Manual
 
-- [ ] 2.5 No regressions in existing auth tests
+- [x] 2.5 No regressions in existing auth tests

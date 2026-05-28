@@ -3,11 +3,6 @@ from django.contrib.auth.models import User
 from django.test import Client
 
 
-@pytest.fixture
-def user(db: None) -> User:
-    return User.objects.create_user(username="tester", password="pass1234")
-
-
 @pytest.mark.django_db
 def test_unauthenticated_redirects_to_login(client: Client) -> None:
     response = client.get("/")
