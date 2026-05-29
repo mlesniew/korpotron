@@ -57,7 +57,7 @@ Standard Django class-based views with `LoginRequiredMixin`. Each view overrides
 
 ## Open Risks & Assumptions
 
-- The Django template directory for `core` views will be `templates/core/` — this is the conventional pattern and `APP_DIRS: True` in settings will find it automatically.
+- The Django template directory for `core` views will be `templates/core/` — this is the conventional pattern and will be found automatically via the `DIRS: [BASE_DIR / "templates"]` entry in settings (not APP_DIRS, which would look in `core/templates/`).
 - No `mypy` CI gate exists yet; type hints should still be added per CLAUDE.md convention but won't be machine-verified this change.
 
 ## Success Criteria (Summary)

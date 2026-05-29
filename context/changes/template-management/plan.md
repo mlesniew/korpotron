@@ -106,7 +106,7 @@ Add the three Django HTML template files for list, form, and delete confirmation
 
 **Intent**: Add a "Templates" link in the nav bar so users can reach template management from any page.
 
-**Contract**: Inside the `<nav>`, add an `<a class="nav-link text-white" href="{% url 'template-list' %}">Templates</a>` element, visible only to authenticated users (inside the existing `{% if user.is_authenticated %}` block or alongside it).
+**Contract**: Inside the `<nav>`, add an `<a class="nav-link text-white" href="{% url 'template-list' %}">Templates</a>` element, visible only to authenticated users (inside the existing `{% if user.is_authenticated %}` block).
 
 #### 2. `templates/core/template_list.html` — new file
 
@@ -224,12 +224,13 @@ No migrations required — `Template` model and its existing migration are uncha
 #### Automated
 
 - [ ] 1.1 Lint passes: `uv run ruff check .`
+- [ ] 1.2 Type checking passes: `uv run mypy .` (if wired)
 
 #### Manual
 
-- [ ] 1.2 Dev server starts without errors
-- [ ] 1.3 `/templates/` while logged in returns a response
-- [ ] 1.4 `/templates/` while not logged in redirects to login
+- [ ] 1.3 Dev server starts without errors
+- [ ] 1.4 `/templates/` while logged in returns a response
+- [ ] 1.5 `/templates/` while not logged in redirects to login
 
 ### Phase 2: HTML Templates and Nav
 
