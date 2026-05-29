@@ -24,4 +24,5 @@ urlpatterns = [
     path("", views.home, name="home"),
     path("admin/", admin.site.urls),
     path("templates/", include("core.urls")),
+    path("option-groups/", include("core.option_group_urls")),
 ]

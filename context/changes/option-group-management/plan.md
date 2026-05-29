@@ -260,16 +260,16 @@ The `unique_together` constraint applies only going forward. A fresh dev databas
 
 #### Automated
 
-- [ ] 1.1 Migration applies cleanly: `uv run manage.py migrate`
-- [ ] 1.2 No import errors: `uv run manage.py check`
-- [ ] 1.3 All existing tests still pass: `uv run pytest`
-- [ ] 1.4 Linting passes: `uv run ruff check .`
+- [x] 1.1 Migration applies cleanly: `uv run manage.py migrate`
+- [x] 1.2 No import errors: `uv run manage.py check`
+- [x] 1.3 All existing tests still pass: `uv run pytest`
+- [x] 1.4 Linting passes: `uv run ruff check .`
 
 #### Manual
 
-- [ ] 1.5 `/option-groups/` returns 302 to login when unauthenticated
-- [ ] 1.6 Authenticated user can navigate to `/option-groups/` without a 500
-- [ ] 1.7 `/option-groups/new/` and `/option-groups/1/edit/` render without a template-not-found 500
+- [x] 1.5 `/option-groups/` returns 302 to login when unauthenticated
+- [x] 1.6 Authenticated user can navigate to `/option-groups/` without a 500
+- [x] 1.7 `/option-groups/new/` and `/option-groups/1/edit/` render without a template-not-found 500
 
 ### Phase 2: HTML Templates and Nav
 

@@ -43,5 +43,8 @@ class Option(models.Model):
     name = models.CharField(max_length=200)
     instruction = models.TextField()
 
+    class Meta:
+        unique_together = [("group", "name")]
+
     def __str__(self) -> str:
         return self.name

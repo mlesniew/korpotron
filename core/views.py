@@ -1,11 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import transaction
 from django.db.models import QuerySet
 from django.forms import BaseModelForm
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
-from core.models import Template
+from core.forms import OptionFormSet
+from core.models import OptionGroup, Template
 
 
 class TemplateListView(LoginRequiredMixin, ListView):
@@ -40,3 +42,66 @@ class TemplateDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_queryset(self) -> QuerySet[Template]:
         return Template.objects.filter(user=self.request.user)
+
+
+class OptionGroupListView(LoginRequiredMixin, ListView):
+    model = OptionGroup
+
+    def get_queryset(self) -> QuerySet[OptionGroup]:
+        return OptionGroup.objects.filter(user=self.request.user)
+
+
+class OptionGroupCreateView(LoginRequiredMixin, CreateView):
+    model = OptionGroup
+    fields = ["name"]
+    success_url = reverse_lazy("option-group-list")
+
+    def get_context_data(self, **kwargs: object) -> dict[str, object]:
+        context = super().get_context_data(**kwargs)
+        context["formset"] = OptionFormSet(self.request.POST or None)
+        return context
+
+    def form_valid(self, form: BaseModelForm) -> HttpResponse:
+        form.instance.user = self.request.user
+        formset = OptionFormSet(self.request.POST, instance=form.instance)
+        if formset.is_valid():
+            with transaction.atomic():
+                self.object = form.save()
+                formset.instance = self.object
+                formset.save()
+            return HttpResponseRedirect(self.get_success_url())
+        self.object = None
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+class OptionGroupUpdateView(LoginRequiredMixin, UpdateView):
+    model = OptionGroup
+    fields = ["name"]
+    success_url = reverse_lazy("option-group-list")
+
+    def get_queryset(self) -> QuerySet[OptionGroup]:
+        return OptionGroup.objects.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs: object) -> dict[str, object]:
+        context = super().get_context_data(**kwargs)
+        context["formset"] = OptionFormSet(
+            self.request.POST or None, instance=self.object
+        )
+        return context
+
+    def form_valid(self, form: BaseModelForm) -> HttpResponse:
+        formset = OptionFormSet(self.request.POST, instance=self.object)
+        if formset.is_valid():
+            with transaction.atomic():
+                form.save()
+                formset.save()
+            return HttpResponseRedirect(self.get_success_url())
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+class OptionGroupDeleteView(LoginRequiredMixin, DeleteView):
+    model = OptionGroup
+    success_url = reverse_lazy("option-group-list")
+
+    def get_queryset(self) -> QuerySet[OptionGroup]:
+        return OptionGroup.objects.filter(user=self.request.user)
