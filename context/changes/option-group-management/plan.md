@@ -260,33 +260,33 @@ The `unique_together` constraint applies only going forward. A fresh dev databas
 
 #### Automated
 
-- [x] 1.1 Migration applies cleanly: `uv run manage.py migrate`
-- [x] 1.2 No import errors: `uv run manage.py check`
-- [x] 1.3 All existing tests still pass: `uv run pytest`
-- [x] 1.4 Linting passes: `uv run ruff check .`
+- [x] 1.1 Migration applies cleanly: `uv run manage.py migrate` — 2071b2b
+- [x] 1.2 No import errors: `uv run manage.py check` — 2071b2b
+- [x] 1.3 All existing tests still pass: `uv run pytest` — 2071b2b
+- [x] 1.4 Linting passes: `uv run ruff check .` — 2071b2b
 
 #### Manual
 
-- [x] 1.5 `/option-groups/` returns 302 to login when unauthenticated
-- [x] 1.6 Authenticated user can navigate to `/option-groups/` without a 500
-- [x] 1.7 `/option-groups/new/` and `/option-groups/1/edit/` render without a template-not-found 500
+- [x] 1.5 `/option-groups/` returns 302 to login when unauthenticated — 2071b2b
+- [x] 1.6 Authenticated user can navigate to `/option-groups/` without a 500 — 2071b2b
+- [x] 1.7 `/option-groups/new/` and `/option-groups/1/edit/` render without a template-not-found 500 — 2071b2b
 
 ### Phase 2: HTML Templates and Nav
 
 #### Automated
 
-- [ ] 2.1 All tests still pass: `uv run pytest`
-- [ ] 2.2 Linting passes: `uv run ruff check .`
+- [x] 2.1 All tests still pass: `uv run pytest`
+- [x] 2.2 Linting passes: `uv run ruff check .`
 
 #### Manual
 
-- [ ] 2.3 "Option Groups" nav link appears in the navbar when logged in
-- [ ] 2.4 List page renders correctly (empty state and populated state)
-- [ ] 2.5 Create form renders with one empty option row; "Add option" button appends a new row
-- [ ] 2.6 Edit form pre-populates group name and existing options
-- [ ] 2.7 Delete confirmation shows option count
-- [ ] 2.8 Submitting create with no options shows a validation error
-- [ ] 2.9 Submitting create with duplicate option names shows a validation error
+- [x] 2.3 "Option Groups" nav link appears in the navbar when logged in
+- [x] 2.4 List page renders correctly (empty state and populated state)
+- [x] 2.5 Create form renders with one empty option row; "Add option" button appends a new row
+- [x] 2.6 Edit form pre-populates group name and existing options
+- [x] 2.7 Delete confirmation shows option count
+- [x] 2.8 Submitting create with no options shows a validation error
+- [x] 2.9 Submitting create with duplicate option names shows a validation error
 
 ### Phase 3: Tests
 

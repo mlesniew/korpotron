@@ -11,6 +11,7 @@
     <span class="navbar-brand">Korpotron</span>
     {% if user.is_authenticated %}
       <a class="nav-link text-white" href="{% url 'template-list' %}">Templates</a>
+      <a class="nav-link text-white" href="{% url 'option-group-list' %}">Option Groups</a>
       <form method="post" action="{% url 'logout' %}">
         {% csrf_token %}
         <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
