@@ -1,9 +1,9 @@
-from django.forms import BaseInlineFormSet, ValidationError, inlineformset_factory
+from django.forms import BaseInlineFormSet, ModelForm, ValidationError, inlineformset_factory
 
 from core.models import Option, OptionGroup
 
 
-class RequiredOptionInlineFormSet(BaseInlineFormSet):
+class RequiredOptionInlineFormSet(BaseInlineFormSet[Option, OptionGroup, ModelForm[Option]]):
     def clean(self) -> None:
         super().clean()
         active_forms = [

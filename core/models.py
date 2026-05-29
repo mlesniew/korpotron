@@ -29,6 +29,7 @@ class OptionGroup(models.Model):
 
     class Meta:
         ordering = ["name"]
+        unique_together = [("user", "name")]
 
     def __str__(self) -> str:
         return self.name

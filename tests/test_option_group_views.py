@@ -6,11 +6,6 @@ from core.models import Option, OptionGroup
 
 
 @pytest.fixture
-def other_user(db: None) -> User:
-    return User.objects.create_user(username="other", password="pass1234")
-
-
-@pytest.fixture
 def option_group(user: User) -> OptionGroup:
     group = OptionGroup.objects.create(user=user, name="Tone")
     Option.objects.create(group=group, name="Formal", instruction="Be formal.")

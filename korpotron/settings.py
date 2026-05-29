@@ -6,6 +6,10 @@ import os
 from pathlib import Path
 
 import dj_database_url
+import django_stubs_ext
+
+django_stubs_ext.monkeypatch()
+
 try:
     from dotenv import load_dotenv
 

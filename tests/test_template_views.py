@@ -6,11 +6,6 @@ from core.models import Template
 
 
 @pytest.fixture
-def other_user(db: None) -> User:
-    return User.objects.create_user(username="other", password="pass1234")
-
-
-@pytest.fixture
 def template(user: User) -> Template:
     return Template.objects.create(user=user, name="My Template", base_prompt="Hello")
 

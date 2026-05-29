@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
-from django.db.models import QuerySet
+from django.db.models import Count, QuerySet
 from django.forms import BaseModelForm
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -48,7 +48,9 @@ class OptionGroupListView(LoginRequiredMixin, ListView):
     model = OptionGroup
 
     def get_queryset(self) -> QuerySet[OptionGroup]:
-        return OptionGroup.objects.filter(user=self.request.user)
+        return OptionGroup.objects.filter(user=self.request.user).annotate(
+            options_count=Count("options")
+        )
 
 
 class OptionGroupCreateView(LoginRequiredMixin, CreateView):
@@ -58,17 +60,19 @@ class OptionGroupCreateView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs: object) -> dict[str, object]:
         context = super().get_context_data(**kwargs)
-        context["formset"] = OptionFormSet(self.request.POST or None)
+        if not hasattr(self, "_formset"):
+            self._formset: OptionFormSet = OptionFormSet(self.request.POST or None)
+        context["formset"] = self._formset
         return context
 
     def form_valid(self, form: BaseModelForm) -> HttpResponse:
         form.instance.user = self.request.user
-        formset = OptionFormSet(self.request.POST, instance=form.instance)
-        if formset.is_valid():
+        self._formset = OptionFormSet(self.request.POST, instance=form.instance)
+        if self._formset.is_valid():
             with transaction.atomic():
                 self.object = form.save()
-                formset.instance = self.object
-                formset.save()
+                self._formset.instance = self.object
+                self._formset.save()
             return HttpResponseRedirect(self.get_success_url())
         self.object = None
         return self.render_to_response(self.get_context_data(form=form))
@@ -84,17 +88,19 @@ class OptionGroupUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs: object) -> dict[str, object]:
         context = super().get_context_data(**kwargs)
-        context["formset"] = OptionFormSet(
-            self.request.POST or None, instance=self.object
-        )
+        if not hasattr(self, "_formset"):
+            self._formset: OptionFormSet = OptionFormSet(
+                self.request.POST or None, instance=self.object
+            )
+        context["formset"] = self._formset
         return context
 
     def form_valid(self, form: BaseModelForm) -> HttpResponse:
-        formset = OptionFormSet(self.request.POST, instance=self.object)
-        if formset.is_valid():
+        self._formset = OptionFormSet(self.request.POST, instance=self.object)
+        if self._formset.is_valid():
             with transaction.atomic():
                 form.save()
-                formset.save()
+                self._formset.save()
             return HttpResponseRedirect(self.get_success_url())
         return self.render_to_response(self.get_context_data(form=form))
 

@@ -23,6 +23,5 @@ urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
     path("", views.home, name="home"),
     path("admin/", admin.site.urls),
-    path("templates/", include("core.urls")),
-    path("option-groups/", include("core.option_group_urls")),
+    path("", include("core.urls")),
 ]

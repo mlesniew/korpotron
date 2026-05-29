@@ -19,7 +19,7 @@
     {% for group in object_list %}
     <tr>
       <td>{{ group.name }}</td>
-      <td>{{ group.options.count }}</td>
+      <td>{{ group.options_count }}</td>
       <td class="text-end">
         <a href="{% url 'option-group-update' group.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
         <a href="{% url 'option-group-delete' group.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
