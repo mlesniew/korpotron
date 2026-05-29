@@ -223,14 +223,14 @@ No migrations required — `Template` model and its existing migration are uncha
 
 #### Automated
 
-- [ ] 1.1 Lint passes: `uv run ruff check .`
-- [ ] 1.2 Type checking passes: `uv run mypy .` (if wired)
+- [x] 1.1 Lint passes: `uv run ruff check .`
+- [x] 1.2 Type checking passes: `uv run mypy .` (if wired)
 
 #### Manual
 
-- [ ] 1.3 Dev server starts without errors
-- [ ] 1.4 `/templates/` while logged in returns a response
-- [ ] 1.5 `/templates/` while not logged in redirects to login
+- [x] 1.3 Dev server starts without errors
+- [x] 1.4 `/templates/` while logged in returns a response
+- [x] 1.5 `/templates/` while not logged in redirects to login
 
 ### Phase 2: HTML Templates and Nav
 

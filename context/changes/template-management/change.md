@@ -1,7 +1,7 @@
 ---
 change_id: template-management
 title: Template management
-status: plan_reviewed
+status: implementing
 created: 2026-05-29
 updated: 2026-05-29
 archived_at: null
