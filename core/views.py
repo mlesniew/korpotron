@@ -1,5 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import QuerySet
+from django.forms import BaseModelForm
+from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
@@ -18,7 +20,7 @@ class TemplateCreateView(LoginRequiredMixin, CreateView):
     fields = ["name", "base_prompt", "generate_title"]
     success_url = reverse_lazy("template-list")
 
-    def form_valid(self, form):  # type: ignore[override]
+    def form_valid(self, form: BaseModelForm) -> HttpResponse:
         form.instance.user = self.request.user
         return super().form_valid(form)
 
