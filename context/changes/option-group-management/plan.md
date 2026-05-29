@@ -275,24 +275,24 @@ The `unique_together` constraint applies only going forward. A fresh dev databas
 
 #### Automated
 
-- [x] 2.1 All tests still pass: `uv run pytest`
-- [x] 2.2 Linting passes: `uv run ruff check .`
+- [x] 2.1 All tests still pass: `uv run pytest` — 5b64e5e
+- [x] 2.2 Linting passes: `uv run ruff check .` — 5b64e5e
 
 #### Manual
 
-- [x] 2.3 "Option Groups" nav link appears in the navbar when logged in
-- [x] 2.4 List page renders correctly (empty state and populated state)
-- [x] 2.5 Create form renders with one empty option row; "Add option" button appends a new row
-- [x] 2.6 Edit form pre-populates group name and existing options
-- [x] 2.7 Delete confirmation shows option count
-- [x] 2.8 Submitting create with no options shows a validation error
-- [x] 2.9 Submitting create with duplicate option names shows a validation error
+- [x] 2.3 "Option Groups" nav link appears in the navbar when logged in — 5b64e5e
+- [x] 2.4 List page renders correctly (empty state and populated state) — 5b64e5e
+- [x] 2.5 Create form renders with one empty option row; "Add option" button appends a new row — 5b64e5e
+- [x] 2.6 Edit form pre-populates group name and existing options — 5b64e5e
+- [x] 2.7 Delete confirmation shows option count — 5b64e5e
+- [x] 2.8 Submitting create with no options shows a validation error — 5b64e5e
+- [x] 2.9 Submitting create with duplicate option names shows a validation error — 5b64e5e
 
 ### Phase 3: Tests
 
 #### Automated
 
-- [ ] 3.1 All 9 new view tests pass: `uv run pytest tests/test_option_group_views.py`
-- [ ] 3.2 Full test suite passes: `uv run pytest`
-- [ ] 3.3 Linting passes: `uv run ruff check .`
-- [ ] 3.4 Docker build succeeds: `docker build .`
+- [x] 3.1 All 9 new view tests pass: `uv run pytest tests/test_option_group_views.py`
+- [x] 3.2 Full test suite passes: `uv run pytest`
+- [x] 3.3 Linting passes: `uv run ruff check .`
+- [x] 3.4 Docker build succeeds: `docker build .`
