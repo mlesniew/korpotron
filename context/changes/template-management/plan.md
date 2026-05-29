@@ -251,9 +251,9 @@ No migrations required — `Template` model and its existing migration are uncha
 
 #### Automated
 
-- [x] 3.1 All tests pass: `uv run pytest`
-- [x] 3.2 Lint passes: `uv run ruff check .`
+- [x] 3.1 All tests pass: `uv run pytest` — a62c820
+- [x] 3.2 Lint passes: `uv run ruff check .` — a62c820
 
 #### Manual
 
-- [x] 3.3 All new tests show as PASSED with no warnings
+- [x] 3.3 All new tests show as PASSED with no warnings — a62c820
