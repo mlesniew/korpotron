@@ -292,7 +292,7 @@ The `unique_together` constraint applies only going forward. A fresh dev databas
 
 #### Automated
 
-- [x] 3.1 All 9 new view tests pass: `uv run pytest tests/test_option_group_views.py`
-- [x] 3.2 Full test suite passes: `uv run pytest`
-- [x] 3.3 Linting passes: `uv run ruff check .`
-- [x] 3.4 Docker build succeeds: `docker build .`
+- [x] 3.1 All 9 new view tests pass: `uv run pytest tests/test_option_group_views.py` — f0cab04
+- [x] 3.2 Full test suite passes: `uv run pytest` — f0cab04
+- [x] 3.3 Linting passes: `uv run ruff check .` — f0cab04
+- [x] 3.4 Docker build succeeds: `docker build .` — f0cab04
