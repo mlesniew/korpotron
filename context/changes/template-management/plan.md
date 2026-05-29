@@ -236,24 +236,24 @@ No migrations required — `Template` model and its existing migration are uncha
 
 #### Automated
 
-- [x] 2.1 Lint passes: `uv run ruff check .`
-- [x] 2.2 Tests pass: `uv run pytest`
+- [x] 2.1 Lint passes: `uv run ruff check .` — ba0d2c5
+- [x] 2.2 Tests pass: `uv run pytest` — ba0d2c5
 
 #### Manual
 
-- [x] 2.3 "Templates" nav link appears for logged-in users
-- [x] 2.4 Template list renders correctly (with templates and empty state)
-- [x] 2.5 Create form submits and redirects to list
-- [x] 2.6 Edit form pre-populates and saves correctly
-- [x] 2.7 Delete confirmation removes template and redirects to list
+- [x] 2.3 "Templates" nav link appears for logged-in users — ba0d2c5
+- [x] 2.4 Template list renders correctly (with templates and empty state) — ba0d2c5
+- [x] 2.5 Create form submits and redirects to list — ba0d2c5
+- [x] 2.6 Edit form pre-populates and saves correctly — ba0d2c5
+- [x] 2.7 Delete confirmation removes template and redirects to list — ba0d2c5
 
 ### Phase 3: Tests
 
 #### Automated
 
-- [ ] 3.1 All tests pass: `uv run pytest`
-- [ ] 3.2 Lint passes: `uv run ruff check .`
+- [x] 3.1 All tests pass: `uv run pytest`
+- [x] 3.2 Lint passes: `uv run ruff check .`
 
 #### Manual
 
-- [ ] 3.3 All new tests show as PASSED with no warnings
+- [x] 3.3 All new tests show as PASSED with no warnings
