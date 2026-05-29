@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1>Templates</h1>
+  <a href="{% url 'template-create' %}" class="btn btn-primary">New template</a>
+</div>
+
+{% if object_list %}
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for template in object_list %}
+    <tr>
+      <td>{{ template.name }}</td>
+      <td class="text-end">
+        <a href="{% url 'template-update' template.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+        <a href="{% url 'template-delete' template.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="text-muted">No templates yet. <a href="{% url 'template-create' %}">Create one</a>.</p>
+{% endif %}
+{% endblock %}

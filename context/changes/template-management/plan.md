@@ -223,29 +223,29 @@ No migrations required — `Template` model and its existing migration are uncha
 
 #### Automated
 
-- [x] 1.1 Lint passes: `uv run ruff check .`
-- [x] 1.2 Type checking passes: `uv run mypy .` (if wired)
+- [x] 1.1 Lint passes: `uv run ruff check .` — 818b019
+- [x] 1.2 Type checking passes: `uv run mypy .` (if wired) — 818b019
 
 #### Manual
 
-- [x] 1.3 Dev server starts without errors
-- [x] 1.4 `/templates/` while logged in returns a response
-- [x] 1.5 `/templates/` while not logged in redirects to login
+- [x] 1.3 Dev server starts without errors — 818b019
+- [x] 1.4 `/templates/` while logged in returns a response — 818b019
+- [x] 1.5 `/templates/` while not logged in redirects to login — 818b019
 
 ### Phase 2: HTML Templates and Nav
 
 #### Automated
 
-- [ ] 2.1 Lint passes: `uv run ruff check .`
-- [ ] 2.2 Tests pass: `uv run pytest`
+- [x] 2.1 Lint passes: `uv run ruff check .`
+- [x] 2.2 Tests pass: `uv run pytest`
 
 #### Manual
 
-- [ ] 2.3 "Templates" nav link appears for logged-in users
-- [ ] 2.4 Template list renders correctly (with templates and empty state)
-- [ ] 2.5 Create form submits and redirects to list
-- [ ] 2.6 Edit form pre-populates and saves correctly
-- [ ] 2.7 Delete confirmation removes template and redirects to list
+- [x] 2.3 "Templates" nav link appears for logged-in users
+- [x] 2.4 Template list renders correctly (with templates and empty state)
+- [x] 2.5 Create form submits and redirects to list
+- [x] 2.6 Edit form pre-populates and saves correctly
+- [x] 2.7 Delete confirmation removes template and redirects to list
 
 ### Phase 3: Tests
 
