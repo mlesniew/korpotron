@@ -33,7 +33,7 @@ Knowledge workers who repeatedly paste stored prompts into LLM chat tools to pol
 | F-02 | core-data-model         | (foundation) Template, OptionGroup, Option models exist with user ownership       | —                      | FR-001, FR-004                                  | ready    |
 | S-01 | template-management     | create, view, edit, and delete templates                                          | F-01, F-02             | FR-001, FR-002, FR-003                          | proposed |
 | S-02 | option-group-management | create, view, edit, and delete option groups with their options                   | F-01, F-02             | FR-004, FR-005, FR-006                          | proposed |
-| S-03 | text-generation-flow    | select a template, pick options, enter text, generate result, copy to clipboard   | F-01, F-02, S-01, S-02 | FR-007, FR-008, FR-009, FR-011, FR-012, US-01   | blocked  |
+| S-03 | text-generation-flow    | select a template, pick options, enter text, generate result, copy to clipboard   | F-01, F-02, S-01, S-02 | FR-007, FR-008, FR-009, FR-011, FR-012, US-01   | proposed |
 
 ## Streams
 
@@ -119,9 +119,9 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Parallel with:** —
 - **Blockers:** —
 - **Unknowns:**
-  - Which LLM / text-generation service will be used? — Owner: user. Block: yes.
-- **Risk:** LLM integration is the riskiest element (external API, key management, latency); blocked until the provider is decided. The input non-retention NFR (no storing user input after request completes) must be explicitly verified in implementation.
-- **Status:** blocked
+  - ~~Which LLM / text-generation service will be used?~~ **Resolved 2026-06-01:** OpenRouter via `openai` SDK — see ADR 001.
+- **Risk:** LLM integration is the riskiest element (external API, key management, latency). The input non-retention NFR (no storing user input after request completes) must be explicitly verified in implementation.
+- **Status:** proposed
 
 ## Backlog Handoff
 
@@ -135,7 +135,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 
 ## Open Roadmap Questions
 
-1. **Which text-generation service / LLM provider will be used?** — Owner: user. Block: yes — gates S-03 (`text-generation-flow`). Resolve before planning S-03.
+1. ~~**Which text-generation service / LLM provider will be used?**~~ **Resolved 2026-06-01:** OpenRouter via `openai` SDK (`base_url` override). See `context/foundation/adr/001-llm-provider-openrouter.md`.
 2. **Confirm target_scale assumptions** (`qps: low`, `data_volume: small`) — Owner: user. Block: no — inferred for single-digit users; correct if traffic expectations change.
 3. **Confirm revised clipboard copy acceptance criteria** — one-click copy preferred; pre-selected text box is acceptable fallback (per FR-012 Socratic note in PRD). Owner: user. Block: no — confirm before S-03 implementation.
 
