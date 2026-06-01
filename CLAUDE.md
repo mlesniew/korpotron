@@ -2,7 +2,7 @@
 
 ## Stack
 
-Django 6.0.5 · Python 3.12 · uv · SQLite (dev) · Fly.io (prod) · GitHub Actions CI
+Django 6.0.5 · Python 3.12 · uv · SQLite (dev) · Fly.io (prod) · OpenRouter (LLM) · GitHub Actions CI
 
 ## Setup
 
@@ -18,7 +18,16 @@ Use **uv** to add packages — not pip. Example: `uv add django-environ`
 
 The project reads configuration from a `.env` file in the project root (loaded automatically via `python-dotenv`). `.env` is gitignored and never committed.
 
-Copy `.env.example` to `.env` to get started. The only required variable for local dev is `SECRET_KEY`. In production (Fly.io) all variables are set as Fly secrets, not via `.env`.
+Copy `.env.example` to `.env` to get started. Required variables:
+
+| Variable | Required for | Notes |
+|---|---|---|
+| `SECRET_KEY` | App to boot | Any non-empty string locally |
+| `OPENROUTER_API_KEY` | Text generation | App boots without it; Generate fails until set |
+| `OPENROUTER_MODEL` | Text generation | Optional — defaults to `openai/gpt-4o-mini` |
+| `OPENROUTER_BASE_URL` | Text generation | Optional — defaults to `https://openrouter.ai/api/v1` |
+
+In production (Fly.io) all variables are set as Fly secrets, not via `.env`.
 
 ## Commands
 

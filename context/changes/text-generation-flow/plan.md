@@ -328,26 +328,26 @@ None — no schema or data changes. The only data-shape change is removing the p
 
 #### Automated
 
-- [x] 3.1 Page-rendering assertions pass: `uv run pytest tests/test_generate.py`
-- [x] 3.2 Linting passes: `uv run ruff check .`
-- [x] 3.3 Docker build succeeds: `docker build .`
+- [x] 3.1 Page-rendering assertions pass: `uv run pytest tests/test_generate.py` — 7b75825
+- [x] 3.2 Linting passes: `uv run ruff check .` — 7b75825
+- [x] 3.3 Docker build succeeds: `docker build .` — 0017433
 
 #### Manual
 
-- [ ] 3.4 Full flow completes under 60 s (select → toggle → paste → generate → copy)
-- [ ] 3.5 Button-group toggle: select, switch, click-to-deselect; never >1 per group
-- [ ] 3.6 Title shows only for `generate_title` templates; body always; both copy (incl. fallback)
-- [ ] 3.7 Spinner during call; forced failure shows inline alert with input preserved
-- [ ] 3.8 Result shown verbatim (no truncation/modification)
+- [x] 3.4 Full flow completes under 60 s (select → toggle → paste → generate → copy) — 7b75825
+- [x] 3.5 Button-group toggle: select, switch, click-to-deselect; never >1 per group — 7b75825
+- [x] 3.6 Title shows only for `generate_title` templates; body always; both copy (incl. fallback) — 7b75825
+- [x] 3.7 Spinner during call; forced failure shows inline alert with input preserved — 7b75825
+- [x] 3.8 Result shown verbatim (no truncation/modification) — 7b75825
 
 ### Phase 4: Documentation & Deployment Config
 
 #### Automated
 
-- [ ] 4.1 `OPENROUTER` var names consistent across `.env.example`, `CLAUDE.md`, `deployment-steps.md`, `infrastructure.md`, and `korpotron/settings.py`
+- [x] 4.1 `OPENROUTER` var names consistent across `.env.example`, `CLAUDE.md`, `deployment-steps.md`, `infrastructure.md`, and `korpotron/settings.py`
 
 #### Manual
 
-- [ ] 4.2 Fresh developer can run the generation flow locally following `CLAUDE.md` + `.env.example`
-- [ ] 4.3 Fresh deploy following `deployment-steps.md` sets `OPENROUTER_API_KEY`
-- [ ] 4.4 No env-var name or model-default contradictions across the four docs
+- [x] 4.2 Fresh developer can run the generation flow locally following `CLAUDE.md` + `.env.example`
+- [x] 4.3 Fresh deploy following `deployment-steps.md` sets `OPENROUTER_API_KEY`
+- [x] 4.4 No env-var name or model-default contradictions across the four docs
