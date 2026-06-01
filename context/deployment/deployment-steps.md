@@ -37,9 +37,14 @@ Push `master` to GitHub (required for GitHub Actions).
 ```bash
 fly secrets set SECRET_KEY="$(python -c "import secrets; print(secrets.token_urlsafe(50))")"
 fly secrets set DATABASE_URL="postgresql://..."   # from Supabase above
+fly secrets set OPENROUTER_API_KEY="sk-or-v1-..."  # from openrouter.ai → Keys
 ```
 
 `DJANGO_SETTINGS_MODULE` and `ALLOWED_HOSTS` are not needed — they're handled in the Dockerfile and derived from `FLY_APP_NAME` respectively.
+
+`OPENROUTER_MODEL` and `OPENROUTER_BASE_URL` are optional (defaults: `openai/gpt-4o-mini` and `https://openrouter.ai/api/v1`). Set them only to override.
+
+> **Note:** Setting a secret on an already-running app does not take effect until a redeploy or machine restart (`fly deploy` or `fly machine restart <id>`). Verify propagation with `fly secrets list`.
 
 ---
 

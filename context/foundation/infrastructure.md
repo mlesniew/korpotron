@@ -10,7 +10,7 @@ tech_stack:
   runtime: Gunicorn (WSGI)
   package_manager: uv
   database: Supabase (external PostgreSQL)
-  llm_provider: OpenRouter (external API)
+  llm_provider: OpenRouter (external API, confirmed — see ADR 001)
 ---
 
 ## Recommendation

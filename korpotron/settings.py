@@ -6,16 +6,16 @@ import os
 from pathlib import Path
 
 import dj_database_url
-import django_stubs_ext
-
-django_stubs_ext.monkeypatch()
+from dotenv import load_dotenv
 
 try:
-    from dotenv import load_dotenv
+    import django_stubs_ext
 
-    load_dotenv()
+    django_stubs_ext.monkeypatch()
 except ImportError:
     pass
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,13 +27,11 @@ DEBUG = os.environ.get("DEBUG", "False").lower() in ("true", "1", "yes")
 # ALLOWED_HOSTS env var adds extra hosts (local dev, custom domains).
 _fly_app = os.environ.get("FLY_APP_NAME")
 _extra_hosts = os.environ.get("ALLOWED_HOSTS", "")
-ALLOWED_HOSTS: list[str] = (
-    [f"{_fly_app}.fly.dev"] if _fly_app else []
-) + [h.strip() for h in _extra_hosts.split(",") if h.strip()]
+ALLOWED_HOSTS: list[str] = ([f"{_fly_app}.fly.dev"] if _fly_app else []) + [
+    h.strip() for h in _extra_hosts.split(",") if h.strip()
+]
 
-CSRF_TRUSTED_ORIGINS: list[str] = (
-    [f"https://{_fly_app}.fly.dev"] if _fly_app else []
-)
+CSRF_TRUSTED_ORIGINS: list[str] = [f"https://{_fly_app}.fly.dev"] if _fly_app else []
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -84,7 +82,9 @@ DATABASES = {
 }
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+    },
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
@@ -108,3 +108,12 @@ STORAGES = {
 }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# OpenRouter (LLM provider) — see ADR 001. The API key is read lazily: it
+# defaults to empty so the app boots (and tests run with a patched client)
+# without it; the generation call fails loudly only when actually invoked.
+OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
+OPENROUTER_MODEL = os.environ.get("OPENROUTER_MODEL", "openai/gpt-4o-mini")
+OPENROUTER_BASE_URL = os.environ.get(
+    "OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1"
+)
