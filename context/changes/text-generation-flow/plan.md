@@ -90,7 +90,7 @@ Add the `openai` dependency and OpenRouter settings, then build `core/llm.py`: p
 **Contract**:
 - A function that builds the messages list from `(template, selected_options, text)` → `list[dict]` with a system message (constant app prompt incl. the always-tagged output contract; title requested iff `template.generate_title`) and a user message containing `<instructions>…</instructions>` (base_prompt + each option's instruction) and `<content>…</content>` (user text).
 - A function that takes the raw model string and returns a typed result `(title: str, body: str)` — extract `<title>`/`<body>` by tag; if `<body>` absent, `body = raw.strip()`, `title = ""`.
-- A top-level `generate(template, selected_options, text) -> GenerateResult` that builds messages, calls `client.chat.completions.create(model=..., messages=...)`, and parses the response. The OpenRouter client is obtained from a module-level factory (e.g. `_get_client()`) reading settings — patch target for tests.
+- A top-level `generate(template, selected_options, text) -> GenerateResult` that builds messages, calls `client.chat.completions.create(model=..., messages=...)`, and parses the response. The OpenRouter client is obtained from a module-level factory (e.g. `_get_client()`) reading settings — patch target for tests. The client is constructed with an **explicit request timeout of 60s** (the rewrite task is short and should complete well within this) so a stalled upstream surfaces as `openai.APITimeoutError` rather than hanging the worker indefinitely (the SDK default is 600s).
 - Type hints throughout (project convention; mypy in CI).
 
 ### Success Criteria:
@@ -137,7 +137,7 @@ Replace the placeholder home view with the generate page (GET), and add the JSON
 - Route e.g. `POST /generate/` (`name="generate-api"`), `login_required`, JSON request body (`{template_id, option_ids: [...], text}`).
 - Validation: `template_id` resolved via a user-scoped queryset (404/400 if not owned); each `option_id` resolved via options whose `group.user == request.user`; reject if two selected options share a `group_id` (400 with message). Empty `text` → 400.
 - Success: `200 {"title": str, "body": str}` (title `""` when not requested).
-- LLM failure: caught, mapped to `502 {"error": "<friendly message>"}` (or similar non-500) — no stack trace or input echoed in the body or logs.
+- LLM failure: caught, mapped to `502 {"error": "<friendly message>"}` (or similar non-500) — no stack trace or input echoed in the body or logs. This includes `openai.APITimeoutError` (the 60s client timeout) so a stalled upstream resolves to the same friendly alert rather than hanging.
 - No DB writes on any path.
 
 ### Success Criteria:
@@ -172,15 +172,15 @@ Build the single-screen UI and its vanilla JS: template picker, text box, option
 
 **Intent**: Render the flow on one screen, extending `base.html`. Order top-to-bottom: template `<select>`, the input `<textarea>`, then one button group per option group (group name as heading above each), then the Generate button, then a result region (hidden until populated) and an error alert region (hidden until needed). Each option group is a Bootstrap button group of toggle `<button>`s; the selected option id per group is tracked in a hidden input (or JS state) so the fetch payload can be assembled.
 
-**Contract**: Markup exposes stable hooks for the JS (template select, textarea, per-group containers carrying their `group_id`, each option button carrying its `option_id`, generate button, result title/body fields, copy buttons, error region). Result title field is shown only when present. Uses existing Bootstrap classes; no new CSS framework.
+**Contract**: Markup exposes stable hooks for the JS (template select, textarea, per-group containers carrying their `group_id`, each option button carrying its `option_id`, generate button, result title/body fields, copy buttons, error region). Result title field is shown only when present. **Empty state**: when the user has no templates, render a short prompt with a link to `{% url 'template-create' %}` instead of the form (the north-star landing screen must not present an empty picker + a Generate button that 400s). Uses existing Bootstrap classes; no new CSS framework.
 
 #### 2. Flow JavaScript
 
 **File**: inline `<script>` in `templates/core/generate.html` (matching the existing inline-JS pattern)
 
-**Intent**: Implement (a) button-group toggle: clicking an option selects it and deselects siblings in the same group; clicking the selected one again clears the group; (b) Generate: gather `template_id`, selected `option_ids`, and `text`, POST JSON to the endpoint with the CSRF token, disable the button and show a spinner while in flight; (c) on success, render body (and title when returned) into copyable fields and reveal the result region; (d) on error, show the inline alert with the endpoint's message and re-enable the button, preserving all input; (e) clipboard copy: `navigator.clipboard.writeText` with a select-all-on-a-textarea fallback per FR-012.
+**Intent**: Implement (a) button-group toggle: clicking an option selects it and deselects siblings in the same group; clicking the selected one again clears the group; (b) Generate: gather `template_id`, selected `option_ids`, and `text`, POST JSON to the endpoint with the CSRF token, disable the button and show a spinner while in flight (use an `AbortController` with a client-side timeout slightly above the 60s server timeout so the spinner always resolves to either a result or the inline error); (c) on success, render body (and title when returned) into copyable fields and reveal the result region; (d) on error, show the inline alert with the endpoint's message and re-enable the button, preserving all input; (e) clipboard copy: `navigator.clipboard.writeText` with a select-all-on-a-textarea fallback per FR-012.
 
-**Contract**: CSRF handled via the Django cookie/token (the page is same-origin). Loading state visibly distinct; only one in-flight request at a time. Toggle state is the single source of truth for the payload. No external JS libraries.
+**Contract**: CSRF handled via the Django cookie/token (the page is same-origin) — read the `csrftoken` value from `document.cookie` and send it as the `X-CSRFToken` header on the fetch (the JSON POST is not a Django form submit, and the cookie is already set because `base.html` renders `{% csrf_token %}` in the logout form). The result title/body are written into the copyable fields via `element.value` (textarea/input) or `textContent` — **never `innerHTML`** — so output is shown verbatim and HTML in the result/pasted content cannot execute. Loading state visibly distinct; only one in-flight request at a time. Toggle state is the single source of truth for the payload. No external JS libraries.
 
 ### Success Criteria:
 
@@ -263,7 +263,7 @@ Update the onboarding and deployment docs so the new OpenRouter dependency is re
 - `GET /` requires login; lists only the user's own templates and option groups (cross-user isolation).
 - `POST /generate/` happy path (client mocked) returns parsed `{title, body}`.
 - Validation: cross-user `template_id` rejected; cross-user `option_id` rejected; two options from the same group rejected; empty text rejected.
-- LLM exception → mapped error status (not 500), no input echoed.
+- LLM exception → mapped error status (not 500), no input echoed; a timeout (`openai.APITimeoutError`) maps to the same friendly error.
 - **Non-retention**: assert generation creates zero DB rows (e.g. compare model counts before/after).
 
 ### Manual Testing Steps:
