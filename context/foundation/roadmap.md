@@ -29,7 +29,7 @@ Knowledge workers who repeatedly paste stored prompts into LLM chat tools to pol
 
 | ID   | Change ID               | Outcome (user can …)                                                              | Prerequisites          | PRD refs                                        | Status   |
 |------|-------------------------|-----------------------------------------------------------------------------------|------------------------|-------------------------------------------------|----------|
-| F-01 | auth-scaffold           | (foundation) log in/out with email+password; all app views protected              | —                      | Access Control                                  | ready    |
+| F-01 | auth-scaffold           | (foundation) log in/out with email+password; all app views protected              | —                      | Access Control                                  | done    |
 | F-02 | core-data-model         | (foundation) Template, OptionGroup, Option models exist with user ownership       | —                      | FR-001, FR-004                                  | ready    |
 | S-01 | template-management     | create, view, edit, and delete templates                                          | F-01, F-02             | FR-001, FR-002, FR-003                          | proposed |
 | S-02 | option-group-management | create, view, edit, and delete option groups with their options                   | F-01, F-02             | FR-004, FR-005, FR-006                          | proposed |
@@ -69,7 +69,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** Every slice depends on this; sequenced first. Django's built-in auth reduces this to configuration + templates rather than novel code.
-- **Status:** ready
+- **Status:** done
 
 ### F-02: Core data model
 
@@ -154,4 +154,5 @@ Foundations below assume these are present and do NOT re-scaffold them.
 
 ## Done
 
+- **(foundation) F-01: log in/out with email+password; all app views protected** — Archived 2026-06-01 → `context/archive/2026-05-26-auth-scaffold/`. Lesson: —.
 - **S-03: user can select a template, optionally select one option per group, enter text to transform, trigger generation, see the verbatim result, and copy it to the clipboard.** — Archived 2026-06-01 → `context/archive/2026-06-01-text-generation-flow/`. Lesson: —.
