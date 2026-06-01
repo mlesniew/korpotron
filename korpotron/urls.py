@@ -17,11 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
-from korpotron import views
+from core.views import GenerateView
 
 urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
-    path("", views.home, name="home"),
+    path("", GenerateView.as_view(), name="home"),
     path("admin/", admin.site.urls),
     path("", include("core.urls")),
 ]

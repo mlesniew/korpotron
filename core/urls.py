@@ -9,9 +9,11 @@ from core.views import (
     TemplateDeleteView,
     TemplateListView,
     TemplateUpdateView,
+    generate_api,
 )
 
 urlpatterns = [
+    path("generate/", generate_api, name="generate-api"),
     path("templates/", TemplateListView.as_view(), name="template-list"),
     path("templates/new/", TemplateCreateView.as_view(), name="template-create"),
     path("templates/<int:pk>/edit/", TemplateUpdateView.as_view(), name="template-update"),

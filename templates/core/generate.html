@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+{# Minimal scaffold — the full single-screen UI + JS lands in Phase 3. #}
+<h1 class="h3 mb-3">Generate</h1>
+
+{% if templates %}
+  <select id="template-select" class="form-select mb-3">
+    {% for template in templates %}
+      <option value="{{ template.pk }}" data-generate-title="{{ template.generate_title|yesno:'1,0' }}">{{ template.name }}</option>
+    {% endfor %}
+  </select>
+
+  {% for group in option_groups %}
+    <div class="option-group mb-2" data-group-id="{{ group.pk }}">
+      <div class="fw-semibold">{{ group.name }}</div>
+      {% for option in group.options.all %}
+        <button type="button" class="btn btn-outline-secondary btn-sm option-btn" data-option-id="{{ option.pk }}">{{ option.name }}</button>
+      {% endfor %}
+    </div>
+  {% endfor %}
+{% else %}
+  <p class="text-muted">You have no templates yet. <a href="{% url 'template-create' %}">Create one</a> to get started.</p>
+{% endif %}
+{% endblock %}
