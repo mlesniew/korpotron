@@ -3,7 +3,7 @@ project: "Korpotron"
 version: 1
 status: draft
 created: 2026-05-26
-updated: 2026-05-26
+updated: 2026-06-01
 prd_version: 1
 main_goal: speed
 top_blocker: decisions
@@ -33,7 +33,7 @@ Knowledge workers who repeatedly paste stored prompts into LLM chat tools to pol
 | F-02 | core-data-model         | (foundation) Template, OptionGroup, Option models exist with user ownership       | —                      | FR-001, FR-004                                  | ready    |
 | S-01 | template-management     | create, view, edit, and delete templates                                          | F-01, F-02             | FR-001, FR-002, FR-003                          | proposed |
 | S-02 | option-group-management | create, view, edit, and delete option groups with their options                   | F-01, F-02             | FR-004, FR-005, FR-006                          | proposed |
-| S-03 | text-generation-flow    | select a template, pick options, enter text, generate result, copy to clipboard   | F-01, F-02, S-01, S-02 | FR-007, FR-008, FR-009, FR-011, FR-012, US-01   | proposed |
+| S-03 | text-generation-flow    | select a template, pick options, enter text, generate result, copy to clipboard   | F-01, F-02, S-01, S-02 | FR-007, FR-008, FR-009, FR-011, FR-012, US-01   | done |
 
 ## Streams
 
@@ -121,7 +121,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Unknowns:**
   - ~~Which LLM / text-generation service will be used?~~ **Resolved 2026-06-01:** OpenRouter via `openai` SDK — see ADR 001.
 - **Risk:** LLM integration is the riskiest element (external API, key management, latency). The input non-retention NFR (no storing user input after request completes) must be explicitly verified in implementation.
-- **Status:** proposed
+- **Status:** done
 
 ## Backlog Handoff
 
@@ -154,4 +154,4 @@ Foundations below assume these are present and do NOT re-scaffold them.
 
 ## Done
 
-(Empty on first generation. `/10x-archive` appends entries here when a change is archived.)
+- **S-03: user can select a template, optionally select one option per group, enter text to transform, trigger generation, see the verbatim result, and copy it to the clipboard.** — Archived 2026-06-01 → `context/archive/2026-06-01-text-generation-flow/`. Lesson: —.
