@@ -1,8 +1,9 @@
 ---
 project: "Korpotron"
 version: 1
-status: draft
+status: implemented
 created: 2026-05-21
+completed: 2026-06-01
 context_type: greenfield
 product_type: web-app
 target_scale:
@@ -20,6 +21,17 @@ timeline_budget:
 Knowledge workers who regularly use LLMs to polish short-form text — emails, comments, documentation — store their reusable prompts in plain text files. Every use requires opening that file, copying the prompt into a chat tool, adjusting it for tone or context, and then copying the result back. This turns a 30-second text improvement into a 3-minute chore.
 
 The insight: prompt-management tools exist but they are designed for developers and power users, not for someone who just wants to rewrite an email quickly. The gap is a purpose-built tool that is minimal, fast, and opinionated about the workflow — not a general-purpose prompt library.
+
+## Status: Implemented
+
+**Completed 2026-06-01.** All primary and secondary success criteria met:
+- ✓ Logged-in user can select template, optionally pick options, enter text, generate result, copy to clipboard — all without leaving the app
+- ✓ Full flow completes under 60 seconds
+- ✓ Input text is not persisted or logged beyond the request scope
+- ✓ Usable on desktop via Django web app, no installs required
+- ✓ Template and option group configuration persists reliably
+
+See `context/foundation/roadmap.md` for implementation summary and archived change folders.
 
 ## User & Persona
 

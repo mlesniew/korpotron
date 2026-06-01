@@ -1,9 +1,10 @@
 ---
 project: "Korpotron"
 version: 1
-status: draft
+status: complete
 created: 2026-05-26
 updated: 2026-06-01
+completed: 2026-06-01
 prd_version: 1
 main_goal: speed
 top_blocker: decisions
@@ -123,15 +124,19 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Risk:** LLM integration is the riskiest element (external API, key management, latency). The input non-retention NFR (no storing user input after request completes) must be explicitly verified in implementation.
 - **Status:** done
 
-## Backlog Handoff
+## Implementation Summary
 
-| Roadmap ID | Change ID               | Suggested issue title                                      | Ready for `/10x-plan` | Notes                                    |
-|------------|-------------------------|------------------------------------------------------------|-----------------------|------------------------------------------|
-| F-01       | auth-scaffold           | Add login/logout views and protect all app routes          | yes                   | Run `/10x-plan auth-scaffold`            |
-| F-02       | core-data-model         | Define Template, OptionGroup, Option models and migrations | yes                   | Run `/10x-plan core-data-model`; run parallel with F-01 |
-| S-01       | template-management     | Build template CRUD views                                  | no                    | Needs F-01, F-02 done first              |
-| S-02       | option-group-management | Build option group CRUD with nested options                | no                    | Needs F-01, F-02; run parallel with S-01 |
-| S-03       | text-generation-flow    | Wire LLM call, prompt assembly, result display, clipboard copy | no                | Blocked: LLM provider decision needed first |
+All 5 roadmap items completed and archived as of 2026-06-01.
+
+| Roadmap ID | Change ID               | Status | Archived |
+|------------|-------------------------|--------|----------|
+| F-01       | auth-scaffold           | done   | 2026-05-26 |
+| F-02       | core-data-model         | done   | 2026-05-28 |
+| S-01       | template-management     | done   | 2026-05-29 |
+| S-02       | option-group-management | done   | 2026-05-29 |
+| S-03       | text-generation-flow    | done   | 2026-06-01 |
+
+The MVP shipped on schedule within the 2-week budget. The north-star slice (S-03) and all prerequisites are live. See the `## Done` section below for archive locations.
 
 ## Open Roadmap Questions
 
