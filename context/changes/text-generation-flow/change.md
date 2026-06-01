@@ -1,7 +1,7 @@
 ---
 change_id: text-generation-flow
 title: Text generation flow
-status: implementing
+status: implemented
 created: 2026-06-01
 updated: 2026-06-01
 archived_at: null

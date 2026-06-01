@@ -344,10 +344,10 @@ None — no schema or data changes. The only data-shape change is removing the p
 
 #### Automated
 
-- [x] 4.1 `OPENROUTER` var names consistent across `.env.example`, `CLAUDE.md`, `deployment-steps.md`, `infrastructure.md`, and `korpotron/settings.py`
+- [x] 4.1 `OPENROUTER` var names consistent across `.env.example`, `CLAUDE.md`, `deployment-steps.md`, `infrastructure.md`, and `korpotron/settings.py` — 067d533
 
 #### Manual
 
-- [x] 4.2 Fresh developer can run the generation flow locally following `CLAUDE.md` + `.env.example`
-- [x] 4.3 Fresh deploy following `deployment-steps.md` sets `OPENROUTER_API_KEY`
-- [x] 4.4 No env-var name or model-default contradictions across the four docs
+- [x] 4.2 Fresh developer can run the generation flow locally following `CLAUDE.md` + `.env.example` — 067d533
+- [x] 4.3 Fresh deploy following `deployment-steps.md` sets `OPENROUTER_API_KEY` — 067d533
+- [x] 4.4 No env-var name or model-default contradictions across the four docs — 067d533
