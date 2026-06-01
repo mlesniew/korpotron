@@ -31,7 +31,7 @@ Knowledge workers who repeatedly paste stored prompts into LLM chat tools to pol
 |------|-------------------------|-----------------------------------------------------------------------------------|------------------------|-------------------------------------------------|----------|
 | F-01 | auth-scaffold           | (foundation) log in/out with email+password; all app views protected              | —                      | Access Control                                  | done    |
 | F-02 | core-data-model         | (foundation) Template, OptionGroup, Option models exist with user ownership       | —                      | FR-001, FR-004                                  | ready    |
-| S-01 | template-management     | create, view, edit, and delete templates                                          | F-01, F-02             | FR-001, FR-002, FR-003                          | proposed |
+| S-01 | template-management     | create, view, edit, and delete templates                                          | F-01, F-02             | FR-001, FR-002, FR-003                          | done |
 | S-02 | option-group-management | create, view, edit, and delete option groups with their options                   | F-01, F-02             | FR-004, FR-005, FR-006                          | proposed |
 | S-03 | text-generation-flow    | select a template, pick options, enter text, generate result, copy to clipboard   | F-01, F-02, S-01, S-02 | FR-007, FR-008, FR-009, FR-011, FR-012, US-01   | done |
 
@@ -96,7 +96,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** Straightforward Django CRUD; must complete before S-03 so at least one template exists for generation testing.
-- **Status:** proposed
+- **Status:** done
 
 ### S-02: Option group management
 
@@ -155,4 +155,5 @@ Foundations below assume these are present and do NOT re-scaffold them.
 ## Done
 
 - **(foundation) F-01: log in/out with email+password; all app views protected** — Archived 2026-06-01 → `context/archive/2026-05-26-auth-scaffold/`. Lesson: —.
+- **S-01: create, view, edit, and delete templates** — Archived 2026-06-01 → `context/archive/2026-05-29-template-management/`. Lesson: —.
 - **S-03: user can select a template, optionally select one option per group, enter text to transform, trigger generation, see the verbatim result, and copy it to the clipboard.** — Archived 2026-06-01 → `context/archive/2026-06-01-text-generation-flow/`. Lesson: —.
