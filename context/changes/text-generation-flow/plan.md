@@ -300,15 +300,15 @@ None — no schema or data changes. The only data-shape change is removing the p
 
 #### Automated
 
-- [ ] 1.1 Dependency resolves: `uv sync` succeeds and `openai` is importable
-- [ ] 1.2 Unit tests pass: `uv run pytest tests/test_llm.py`
-- [ ] 1.3 Type checking passes: `uv run mypy core/llm.py`
-- [ ] 1.4 Linting passes: `uv run ruff check .` and `uv run ruff format --check .`
+- [x] 1.1 Dependency resolves: `uv sync` succeeds and `openai` is importable
+- [x] 1.2 Unit tests pass: `uv run pytest tests/test_llm.py`
+- [x] 1.3 Type checking passes: `uv run mypy core/llm.py`
+- [x] 1.4 Linting passes: `uv run ruff check .` and `uv run ruff format --check .`
 
 #### Manual
 
-- [ ] 1.5 Real `generate(...)` call via shell returns a sensible rewrite
-- [ ] 1.6 Title-on response parses into separated title + body
+- [x] 1.5 Real `generate(...)` call via shell returns a sensible rewrite
+- [x] 1.6 Title-on response parses into separated title + body
 
 ### Phase 2: Generate View & JSON Endpoint
 
