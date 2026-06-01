@@ -60,13 +60,19 @@ class GenerateResult:
     body: str
 
 
+_client: OpenAI | None = None
+
+
 def _get_client() -> OpenAI:
-    """Construct the OpenRouter client from settings. Patch target for tests."""
-    return OpenAI(
-        api_key=settings.OPENROUTER_API_KEY,
-        base_url=settings.OPENROUTER_BASE_URL,
-        timeout=REQUEST_TIMEOUT,
-    )
+    """Return the module-level OpenRouter client singleton. Patch target for tests."""
+    global _client
+    if _client is None:
+        _client = OpenAI(
+            api_key=settings.OPENROUTER_API_KEY,
+            base_url=settings.OPENROUTER_BASE_URL,
+            timeout=REQUEST_TIMEOUT,
+        )
+    return _client
 
 
 def build_messages(

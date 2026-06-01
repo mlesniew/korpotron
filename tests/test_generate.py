@@ -4,6 +4,7 @@ from unittest.mock import patch
 import httpx
 import pytest
 from django.contrib.auth.models import User
+from django.http import HttpResponse
 from django.test import Client
 from openai import APITimeoutError, OpenAIError
 
@@ -48,7 +49,7 @@ def _login(client: Client) -> None:
     client.login(username="tester", password="pass1234")
 
 
-def _post(client: Client, **body: object) -> "httpx.Response":  # type: ignore[name-defined]
+def _post(client: Client, **body: object) -> HttpResponse:
     return client.post(
         "/generate/", data=json.dumps(body), content_type="application/json"
     )

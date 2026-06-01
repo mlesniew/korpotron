@@ -27,13 +27,11 @@ DEBUG = os.environ.get("DEBUG", "False").lower() in ("true", "1", "yes")
 # ALLOWED_HOSTS env var adds extra hosts (local dev, custom domains).
 _fly_app = os.environ.get("FLY_APP_NAME")
 _extra_hosts = os.environ.get("ALLOWED_HOSTS", "")
-ALLOWED_HOSTS: list[str] = (
-    [f"{_fly_app}.fly.dev"] if _fly_app else []
-) + [h.strip() for h in _extra_hosts.split(",") if h.strip()]
+ALLOWED_HOSTS: list[str] = ([f"{_fly_app}.fly.dev"] if _fly_app else []) + [
+    h.strip() for h in _extra_hosts.split(",") if h.strip()
+]
 
-CSRF_TRUSTED_ORIGINS: list[str] = (
-    [f"https://{_fly_app}.fly.dev"] if _fly_app else []
-)
+CSRF_TRUSTED_ORIGINS: list[str] = [f"https://{_fly_app}.fly.dev"] if _fly_app else []
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -84,7 +82,9 @@ DATABASES = {
 }
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+    },
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
