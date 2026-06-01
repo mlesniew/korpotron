@@ -82,6 +82,37 @@ def test_generate_page_lists_only_own(
     assert other_group not in response.context["option_groups"]
 
 
+# --- Page rendering (Phase 3) ---------------------------------------------
+
+
+@pytest.mark.django_db
+def test_generate_page_renders_form_and_options(
+    client: Client, user: User, template: Template, options: list[Option]
+) -> None:
+    _login(client)
+    html = client.get("/").content.decode()
+    # template picker + input + generate button
+    assert 'id="template-select"' in html
+    assert template.name in html
+    assert 'id="input-text"' in html
+    assert 'id="generate-btn"' in html
+    # option group heading + buttons carrying their ids
+    assert "Tone" in html
+    assert f'data-option-id="{options[0].pk}"' in html
+    assert f'data-option-id="{options[1].pk}"' in html
+
+
+@pytest.mark.django_db
+def test_generate_page_empty_state_when_no_templates(
+    client: Client, user: User
+) -> None:
+    _login(client)
+    html = client.get("/").content.decode()
+    # empty state links to template creation, no Generate button presented
+    assert "/templates/new/" in html
+    assert 'id="generate-btn"' not in html
+
+
 # --- POST /generate/ -------------------------------------------------------
 
 

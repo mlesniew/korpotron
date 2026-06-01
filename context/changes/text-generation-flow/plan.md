@@ -314,23 +314,23 @@ None — no schema or data changes. The only data-shape change is removing the p
 
 #### Automated
 
-- [x] 2.1 Endpoint + view tests pass: `uv run pytest tests/test_generate.py`
-- [x] 2.2 Tests assert login-required, per-user listing, parsed result, cross-user rejection, same-group rejection, LLM-failure mapping, and zero DB writes
-- [x] 2.3 Type checking passes: `uv run mypy core`
-- [x] 2.4 Linting passes: `uv run ruff check .`
+- [x] 2.1 Endpoint + view tests pass: `uv run pytest tests/test_generate.py` — 88ce506
+- [x] 2.2 Tests assert login-required, per-user listing, parsed result, cross-user rejection, same-group rejection, LLM-failure mapping, and zero DB writes — 88ce506
+- [x] 2.3 Type checking passes: `uv run mypy core` — 88ce506
+- [x] 2.4 Linting passes: `uv run ruff check .` — 88ce506
 
 #### Manual
 
-- [x] 2.5 `/` shows only the user's own templates and option groups
-- [x] 2.6 Malformed/cross-user POST rejected as specified (curl)
+- [x] 2.5 `/` shows only the user's own templates and option groups — 88ce506
+- [x] 2.6 Malformed/cross-user POST rejected as specified (curl) — 88ce506
 
 ### Phase 3: Frontend (Generate Page + JS)
 
 #### Automated
 
-- [ ] 3.1 Page-rendering assertions pass: `uv run pytest tests/test_generate.py`
-- [ ] 3.2 Linting passes: `uv run ruff check .`
-- [ ] 3.3 Docker build succeeds: `docker build .`
+- [x] 3.1 Page-rendering assertions pass: `uv run pytest tests/test_generate.py`
+- [x] 3.2 Linting passes: `uv run ruff check .`
+- [x] 3.3 Docker build succeeds: `docker build .`
 
 #### Manual
 

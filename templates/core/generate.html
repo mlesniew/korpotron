@@ -1,25 +1,210 @@
 {% extends "base.html" %}
 
 {% block content %}
-{# Minimal scaffold — the full single-screen UI + JS lands in Phase 3. #}
 <h1 class="h3 mb-3">Generate</h1>
 
 {% if templates %}
-  <select id="template-select" class="form-select mb-3">
-    {% for template in templates %}
-      <option value="{{ template.pk }}" data-generate-title="{{ template.generate_title|yesno:'1,0' }}">{{ template.name }}</option>
-    {% endfor %}
-  </select>
-
-  {% for group in option_groups %}
-    <div class="option-group mb-2" data-group-id="{{ group.pk }}">
-      <div class="fw-semibold">{{ group.name }}</div>
-      {% for option in group.options.all %}
-        <button type="button" class="btn btn-outline-secondary btn-sm option-btn" data-option-id="{{ option.pk }}">{{ option.name }}</button>
-      {% endfor %}
+<div class="row g-4">
+  <div class="col-lg-6">
+    <div class="mb-3">
+      <label for="template-select" class="form-label">Template</label>
+      <select id="template-select" class="form-select">
+        {% for template in templates %}
+          <option value="{{ template.pk }}" data-generate-title="{{ template.generate_title|yesno:'1,0' }}">{{ template.name }}</option>
+        {% endfor %}
+      </select>
     </div>
-  {% endfor %}
-{% else %}
-  <p class="text-muted">You have no templates yet. <a href="{% url 'template-create' %}">Create one</a> to get started.</p>
+
+    <div class="mb-3">
+      <label for="input-text" class="form-label">Text to transform</label>
+      <textarea id="input-text" class="form-control" rows="8" placeholder="Paste the text you want to rewrite…"></textarea>
+    </div>
+
+    {% for group in option_groups %}
+      {% if group.options.all %}
+      <div class="mb-3 option-group" data-group-id="{{ group.pk }}">
+        <div class="form-label">{{ group.name }}</div>
+        <div class="btn-group flex-wrap" role="group" aria-label="{{ group.name }}">
+          {% for option in group.options.all %}
+            <button type="button" class="btn btn-outline-primary option-btn" data-option-id="{{ option.pk }}" aria-pressed="false">{{ option.name }}</button>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    {% endfor %}
+
+    <button type="button" id="generate-btn" class="btn btn-primary">
+      <span id="generate-spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+      <span id="generate-label">Generate</span>
+    </button>
+  </div>
+
+  <div class="col-lg-6">
+    <div id="error-alert" class="alert alert-danger d-none" role="alert"></div>
+
+    <div id="result-region" class="d-none">
+      <div id="title-field-wrap" class="mb-3 d-none">
+        <label for="result-title" class="form-label d-flex justify-content-between align-items-center">
+          <span>Title</span>
+          <button type="button" class="btn btn-outline-secondary btn-sm copy-btn" data-copy-target="result-title">Copy</button>
+        </label>
+        <input id="result-title" type="text" class="form-control" readonly>
+      </div>
+      <div class="mb-3">
+        <label for="result-body" class="form-label d-flex justify-content-between align-items-center">
+          <span>Result</span>
+          <button type="button" class="btn btn-outline-secondary btn-sm copy-btn" data-copy-target="result-body">Copy</button>
+        </label>
+        <textarea id="result-body" class="form-control" rows="12" readonly></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const GENERATE_URL = "{% url 'generate-api' %}";
+    // group_id -> option_id; the single source of truth for the payload.
+    const selected = {};
+
+    function getCookie(name) {
+      const match = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+      return match ? match.pop() : '';
+    }
+
+    // (a) Button-group toggle: select deselects siblings; re-click clears the group.
+    document.querySelectorAll('.option-group').forEach(function (group) {
+      const groupId = group.dataset.groupId;
+      group.querySelectorAll('.option-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const wasActive = btn.classList.contains('active');
+          group.querySelectorAll('.option-btn').forEach(function (sibling) {
+            sibling.classList.remove('active');
+            sibling.setAttribute('aria-pressed', 'false');
+          });
+          if (wasActive) {
+            delete selected[groupId];
+          } else {
+            btn.classList.add('active');
+            btn.setAttribute('aria-pressed', 'true');
+            selected[groupId] = btn.dataset.optionId;
+          }
+        });
+      });
+    });
+
+    const btn = document.getElementById('generate-btn');
+    const spinner = document.getElementById('generate-spinner');
+    const errorAlert = document.getElementById('error-alert');
+    const resultRegion = document.getElementById('result-region');
+    const titleWrap = document.getElementById('title-field-wrap');
+    const titleField = document.getElementById('result-title');
+    const bodyField = document.getElementById('result-body');
+    const templateSelect = document.getElementById('template-select');
+    const inputText = document.getElementById('input-text');
+
+    let inFlight = false;
+
+    function showError(message) {
+      errorAlert.textContent = message;  // textContent, never innerHTML
+      errorAlert.classList.remove('d-none');
+    }
+    function clearError() {
+      errorAlert.classList.add('d-none');
+      errorAlert.textContent = '';
+    }
+    function setLoading(loading) {
+      inFlight = loading;
+      btn.disabled = loading;
+      spinner.classList.toggle('d-none', !loading);
+    }
+
+    // (b) Generate.
+    btn.addEventListener('click', async function () {
+      if (inFlight) return;  // only one in-flight request at a time
+      clearError();
+      const text = inputText.value;
+      if (!text.trim()) {
+        showError('Please enter some text to transform.');
+        return;
+      }
+      const payload = {
+        template_id: templateSelect.value,
+        option_ids: Object.values(selected).map(Number),
+        text: text,
+      };
+
+      setLoading(true);
+      // Client-side abort just above the 60s server timeout so the spinner
+      // always resolves to either a result or the inline error.
+      const controller = new AbortController();
+      const timeoutId = setTimeout(function () { controller.abort(); }, 65000);
+      try {
+        const response = await fetch(GENERATE_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken'),
+          },
+          body: JSON.stringify(payload),
+          signal: controller.signal,
+        });
+        const data = await response.json().catch(function () { return {}; });
+        if (!response.ok) {
+          showError(data.error || 'Text generation failed. Please try again.');
+          return;
+        }
+        // (c) Success: render verbatim into copyable fields (.value, never innerHTML).
+        if (data.title) {
+          titleField.value = data.title;
+          titleWrap.classList.remove('d-none');
+        } else {
+          titleField.value = '';
+          titleWrap.classList.add('d-none');
+        }
+        bodyField.value = data.body || '';
+        resultRegion.classList.remove('d-none');
+      } catch (err) {
+        // (d) Error: inline alert, input preserved, button re-enabled (finally).
+        if (err.name === 'AbortError') {
+          showError('The request timed out. Please try again.');
+        } else {
+          showError('Network error. Please try again.');
+        }
+      } finally {
+        clearTimeout(timeoutId);
+        setLoading(false);
+      }
+    });
+
+    // (e) Clipboard copy with a select-all textarea fallback (FR-012).
+    document.querySelectorAll('.copy-btn').forEach(function (copyBtn) {
+      copyBtn.addEventListener('click', async function () {
+        const target = document.getElementById(copyBtn.dataset.copyTarget);
+        const original = copyBtn.textContent;
+        function flash() {
+          copyBtn.textContent = 'Copied!';
+          setTimeout(function () { copyBtn.textContent = original; }, 1200);
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          try {
+            await navigator.clipboard.writeText(target.value);
+            flash();
+            return;
+          } catch (err) { /* fall through to the legacy fallback */ }
+        }
+        target.removeAttribute('readonly');
+        target.focus();
+        target.select();
+        try { document.execCommand('copy'); flash(); } catch (err) { /* ignore */ }
+        target.setAttribute('readonly', '');
+      });
+    });
+  })();
+</script>
+{% endif %}
+
+{% if not templates %}
+<p class="text-muted">You have no templates yet. <a href="{% url 'template-create' %}">Create one</a> to get started.</p>
 {% endif %}
 {% endblock %}
