@@ -6,16 +6,16 @@ import os
 from pathlib import Path
 
 import dj_database_url
-import django_stubs_ext
-
-django_stubs_ext.monkeypatch()
+from dotenv import load_dotenv
 
 try:
-    from dotenv import load_dotenv
+    import django_stubs_ext
 
-    load_dotenv()
+    django_stubs_ext.monkeypatch()
 except ImportError:
     pass
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
