@@ -4,13 +4,6 @@ from django.test import Client
 
 
 @pytest.mark.django_db
-def test_unauthenticated_redirects_to_login(client: Client) -> None:
-    response = client.get("/")
-    assert response.status_code == 302
-    assert response["Location"].startswith("/accounts/login/")
-
-
-@pytest.mark.django_db
 def test_valid_login_redirects_to_home(client: Client, user: User) -> None:
     response = client.post(
         "/accounts/login/",
@@ -33,8 +26,8 @@ def test_invalid_login_returns_form(client: Client, user: User) -> None:
 
 
 @pytest.mark.django_db
-def test_logout_redirects_to_login(client: Client, user: User) -> None:
+def test_logout_redirects_to_landing(client: Client, user: User) -> None:
     client.login(username="tester", password="pass1234")
     response = client.post("/accounts/logout/")
     assert response.status_code == 302
-    assert response["Location"].startswith("/accounts/login/")
+    assert response["Location"] == "/"

@@ -40,6 +40,8 @@ Knowledge workers who repeatedly paste stored prompts into LLM chat tools to pol
 | S-07 | option-group-edit-ux    | option group edit page shows a collapsible per-option list with inline editing and icon-based delete + confirm  | F-01, S-02             | —                     | planned |
 | S-08 | template-list-ux        | template list page shows a name + delete-icon row per template; clicking the name navigates to the edit page    | F-01, S-01             | —                     | planned |
 | S-09 | option-group-list-ux    | option group list page shows a name + delete-icon row per group; clicking the name navigates to the edit page   | F-01, S-02             | —                     | planned |
+| S-10 | ui-refresh              | all app pages get a modern, non-generic visual style; forms and layout overhauled; framework TBD via research    | S-04–S-09              | —                     | planned |
+| S-11 | user-registration       | users can self-register; accounts are inactive until an admin approves them via the Django admin panel           | F-01                   | —                     | planned |
 
 ## Streams
 
@@ -54,6 +56,7 @@ Navigation aid — groups items that share a Prerequisites chain. Canonical orde
 | C      | Cost control & onboarding                      | `S-05`, `S-06`                               | Independent of each other; both require MVP foundations. S-05 limits daily generation cost; S-06 seeds new users with useful defaults. |
 | D      | UX polish — list & edit pages                  | `S-07` → `S-08`, `S-09`                     | S-07 establishes the icon/confirm-dialog pattern; S-08 and S-09 apply it to template and option group lists. S-08 and S-09 are parallel. |
 | E      | Discovery & entry point                        | `S-04`                                       | Standalone; no dependencies on C or D. Adds a public landing page for unauthenticated visitors.             |
+| F      | Visual refresh                                 | `S-10`                                       | Sequenced after all other post-MVP slices so structural HTML is stable before the visual layer is applied. Framework choice requires research before planning. |
 
 ## Baseline
 
@@ -221,6 +224,39 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Risk:** Low — primarily a template/view change; reuses the delete-with-confirmation pattern from S-07.
 - **Status:** planned
 
+### S-11: User registration
+
+- **Outcome:** users can register themselves via a registration form (username, email, password). Newly created accounts are set to `is_active=False` and cannot log in until an admin approves them. After submitting the form, the user sees a "pending approval" message. Approval is done by the admin in the existing Django admin panel — no new admin UI required. A "Register" link appears on the login page.
+- **Change ID:** user-registration
+- **PRD refs:** —
+- **Prerequisites:** F-01 (auth scaffold — login/logout foundation)
+- **Parallel with:** S-05, S-06, S-07, S-08, S-09
+- **Blockers:** —
+- **Unknowns:** —
+- **Notes:**
+  - Uses Django's built-in `is_active` flag — no new model fields needed.
+  - S-04 (landing page) should also carry a "Register" link once it ships; coordinate during S-04 implementation.
+  - No email notifications — admin must check the Django admin panel to discover pending registrations.
+- **Risk:** Low — thin view + form on top of Django's existing User model; approval leverages built-in admin.
+- **Status:** planned
+
+### S-10: UI refresh
+
+- **Outcome:** all app pages have a modern, cohesive visual style. Forms are no longer rendered with bare Django widgets. The look is fresh and distinct from a default Bootstrap theme, without introducing a SPA or a JS build pipeline. CSS/JS loaded from CDN is acceptable.
+- **Change ID:** ui-refresh
+- **PRD refs:** —
+- **Prerequisites:** S-04, S-05, S-06, S-07, S-08, S-09 — sequenced last so all structural HTML changes from earlier slices are in place before the visual layer is applied, avoiding double-rework.
+- **Parallel with:** —
+- **Blockers:** —
+- **Unknowns:**
+  - **Which CSS/UI framework or library?** — Must be resolved via research before planning starts. Constraints: CDN-deliverable, SSR-compatible, more distinctive than default Bootstrap, minimal JS build overhead. Examples to evaluate: Tailwind CSS (CDN play), Pico CSS, Bulma, DaisyUI, or a lightweight custom approach.
+- **Notes:**
+  - Scope is visual only — no functionality changes.
+  - Form rendering (currently bare Django widgets) is a priority target.
+  - Exact design decisions (colour palette, typography, component style) are deferred to the planning phase, after the framework is chosen.
+- **Risk:** Medium — touches every template; a poor framework choice or incomplete rollout leaves the UI inconsistent. Mitigated by sequencing after all structural slices and making the framework decision explicit before implementation begins.
+- **Status:** planned
+
 ## Implementation Summary
 
 MVP (F-01, F-02, S-01–S-03) shipped and archived as of 2026-06-01. Six post-MVP slices (S-04–S-09) are planned as of 2026-06-04.
@@ -238,6 +274,8 @@ MVP (F-01, F-02, S-01–S-03) shipped and archived as of 2026-06-01. Six post-MV
 | S-07       | option-group-edit-ux    | planned | — |
 | S-08       | template-list-ux        | planned | — |
 | S-09       | option-group-list-ux    | planned | — |
+| S-10       | ui-refresh              | planned | — |
+| S-11       | user-registration       | planned | — |
 
 See the `## Done` section below for MVP archive locations.
 

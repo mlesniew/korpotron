@@ -92,7 +92,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LOGIN_URL = "/accounts/login/"
 LOGIN_REDIRECT_URL = "/"
-LOGOUT_REDIRECT_URL = "/accounts/login/"
+LOGOUT_REDIRECT_URL = "/"
 
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
