@@ -1,10 +1,9 @@
 ---
 project: "Korpotron"
 version: 1
-status: complete
+status: active
 created: 2026-05-26
-updated: 2026-06-01
-completed: 2026-06-01
+updated: 2026-06-04
 prd_version: 1
 main_goal: speed
 top_blocker: decisions
@@ -35,15 +34,26 @@ Knowledge workers who repeatedly paste stored prompts into LLM chat tools to pol
 | S-01 | template-management     | create, view, edit, and delete templates                                          | F-01, F-02             | FR-001, FR-002, FR-003                          | done |
 | S-02 | option-group-management | create, view, edit, and delete option groups with their options                   | F-01, F-02             | FR-004, FR-005, FR-006                          | done |
 | S-03 | text-generation-flow    | select a template, pick options, enter text, generate result, copy to clipboard   | F-01, F-02, S-01, S-02 | FR-007, FR-008, FR-009, FR-011, FR-012, US-01   | done |
+| S-04 | landing-page            | unauthenticated visitors see a branded landing page with a "Get started" CTA      | F-01                   | —                                               | planned |
+| S-05 | daily-generation-limit  | generation is rate-limited per user per day via env var; users see a friendly message when the limit is reached | F-01, F-02, S-03 | —                          | planned |
+| S-06 | onboarding-defaults     | new users get 3 default templates and default option groups seeded from a repo JSON fixture on first login      | F-01, F-02, S-01, S-02 | —                     | planned |
+| S-07 | option-group-edit-ux    | option group edit page shows a collapsible per-option list with inline editing and icon-based delete + confirm  | F-01, S-02             | —                     | planned |
+| S-08 | template-list-ux        | template list page shows a name + delete-icon row per template; clicking the name navigates to the edit page    | F-01, S-01             | —                     | planned |
+| S-09 | option-group-list-ux    | option group list page shows a name + delete-icon row per group; clicking the name navigates to the edit page   | F-01, S-02             | —                     | planned |
 
 ## Streams
 
 Navigation aid — groups items that share a Prerequisites chain. Canonical ordering still lives in the dependency graph below; this table is the proposed reading order across parallel tracks.
 
-| Stream | Theme                                | Chain                              | Note                                                                                     |
-|--------|--------------------------------------|------------------------------------|------------------------------------------------------------------------------------------|
-| A      | Foundations → Template management → Generation | `F-01` / `F-02` → `S-01` → `S-03` | F-01 and F-02 run in parallel; S-03 also requires S-02 from Stream B.                  |
-| B      | Option group management              | `S-02`                             | Branches from F-01+F-02 (parallel with S-01); converges at S-03 via shared prerequisites.|
+**MVP reached at S-03 (2026-06-01).** Streams A and B below delivered the core product. Streams C–E are post-MVP improvements that can be worked in parallel once the MVP foundations are in place.
+
+| Stream | Theme                                          | Chain                                        | Note                                                                                                        |
+|--------|------------------------------------------------|----------------------------------------------|-------------------------------------------------------------------------------------------------------------|
+| A      | Foundations → Template management → Generation | `F-01` / `F-02` → `S-01` → `S-03`           | F-01 and F-02 run in parallel; S-03 also requires S-02 from Stream B. **MVP complete.**                    |
+| B      | Option group management                        | `F-01` / `F-02` → `S-02`                    | Branches from F-01+F-02 (parallel with S-01); converges at S-03 via shared prerequisites. **MVP complete.**|
+| C      | Cost control & onboarding                      | `S-05`, `S-06`                               | Independent of each other; both require MVP foundations. S-05 limits daily generation cost; S-06 seeds new users with useful defaults. |
+| D      | UX polish — list & edit pages                  | `S-07` → `S-08`, `S-09`                     | S-07 establishes the icon/confirm-dialog pattern; S-08 and S-09 apply it to template and option group lists. S-08 and S-09 are parallel. |
+| E      | Discovery & entry point                        | `S-04`                                       | Standalone; no dependencies on C or D. Adds a public landing page for unauthenticated visitors.             |
 
 ## Baseline
 
@@ -124,25 +134,118 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Risk:** LLM integration is the riskiest element (external API, key management, latency). The input non-retention NFR (no storing user input after request completes) must be explicitly verified in implementation.
 - **Status:** done
 
+### S-04: Landing page
+
+- **Outcome:** unauthenticated visitors land on a branded page showing the Korpotron name, a short catchy description, and a "Get started" button that leads to the login form. Authenticated users bypass the landing page and go directly to the app, unchanged.
+- **Change ID:** landing-page
+- **PRD refs:** —
+- **Prerequisites:** F-01 (auth, to detect login state and redirect authenticated users past the page)
+- **Parallel with:** S-05, S-06, S-07, S-08, S-09
+- **Blockers:** —
+- **Unknowns:** —
+- **Risk:** Low — pure front-end addition with no data model changes; only affects the unauthenticated entry point.
+- **Status:** planned
+
+### S-05: Daily generation limit
+
+- **Outcome:** generation is rate-limited per user per day. The limit is set via a `DAILY_GENERATION_LIMIT` env var (default: `100`; `0` = unlimited). When a user hits the limit they see a friendly message on the generation page telling them to come back in a few hours or tomorrow. No remaining count or reset time is displayed.
+- **Change ID:** daily-generation-limit
+- **PRD refs:** —
+- **Prerequisites:** F-01 (per-user identity), F-02 (data model for counter storage), S-03 (generation flow to enforce the limit)
+- **Parallel with:** S-04, S-06, S-07, S-08, S-09
+- **Blockers:** —
+- **Unknowns:** —
+- **Risk:** Low — accuracy is explicitly not required; a per-user counter reset at midnight UTC is sufficient. Env var default of 100 keeps runaway costs in check.
+- **Status:** planned
+
+### S-06: Onboarding defaults
+
+- **Outcome:** new users have 3 default templates and a set of default option groups seeded into their personal data on first login. The defaults are owned by the user and fully editable and deletable. Content is defined in a JSON fixture file stored in the repository.
+- **Change ID:** onboarding-defaults
+- **PRD refs:** —
+- **Prerequisites:** F-01 (login signal to trigger seeding), F-02 (Template, OptionGroup, Option models), S-01 (template data shape), S-02 (option group data shape)
+- **Parallel with:** S-04, S-05, S-07, S-08, S-09
+- **Blockers:** —
+- **Unknowns:** —
+- **Notes:**
+  - Trigger: on login, if the user has zero templates **and** zero option groups, seed from the fixture (simple enough; no separate first-login flag needed).
+  - Default templates (to be authored during planning): corporate email, Teams/IM message, peer feedback — all oriented toward corporate communication.
+  - Default option groups: Language (English, Polish, German), Tone, Corporate Buzzword level (controls how heavily corporate jargon is applied).
+  - Exact prompt text for templates and options is defined during the planning phase.
+- **Risk:** Low — seeding is a one-time write at login; idempotency guard (zero templates + zero option groups) prevents double-seeding. JSON fixture keeps content auditable and easy to update without code changes.
+- **Status:** planned
+
+### S-07: Option group edit UX
+
+- **Outcome:** the option group edit page is redesigned for clarity. The page shows the group title (editable) and a collapsed list of its options. Each row shows the option name and a delete icon (MDI or similar, already in the project). Clicking a row expands it inline to reveal editable title and instructions fields plus a Save button; saving collapses the row. Clicking the delete icon shows a confirmation dialog; confirming deletes the option. No full-page reloads for individual option edits or deletes.
+- **Change ID:** option-group-edit-ux
+- **PRD refs:** —
+- **Prerequisites:** F-01 (auth), S-02 (option group management to build upon)
+- **Parallel with:** S-04, S-05, S-06
+- **Blockers:** —
+- **Unknowns:** —
+- **Notes:**
+  - Vanilla JS only — no new JS libraries or build steps introduced.
+  - Backed by lightweight JSON CRUD endpoints for individual option create / update / delete.
+  - Icon set: MDI icons (or equivalent already present in the project).
+- **Risk:** Low-medium — introduces JS and REST endpoints for the first time; keeping JS vanilla and scoped to this page limits blast radius.
+- **Status:** planned
+
+### S-08: Template list UX
+
+- **Outcome:** the template list page is redesigned for consistency with S-07. Each template is shown as a row with its name on the left and a delete icon button on the right. Clicking the delete icon shows the same confirmation dialog as S-07; confirming deletes the template. Clicking the template name navigates to the existing edit page (no inline editing on the list).
+- **Change ID:** template-list-ux
+- **PRD refs:** —
+- **Prerequisites:** F-01 (auth), S-01 (template management to build upon)
+- **Parallel with:** S-04, S-05, S-06, S-07, S-09
+- **Blockers:** —
+- **Unknowns:** —
+- **Notes:**
+  - Delete uses the same icon and confirmation pattern established in S-07 for visual consistency.
+  - No inline editing — clicking the name navigates to the existing template edit page.
+- **Risk:** Low — primarily a template/view change; reuses the delete-with-confirmation pattern from S-07.
+- **Status:** planned
+
+### S-09: Option group list UX
+
+- **Outcome:** the option group list page is redesigned for consistency with S-07 and S-08. Each group is shown as a row with its name on the left and a delete icon button on the right. Clicking the delete icon shows a confirmation dialog; confirming deletes the group. Clicking the name navigates to the existing option group edit page.
+- **Change ID:** option-group-list-ux
+- **PRD refs:** —
+- **Prerequisites:** F-01 (auth), S-02 (option group management to build upon)
+- **Parallel with:** S-04, S-05, S-06, S-07, S-08
+- **Blockers:** —
+- **Unknowns:** —
+- **Notes:**
+  - Delete uses the same icon and confirmation pattern established in S-07.
+  - No inline editing — clicking the name navigates to the existing option group edit page.
+- **Risk:** Low — primarily a template/view change; reuses the delete-with-confirmation pattern from S-07.
+- **Status:** planned
+
 ## Implementation Summary
 
-All 5 roadmap items completed and archived as of 2026-06-01.
+MVP (F-01, F-02, S-01–S-03) shipped and archived as of 2026-06-01. Six post-MVP slices (S-04–S-09) are planned as of 2026-06-04.
 
-| Roadmap ID | Change ID               | Status | Archived |
-|------------|-------------------------|--------|----------|
-| F-01       | auth-scaffold           | done   | 2026-05-26 |
-| F-02       | core-data-model         | done   | 2026-05-28 |
-| S-01       | template-management     | done   | 2026-05-29 |
-| S-02       | option-group-management | done   | 2026-05-29 |
-| S-03       | text-generation-flow    | done   | 2026-06-01 |
+| Roadmap ID | Change ID               | Status  | Archived |
+|------------|-------------------------|---------|----------|
+| F-01       | auth-scaffold           | done    | 2026-05-26 |
+| F-02       | core-data-model         | done    | 2026-05-28 |
+| S-01       | template-management     | done    | 2026-05-29 |
+| S-02       | option-group-management | done    | 2026-05-29 |
+| S-03       | text-generation-flow    | done    | 2026-06-01 |
+| S-04       | landing-page            | planned | — |
+| S-05       | daily-generation-limit  | planned | — |
+| S-06       | onboarding-defaults     | planned | — |
+| S-07       | option-group-edit-ux    | planned | — |
+| S-08       | template-list-ux        | planned | — |
+| S-09       | option-group-list-ux    | planned | — |
 
-The MVP shipped on schedule within the 2-week budget. The north-star slice (S-03) and all prerequisites are live. See the `## Done` section below for archive locations.
+See the `## Done` section below for MVP archive locations.
 
 ## Open Roadmap Questions
 
 1. ~~**Which text-generation service / LLM provider will be used?**~~ **Resolved 2026-06-01:** OpenRouter via `openai` SDK (`base_url` override). See `context/foundation/adr/001-llm-provider-openrouter.md`.
 2. **Confirm target_scale assumptions** (`qps: low`, `data_volume: small`) — Owner: user. Block: no — inferred for single-digit users; correct if traffic expectations change.
-3. **Confirm revised clipboard copy acceptance criteria** — one-click copy preferred; pre-selected text box is acceptable fallback (per FR-012 Socratic note in PRD). Owner: user. Block: no — confirm before S-03 implementation.
+3. ~~**Confirm revised clipboard copy acceptance criteria**~~ **Resolved 2026-06-01:** S-03 shipped; one-click copy implemented.
 
 ## Parked
 
