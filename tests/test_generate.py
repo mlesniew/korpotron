@@ -1,4 +1,5 @@
 import json
+from datetime import date, timedelta
 from unittest.mock import patch
 
 import httpx
@@ -9,7 +10,7 @@ from django.test import Client
 from openai import APITimeoutError, OpenAIError
 
 from core.llm import GenerateResult
-from core.models import Option, OptionGroup, Template
+from core.models import DailyGenerationCount, Option, OptionGroup, Template
 
 
 @pytest.fixture
@@ -258,3 +259,86 @@ def test_generate_creates_no_db_rows(
         )
     assert response.status_code == 200
     assert counts() == before
+
+
+# --- Daily generation limit -----------------------------------------------
+
+
+@pytest.fixture
+def today() -> date:
+    from django.utils import timezone
+
+    return timezone.now().date()
+
+
+@pytest.mark.django_db
+def test_daily_limit_not_reached(
+    client: Client, user: User, template: Template, settings: object, today: date
+) -> None:
+    settings.DAILY_GENERATION_LIMIT = 2  # type: ignore[attr-defined]
+    DailyGenerationCount.objects.create(user=user, date=today, count=1)
+    _login(client)
+    with patch(
+        "core.views.llm.generate",
+        return_value=GenerateResult(title="", body="ok"),
+    ):
+        response = _post(client, template_id=template.pk, text="hi")
+    assert response.status_code == 200
+    assert DailyGenerationCount.objects.get(user=user, date=today).count == 2
+
+
+@pytest.mark.django_db
+def test_daily_limit_reached(
+    client: Client, user: User, template: Template, settings: object, today: date
+) -> None:
+    settings.DAILY_GENERATION_LIMIT = 2  # type: ignore[attr-defined]
+    DailyGenerationCount.objects.create(user=user, date=today, count=2)
+    _login(client)
+    with patch("core.views.llm.generate") as mock_generate:
+        response = _post(client, template_id=template.pk, text="hi")
+    assert response.status_code == 429
+    assert "error" in response.json()
+    mock_generate.assert_not_called()
+
+
+@pytest.mark.django_db
+def test_daily_limit_zero_means_unlimited(
+    client: Client, user: User, template: Template, settings: object, today: date
+) -> None:
+    settings.DAILY_GENERATION_LIMIT = 0  # type: ignore[attr-defined]
+    DailyGenerationCount.objects.create(user=user, date=today, count=999)
+    _login(client)
+    with patch(
+        "core.views.llm.generate",
+        return_value=GenerateResult(title="", body="ok"),
+    ):
+        response = _post(client, template_id=template.pk, text="hi")
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_daily_limit_llm_error_does_not_increment(
+    client: Client, user: User, template: Template, settings: object, today: date
+) -> None:
+    settings.DAILY_GENERATION_LIMIT = 5  # type: ignore[attr-defined]
+    _login(client)
+    with patch("core.views.llm.generate", side_effect=OpenAIError("boom")):
+        response = _post(client, template_id=template.pk, text="hi")
+    assert response.status_code == 502
+    assert not DailyGenerationCount.objects.filter(user=user, date=today).exists()
+
+
+@pytest.mark.django_db
+def test_daily_limit_resets_next_day(
+    client: Client, user: User, template: Template, settings: object, today: date
+) -> None:
+    settings.DAILY_GENERATION_LIMIT = 1  # type: ignore[attr-defined]
+    yesterday = today - timedelta(days=1)
+    DailyGenerationCount.objects.create(user=user, date=yesterday, count=1)
+    _login(client)
+    with patch(
+        "core.views.llm.generate",
+        return_value=GenerateResult(title="", body="ok"),
+    ):
+        response = _post(client, template_id=template.pk, text="hi")
+    assert response.status_code == 200
