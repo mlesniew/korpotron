@@ -31,7 +31,7 @@ Unauthenticated visitors hitting `/` see a full-viewport dark hero page with the
 
 ## Implementation Approach
 
-Replace `GenerateView` with a new `HomeView` that checks `request.user.is_authenticated`. No `LoginRequiredMixin` — the view handles both auth states directly. The anonymous branch renders a standalone `core/landing.html` (no base.html, own Bootstrap CDN link, full-viewport dark hero). The authenticated branch replicates the exact context and template of the old `GenerateView`.
+Replace `GenerateView` with a new `HomeView` that checks `request.user.is_authenticated`. No `LoginRequiredMixin` — the view handles both auth states directly. The anonymous branch renders a standalone `core/landing.html` (no base.html, own Bootstrap CDN link, full-viewport dark hero). The authenticated branch replicates the context and template of the old `GenerateView` (the two querysets: `templates` and `option_groups`).
 
 ## Phase 1: View and Routing Change
 
@@ -59,17 +59,17 @@ Swap the root URL handler from `GenerateView` to a new `HomeView` that dispatche
 
 #### Automated Verification
 
-- `uv run pytest tests/test_generate.py tests/test_auth.py` passes (after Phase 3 test updates)
+- `uv run pytest tests/test_generate.py tests/test_auth.py` passes (after Phase 3 test updates) *(verifiable after Phase 2 — landing.html must exist first)*
 - `uv run ruff check .` passes
 - `uv run ruff format .` produces no diff
 
 #### Manual Verification
 
-- Anonymous `GET /` → landing page (200, hero content visible, no app nav links)
+- Anonymous `GET /` → landing page (200, hero content visible, no app nav links) *(verifiable after Phase 2 — landing.html must exist first)*
 - Authenticated `GET /` → generate UI (200, same as before the change)
-- No regression: `test_generate_page_lists_only_own` and `test_generate_page_renders_form_and_options` still pass
+- No regression: `test_generate_page_lists_only_own`, `test_generate_page_renders_form_and_options`, and `test_generate_page_empty_state_when_no_templates` still pass
 
-**Implementation Note:** After completing this phase and all automated verification passes, pause here for manual confirmation from the human that the manual testing was successful before proceeding to the next phase.
+**Implementation Note:** After completing this phase, pause here for manual confirmation of criteria 1.5 and 1.6 only (authenticated path and regression tests are immediately verifiable). Criteria 1.1 and 1.4 require Phase 2's `landing.html` template and will be verified after Phase 2.
 
 ---
 
@@ -195,13 +195,13 @@ No migrations needed — no model changes.
 
 #### Automated
 
-- [ ] 1.1 `uv run pytest tests/test_generate.py tests/test_auth.py` passes
+- [ ] 1.1 `uv run pytest tests/test_generate.py tests/test_auth.py` passes *(verifiable after Phase 2)*
 - [ ] 1.2 `uv run ruff check .` passes
 - [ ] 1.3 `uv run ruff format .` produces no diff
 
 #### Manual
 
-- [ ] 1.4 Anonymous `GET /` returns 200 (landing page, no app nav links)
+- [ ] 1.4 Anonymous `GET /` returns 200 (landing page, no app nav links) *(verifiable after Phase 2)*
 - [ ] 1.5 Authenticated `GET /` returns generate UI unchanged
 - [ ] 1.6 No regression in generate-related tests
 
