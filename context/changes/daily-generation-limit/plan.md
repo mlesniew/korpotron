@@ -39,7 +39,7 @@ Two phases: Phase 1 adds the data model and settings plumbing. Phase 2 wires the
 
 **UTC date**: Use `timezone.now().date()` (from `django.utils`) not `date.today()`. With `USE_TZ = True`, `timezone.now()` is UTC; `date.today()` reflects the server's local time zone, which breaks the midnight-UTC-reset invariant on non-UTC servers.
 
-**Atomic counter increment**: Use `get_or_create(..., defaults={"count": 1})` + `F("count") + 1` in a subsequent `save(update_fields=["count"])` for the update case. This translates the increment to a SQL `UPDATE SET count = count + 1`, avoiding the non-atomic read-modify-write of `obj.count += 1`. The roadmap explicitly says accuracy is not required, but this pattern costs nothing extra.
+**Atomic counter increment**: Use `get_or_create(..., defaults={"count": 1})` + `F("count") + 1` in a subsequent `save(update_fields=["count"])` for the update case. This translates the increment to a SQL `UPDATE SET count = count + 1`, avoiding the non-atomic read-modify-write of `obj.count += 1`. For the first call (`created=True`), `defaults={"count": 1}` acts as the increment — do not use `0`. The roadmap explicitly says accuracy is not required, but this pattern costs nothing extra.
 
 ---
 
@@ -134,7 +134,7 @@ Required new imports: `from django.db.models import F`, `from django.utils impor
 
 **Intent**: Verify the five enforcement cases relevant to correctness.
 
-**Contract**: Five new test functions using `@pytest.mark.django_db`, `settings` fixture (pytest-django) to override `DAILY_GENERATION_LIMIT`, and `mocker.patch("core.views.llm.generate", ...)`:
+**Contract**: Five new test functions using `@pytest.mark.django_db`, `settings` fixture (pytest-django) to override `DAILY_GENERATION_LIMIT`, and `unittest.mock.patch("core.views.llm.generate", ...)` as a context manager (matching the existing test pattern — no additional dependency):
 
 - `test_daily_limit_not_reached` — set limit to 2, pre-seed count=1, successful generate → 200 and counter is now 2.
 - `test_daily_limit_reached` — set limit to 2, pre-seed count=2, attempt generate → 429, `llm.generate` not called.
@@ -159,7 +159,7 @@ For pre-seeding, create `DailyGenerationCount` rows directly (e.g., `DailyGenera
 - With `DAILY_GENERATION_LIMIT=1` in `.env`, generate once → succeeds; generate again → inline error alert shows the limit-reached message.
 - With `DAILY_GENERATION_LIMIT=0` in `.env`, generate repeatedly without hitting any limit.
 
-**Implementation Note**: After completing this phase and all automated verification passes, pause for manual confirmation before considering the change complete.
+**Implementation Note**: After completing this phase and all automated verification passes, pause for manual confirmation before considering the change complete. Create or update the GitHub issue for `daily-generation-limit`.
 
 ---
 
