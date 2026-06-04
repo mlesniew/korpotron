@@ -49,3 +49,16 @@ class Option(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+
+class DailyGenerationCount(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="daily_generation_counts",
+    )
+    date = models.DateField()
+    count = models.IntegerField(default=0)
+
+    class Meta:
+        unique_together = [("user", "date")]

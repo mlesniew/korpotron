@@ -205,13 +205,13 @@ Phase 1 adds one new migration. The table starts empty. No existing data migrati
 
 #### Automated
 
-- [ ] 1.1 Migration applies cleanly: `uv run manage.py migrate`
-- [ ] 1.2 All existing tests still pass: `uv run pytest`
-- [ ] 1.3 Lint passes: `uv run ruff check .`
+- [x] 1.1 Migration applies cleanly: `uv run manage.py migrate`
+- [x] 1.2 All existing tests still pass: `uv run pytest`
+- [x] 1.3 Lint passes: `uv run ruff check .`
 
 #### Manual
 
-- [ ] 1.4 DailyGenerationCount fields visible via Django shell
+- [x] 1.4 DailyGenerationCount fields visible via Django shell
 
 ### Phase 2: Enforcement in `generate_api` and tests
 

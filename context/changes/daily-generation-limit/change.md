@@ -1,7 +1,7 @@
 ---
 change_id: daily-generation-limit
 title: Daily generation limit
-status: plan_reviewed
+status: implementing
 created: 2026-06-04
 updated: 2026-06-04
 archived_at: null
