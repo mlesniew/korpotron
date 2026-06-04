@@ -221,12 +221,11 @@ def generate_api(request: HttpRequest) -> JsonResponse:
             {"error": "Text generation failed. Please try again."}, status=502
         )
 
-    if settings.DAILY_GENERATION_LIMIT > 0:
-        obj, created = DailyGenerationCount.objects.get_or_create(
-            user=request.user, date=today, defaults={"count": 1}
-        )
-        if not created:
-            obj.count = F("count") + 1
-            obj.save(update_fields=["count"])
+    obj, created = DailyGenerationCount.objects.get_or_create(
+        user=request.user, date=today, defaults={"count": 1}
+    )
+    if not created:
+        obj.count = F("count") + 1
+        obj.save(update_fields=["count"])
 
     return JsonResponse({"title": result.title, "body": result.body})
