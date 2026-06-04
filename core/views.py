@@ -199,33 +199,38 @@ def generate_api(request: HttpRequest) -> JsonResponse:
 
     today = timezone.now().date()
 
-    if settings.DAILY_GENERATION_LIMIT > 0:
-        limit = settings.DAILY_GENERATION_LIMIT
-        existing = DailyGenerationCount.objects.filter(
-            user=request.user, date=today
-        ).first()
-        current_count = existing.count if existing is not None else 0
-        if current_count >= limit:
+    # Lock is row-scoped to (user, date), so only concurrent requests from the
+    # same user are serialised; other users are unaffected.
+    with transaction.atomic():
+        if settings.DAILY_GENERATION_LIMIT > 0:
+            limit = settings.DAILY_GENERATION_LIMIT
+            existing = (
+                DailyGenerationCount.objects.select_for_update()
+                .filter(user=request.user, date=today)
+                .first()
+            )
+            current_count = existing.count if existing is not None else 0
+            if current_count >= limit:
+                return JsonResponse(
+                    {
+                        "error": "You've reached your daily generation limit. Please try again tomorrow."
+                    },
+                    status=429,
+                )
+
+        try:
+            result = llm.generate(template, options, text)
+        except OpenAIError:
+            # Do not log or echo the input/prompt/output (non-retention NFR).
             return JsonResponse(
-                {
-                    "error": "You've reached your daily generation limit. Please try again tomorrow."
-                },
-                status=429,
+                {"error": "Text generation failed. Please try again."}, status=502
             )
 
-    try:
-        result = llm.generate(template, options, text)
-    except OpenAIError:
-        # Do not log or echo the input/prompt/output (non-retention NFR).
-        return JsonResponse(
-            {"error": "Text generation failed. Please try again."}, status=502
+        DailyGenerationCount.objects.update_or_create(
+            user=request.user,
+            date=today,
+            defaults={"count": F("count") + 1},
+            create_defaults={"count": 1},
         )
-
-    DailyGenerationCount.objects.update_or_create(
-        user=request.user,
-        date=today,
-        defaults={"count": F("count") + 1},
-        create_defaults={"count": 1},
-    )
 
     return JsonResponse({"title": result.title, "body": result.body})
