@@ -205,25 +205,25 @@ Phase 1 adds one new migration. The table starts empty. No existing data migrati
 
 #### Automated
 
-- [x] 1.1 Migration applies cleanly: `uv run manage.py migrate`
-- [x] 1.2 All existing tests still pass: `uv run pytest`
-- [x] 1.3 Lint passes: `uv run ruff check .`
+- [x] 1.1 Migration applies cleanly: `uv run manage.py migrate` — 01623c2
+- [x] 1.2 All existing tests still pass: `uv run pytest` — 01623c2
+- [x] 1.3 Lint passes: `uv run ruff check .` — 01623c2
 
 #### Manual
 
-- [x] 1.4 DailyGenerationCount fields visible via Django shell
+- [x] 1.4 DailyGenerationCount fields visible via Django shell — 01623c2
 
 ### Phase 2: Enforcement in `generate_api` and tests
 
 #### Automated
 
-- [ ] 2.1 All tests pass: `uv run pytest`
-- [ ] 2.2 New tests pass: `uv run pytest tests/test_generate.py -k "daily_limit"`
-- [ ] 2.3 Lint passes: `uv run ruff check .`
-- [ ] 2.4 Format check: `uv run ruff format --check .`
-- [ ] 2.5 Docker build succeeds: `docker build .`
+- [x] 2.1 All tests pass: `uv run pytest`
+- [x] 2.2 New tests pass: `uv run pytest tests/test_generate.py -k "daily_limit"`
+- [x] 2.3 Lint passes: `uv run ruff check .`
+- [x] 2.4 Format check: `uv run ruff format --check .`
+- [x] 2.5 Docker build succeeds: `docker build .`
 
 #### Manual
 
-- [ ] 2.6 DAILY_GENERATION_LIMIT=1: second generate shows limit-reached message
-- [ ] 2.7 DAILY_GENERATION_LIMIT=0: generation works without limit
+- [x] 2.6 DAILY_GENERATION_LIMIT=1: second generate shows limit-reached message
+- [x] 2.7 DAILY_GENERATION_LIMIT=0: generation works without limit

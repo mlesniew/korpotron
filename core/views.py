@@ -1,12 +1,14 @@
 import json
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
-from django.db.models import Count, QuerySet
+from django.db.models import Count, F, QuerySet
 from django.forms import BaseModelForm
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views.decorators.http import require_POST
 from django.views.generic import (
     CreateView,
@@ -19,7 +21,7 @@ from openai import OpenAIError
 
 from core import llm
 from core.forms import OptionFormSet
-from core.models import Option, OptionGroup, Template
+from core.models import DailyGenerationCount, Option, OptionGroup, Template
 
 
 class TemplateListView(LoginRequiredMixin, ListView):
@@ -195,6 +197,21 @@ def generate_api(request: HttpRequest) -> JsonResponse:
             {"error": "Only one option per group may be selected."}, status=400
         )
 
+    if settings.DAILY_GENERATION_LIMIT > 0:
+        limit = settings.DAILY_GENERATION_LIMIT
+        today = timezone.now().date()
+        existing = DailyGenerationCount.objects.filter(
+            user=request.user, date=today
+        ).first()
+        current_count = existing.count if existing is not None else 0
+        if current_count >= limit:
+            return JsonResponse(
+                {
+                    "error": "You've reached your daily generation limit. Please try again tomorrow."
+                },
+                status=429,
+            )
+
     try:
         result = llm.generate(template, options, text)
     except OpenAIError:
@@ -202,5 +219,14 @@ def generate_api(request: HttpRequest) -> JsonResponse:
         return JsonResponse(
             {"error": "Text generation failed. Please try again."}, status=502
         )
+
+    if settings.DAILY_GENERATION_LIMIT > 0:
+        today = timezone.now().date()
+        obj, created = DailyGenerationCount.objects.get_or_create(
+            user=request.user, date=today, defaults={"count": 1}
+        )
+        if not created:
+            obj.count = F("count") + 1
+            obj.save(update_fields=["count"])
 
     return JsonResponse({"title": result.title, "body": result.body})

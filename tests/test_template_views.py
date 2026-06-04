@@ -12,7 +12,9 @@ def template(user: User) -> Template:
 
 @pytest.fixture
 def other_template(other_user: User) -> Template:
-    return Template.objects.create(user=other_user, name="Other Template", base_prompt="Hi")
+    return Template.objects.create(
+        user=other_user, name="Other Template", base_prompt="Hi"
+    )
 
 
 @pytest.mark.django_db
