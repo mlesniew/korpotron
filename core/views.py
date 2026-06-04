@@ -6,13 +6,14 @@ from django.db import transaction
 from django.db.models import Count, QuerySet
 from django.forms import BaseModelForm
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.decorators.http import require_POST
 from django.views.generic import (
     CreateView,
     DeleteView,
     ListView,
-    TemplateView,
     UpdateView,
 )
 from openai import OpenAIError
@@ -125,18 +126,19 @@ class OptionGroupDeleteView(LoginRequiredMixin, DeleteView):
         return OptionGroup.objects.filter(user=self.request.user)
 
 
-class GenerateView(LoginRequiredMixin, TemplateView):
-    """The north-star flow at `/`: pick a template, toggle options, generate."""
-
-    template_name = "core/generate.html"
-
-    def get_context_data(self, **kwargs: object) -> dict[str, object]:
-        context = super().get_context_data(**kwargs)
-        context["templates"] = Template.objects.filter(user=self.request.user)
-        context["option_groups"] = OptionGroup.objects.filter(
-            user=self.request.user
-        ).prefetch_related("options")
-        return context
+class HomeView(View):
+    def get(self, request: HttpRequest) -> HttpResponse:
+        if not request.user.is_authenticated:
+            return render(request, "core/landing.html")
+        templates = Template.objects.filter(user=request.user)
+        option_groups = OptionGroup.objects.filter(user=request.user).prefetch_related(
+            "options"
+        )
+        return render(
+            request,
+            "core/generate.html",
+            {"templates": templates, "option_groups": option_groups},
+        )
 
 
 @login_required

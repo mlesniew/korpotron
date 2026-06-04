@@ -1,7 +1,7 @@
 from django.urls import path
 
 from core.views import (
-    GenerateView,
+    HomeView,
     OptionGroupCreateView,
     OptionGroupDeleteView,
     OptionGroupListView,
@@ -14,7 +14,7 @@ from core.views import (
 )
 
 urlpatterns = [
-    path("", GenerateView.as_view(), name="home"),
+    path("", HomeView.as_view(), name="home"),
     path("generate/", generate_api, name="generate-api"),
     path("templates/", TemplateListView.as_view(), name="template-list"),
     path("templates/new/", TemplateCreateView.as_view(), name="template-create"),

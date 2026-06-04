@@ -24,7 +24,9 @@ def test_option_group_creation(user: User) -> None:
 @pytest.mark.django_db
 def test_option_creation(user: User) -> None:
     og = OptionGroup.objects.create(user=user, name="Tone")
-    o = Option.objects.create(group=og, name="Formal", instruction="Use formal language.")
+    o = Option.objects.create(
+        group=og, name="Formal", instruction="Use formal language."
+    )
     assert o.name == "Formal"
     assert o.instruction == "Use formal language."
     assert o.group == og
