@@ -24,7 +24,7 @@ Unauthenticated visitors hitting `/` see a full-viewport dark hero page with the
 ## What We're NOT Doing
 
 - No URL changes — `GenerateView` content stays at `/` (name `"home"`) for authenticated users
-- No changes to auth settings (`LOGIN_URL`, `LOGIN_REDIRECT_URL`, `LOGOUT_REDIRECT_URL`)
+- No changes to auth settings (`LOGIN_URL`, `LOGIN_REDIRECT_URL`, `LOGOUT_REDIRECT_URL`) *(see addendum below)*
 - No registration/signup flow — "Get started" leads to login only
 - No mobile-first design — desktop browser use case only per PRD non-goals
 - No additional marketing content, screenshots, or feature lists beyond what the hero provides
@@ -174,7 +174,7 @@ Fix the two broken assertions and add two new tests covering the landing page an
 3. Click "Get started" — verify redirect to login form
 4. Log in — verify `LOGIN_REDIRECT_URL = "/"` still takes you to the generate UI
 5. Visit `http://localhost:8000/` while logged in — verify generate UI loads, no landing page
-6. Log out — verify `LOGOUT_REDIRECT_URL = "/accounts/login/"` still works
+6. Log out — verify `LOGOUT_REDIRECT_URL = "/"` lands on landing page (see addendum)
 
 ## Migration Notes
 
@@ -229,3 +229,11 @@ No migrations needed — no model changes.
 #### Manual
 
 - [x] 3.4 All updated and new tests show green in pytest output — 67eafb1
+
+---
+
+## Addendum: LOGOUT_REDIRECT_URL change (post-implementation)
+
+**Scope extension** — commit 986d944 changed `LOGOUT_REDIRECT_URL` from `"/accounts/login/"` to `"/"`. This was explicitly excluded by the original "What We're NOT Doing" list, but was added after implementation as a natural consequence of the landing page: once `/` is a meaningful public page, it is a better post-logout destination than jumping straight to the login form.
+
+The corresponding test was renamed from `test_logout_redirects_to_login` to `test_logout_redirects_to_landing` and its assertion updated accordingly. Identified as a scope violation in impl-review (F2) and documented here retroactively.
