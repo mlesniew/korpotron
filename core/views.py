@@ -197,9 +197,10 @@ def generate_api(request: HttpRequest) -> JsonResponse:
             {"error": "Only one option per group may be selected."}, status=400
         )
 
+    today = timezone.now().date()
+
     if settings.DAILY_GENERATION_LIMIT > 0:
         limit = settings.DAILY_GENERATION_LIMIT
-        today = timezone.now().date()
         existing = DailyGenerationCount.objects.filter(
             user=request.user, date=today
         ).first()
@@ -221,7 +222,6 @@ def generate_api(request: HttpRequest) -> JsonResponse:
         )
 
     if settings.DAILY_GENERATION_LIMIT > 0:
-        today = timezone.now().date()
         obj, created = DailyGenerationCount.objects.get_or_create(
             user=request.user, date=today, defaults={"count": 1}
         )
