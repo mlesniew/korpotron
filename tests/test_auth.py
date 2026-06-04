@@ -4,10 +4,10 @@ from django.test import Client
 
 
 @pytest.mark.django_db
-def test_unauthenticated_redirects_to_login(client: Client) -> None:
+def test_unauthenticated_sees_landing_page(client: Client) -> None:
     response = client.get("/")
-    assert response.status_code == 302
-    assert response["Location"].startswith("/accounts/login/")
+    assert response.status_code == 200
+    assert b"Get started" in response.content
 
 
 @pytest.mark.django_db

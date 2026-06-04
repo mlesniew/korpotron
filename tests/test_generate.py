@@ -59,10 +59,21 @@ def _post(client: Client, **body: object) -> HttpResponse:
 
 
 @pytest.mark.django_db
-def test_generate_page_requires_login(client: Client) -> None:
+def test_anonymous_home_shows_landing_page(client: Client) -> None:
     response = client.get("/")
-    assert response.status_code == 302
-    assert response["Location"].startswith("/accounts/login/")
+    assert response.status_code == 200
+    assert b"Get started" in response.content
+    assert b'id="generate-btn"' not in response.content
+
+
+@pytest.mark.django_db
+def test_authenticated_home_shows_generate_ui(
+    client: Client, user: User, template: Template
+) -> None:
+    _login(client)
+    response = client.get("/")
+    assert response.status_code == 200
+    assert b'id="generate-btn"' in response.content
 
 
 @pytest.mark.django_db

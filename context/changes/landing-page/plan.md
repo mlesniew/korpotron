@@ -195,37 +195,37 @@ No migrations needed — no model changes.
 
 #### Automated
 
-- [ ] 1.1 `uv run pytest tests/test_generate.py tests/test_auth.py` passes *(verifiable after Phase 2)*
+- [x] 1.1 `uv run pytest tests/test_generate.py tests/test_auth.py` passes *(verifiable after Phase 2)*
 - [x] 1.2 `uv run ruff check .` passes — d670c20
 - [x] 1.3 `uv run ruff format .` produces no diff — d670c20
 
 #### Manual
 
-- [ ] 1.4 Anonymous `GET /` returns 200 (landing page, no app nav links) *(verifiable after Phase 2)*
-- [ ] 1.5 Authenticated `GET /` returns generate UI unchanged
-- [ ] 1.6 No regression in generate-related tests
+- [x] 1.4 Anonymous `GET /` returns 200 (landing page, no app nav links) *(verifiable after Phase 2)*
+- [x] 1.5 Authenticated `GET /` returns generate UI unchanged
+- [x] 1.6 No regression in generate-related tests
 
 ### Phase 2: Landing Page Template
 
 #### Automated
 
-- [x] 2.1 `uv run pytest tests/test_generate.py` passes (no 500 from missing template)
-- [x] 2.2 `uv run ruff check .` passes
+- [x] 2.1 `uv run pytest tests/test_generate.py` passes (no 500 from missing template) — 70164ff
+- [x] 2.2 `uv run ruff check .` passes — 70164ff
 
 #### Manual
 
-- [x] 2.3 Anonymous `GET /` shows full-viewport dark hero with headline, tagline, "Get started" button
-- [x] 2.4 "Get started" leads to `/accounts/login/`
-- [x] 2.5 No navbar or app nav links on landing page
+- [x] 2.3 Anonymous `GET /` shows full-viewport dark hero with headline, tagline, "Get started" button — 70164ff
+- [x] 2.4 "Get started" leads to `/accounts/login/` — 70164ff
+- [x] 2.5 No navbar or app nav links on landing page — 70164ff
 
 ### Phase 3: Test Updates
 
 #### Automated
 
-- [ ] 3.1 `uv run pytest` passes (full suite, no failures)
-- [ ] 3.2 `uv run ruff check .` passes
-- [ ] 3.3 `uv run ruff format .` produces no diff
+- [x] 3.1 `uv run pytest` passes (full suite, no failures)
+- [x] 3.2 `uv run ruff check .` passes
+- [x] 3.3 `uv run ruff format .` produces no diff
 
 #### Manual
 
-- [ ] 3.4 All updated and new tests show green in pytest output
+- [x] 3.4 All updated and new tests show green in pytest output
