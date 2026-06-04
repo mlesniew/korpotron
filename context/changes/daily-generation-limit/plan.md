@@ -217,13 +217,13 @@ Phase 1 adds one new migration. The table starts empty. No existing data migrati
 
 #### Automated
 
-- [x] 2.1 All tests pass: `uv run pytest`
-- [x] 2.2 New tests pass: `uv run pytest tests/test_generate.py -k "daily_limit"`
-- [x] 2.3 Lint passes: `uv run ruff check .`
-- [x] 2.4 Format check: `uv run ruff format --check .`
-- [x] 2.5 Docker build succeeds: `docker build .`
+- [x] 2.1 All tests pass: `uv run pytest` — 2fefb55
+- [x] 2.2 New tests pass: `uv run pytest tests/test_generate.py -k "daily_limit"` — 2fefb55
+- [x] 2.3 Lint passes: `uv run ruff check .` — 2fefb55
+- [x] 2.4 Format check: `uv run ruff format --check .` — 2fefb55
+- [x] 2.5 Docker build succeeds: `docker build .` — 2fefb55
 
 #### Manual
 
-- [x] 2.6 DAILY_GENERATION_LIMIT=1: second generate shows limit-reached message
-- [x] 2.7 DAILY_GENERATION_LIMIT=0: generation works without limit
+- [x] 2.6 DAILY_GENERATION_LIMIT=1: second generate shows limit-reached message — 2fefb55
+- [x] 2.7 DAILY_GENERATION_LIMIT=0: generation works without limit — 2fefb55
