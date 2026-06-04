@@ -196,8 +196,8 @@ No migrations needed — no model changes.
 #### Automated
 
 - [ ] 1.1 `uv run pytest tests/test_generate.py tests/test_auth.py` passes *(verifiable after Phase 2)*
-- [x] 1.2 `uv run ruff check .` passes
-- [x] 1.3 `uv run ruff format .` produces no diff
+- [x] 1.2 `uv run ruff check .` passes — d670c20
+- [x] 1.3 `uv run ruff format .` produces no diff — d670c20
 
 #### Manual
 
