@@ -195,15 +195,15 @@ No migrations needed — no model changes.
 
 #### Automated
 
-- [x] 1.1 `uv run pytest tests/test_generate.py tests/test_auth.py` passes *(verifiable after Phase 2)*
+- [x] 1.1 `uv run pytest tests/test_generate.py tests/test_auth.py` passes *(verifiable after Phase 2)* — 67eafb1
 - [x] 1.2 `uv run ruff check .` passes — d670c20
 - [x] 1.3 `uv run ruff format .` produces no diff — d670c20
 
 #### Manual
 
-- [x] 1.4 Anonymous `GET /` returns 200 (landing page, no app nav links) *(verifiable after Phase 2)*
-- [x] 1.5 Authenticated `GET /` returns generate UI unchanged
-- [x] 1.6 No regression in generate-related tests
+- [x] 1.4 Anonymous `GET /` returns 200 (landing page, no app nav links) *(verifiable after Phase 2)* — 67eafb1
+- [x] 1.5 Authenticated `GET /` returns generate UI unchanged — 67eafb1
+- [x] 1.6 No regression in generate-related tests — 67eafb1
 
 ### Phase 2: Landing Page Template
 
@@ -222,10 +222,10 @@ No migrations needed — no model changes.
 
 #### Automated
 
-- [x] 3.1 `uv run pytest` passes (full suite, no failures)
-- [x] 3.2 `uv run ruff check .` passes
-- [x] 3.3 `uv run ruff format .` produces no diff
+- [x] 3.1 `uv run pytest` passes (full suite, no failures) — 67eafb1
+- [x] 3.2 `uv run ruff check .` passes — 67eafb1
+- [x] 3.3 `uv run ruff format .` produces no diff — 67eafb1
 
 #### Manual
 
-- [x] 3.4 All updated and new tests show green in pytest output
+- [x] 3.4 All updated and new tests show green in pytest output — 67eafb1
