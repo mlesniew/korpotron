@@ -41,6 +41,7 @@ Knowledge workers who repeatedly paste stored prompts into LLM chat tools to pol
 | S-08 | template-list-ux        | template list page shows a name + delete-icon row per template; clicking the name navigates to the edit page    | F-01, S-01             | —                     | planned |
 | S-09 | option-group-list-ux    | option group list page shows a name + delete-icon row per group; clicking the name navigates to the edit page   | F-01, S-02             | —                     | planned |
 | S-10 | ui-refresh              | all app pages get a modern, non-generic visual style; forms and layout overhauled; framework TBD via research    | S-04–S-09              | —                     | planned |
+| S-11 | user-registration       | users can self-register; accounts are inactive until an admin approves them via the Django admin panel           | F-01                   | —                     | planned |
 
 ## Streams
 
@@ -223,6 +224,22 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Risk:** Low — primarily a template/view change; reuses the delete-with-confirmation pattern from S-07.
 - **Status:** planned
 
+### S-11: User registration
+
+- **Outcome:** users can register themselves via a registration form (username, email, password). Newly created accounts are set to `is_active=False` and cannot log in until an admin approves them. After submitting the form, the user sees a "pending approval" message. Approval is done by the admin in the existing Django admin panel — no new admin UI required. A "Register" link appears on the login page.
+- **Change ID:** user-registration
+- **PRD refs:** —
+- **Prerequisites:** F-01 (auth scaffold — login/logout foundation)
+- **Parallel with:** S-05, S-06, S-07, S-08, S-09
+- **Blockers:** —
+- **Unknowns:** —
+- **Notes:**
+  - Uses Django's built-in `is_active` flag — no new model fields needed.
+  - S-04 (landing page) should also carry a "Register" link once it ships; coordinate during S-04 implementation.
+  - No email notifications — admin must check the Django admin panel to discover pending registrations.
+- **Risk:** Low — thin view + form on top of Django's existing User model; approval leverages built-in admin.
+- **Status:** planned
+
 ### S-10: UI refresh
 
 - **Outcome:** all app pages have a modern, cohesive visual style. Forms are no longer rendered with bare Django widgets. The look is fresh and distinct from a default Bootstrap theme, without introducing a SPA or a JS build pipeline. CSS/JS loaded from CDN is acceptable.
@@ -258,6 +275,7 @@ MVP (F-01, F-02, S-01–S-03) shipped and archived as of 2026-06-01. Six post-MV
 | S-08       | template-list-ux        | planned | — |
 | S-09       | option-group-list-ux    | planned | — |
 | S-10       | ui-refresh              | planned | — |
+| S-11       | user-registration       | planned | — |
 
 See the `## Done` section below for MVP archive locations.
 
