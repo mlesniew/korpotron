@@ -222,17 +222,19 @@ def test_generate_timeout_maps_to_friendly_error(
 
 @pytest.mark.django_db
 def test_generate_creates_no_db_rows(
-    client: Client, user: User, template: Template, options: list[Option]
+    client: Client, user: User, template: Template, options: list[Option], settings: object
 ) -> None:
+    settings.DAILY_GENERATION_LIMIT = 0  # type: ignore[attr-defined]
     _login(client)
     from django.contrib.sessions.models import Session
 
-    def counts() -> tuple[int, int, int, int]:
+    def counts() -> tuple[int, int, int, int, int]:
         return (
             Template.objects.count(),
             OptionGroup.objects.count(),
             Option.objects.count(),
             Session.objects.count(),
+            DailyGenerationCount.objects.count(),
         )
 
     before = counts()
