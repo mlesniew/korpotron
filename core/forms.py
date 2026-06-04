@@ -1,9 +1,16 @@
-from django.forms import BaseInlineFormSet, ModelForm, ValidationError, inlineformset_factory
+from django.forms import (
+    BaseInlineFormSet,
+    ModelForm,
+    ValidationError,
+    inlineformset_factory,
+)
 
 from core.models import Option, OptionGroup
 
 
-class RequiredOptionInlineFormSet(BaseInlineFormSet[Option, OptionGroup, ModelForm[Option]]):
+class RequiredOptionInlineFormSet(
+    BaseInlineFormSet[Option, OptionGroup, ModelForm[Option]]
+):
     def clean(self) -> None:
         super().clean()
         active_forms = [
@@ -11,7 +18,9 @@ class RequiredOptionInlineFormSet(BaseInlineFormSet[Option, OptionGroup, ModelFo
         ]
         if len(active_forms) < 1:
             raise ValidationError("At least one option is required.")
-        names = [f.cleaned_data["name"] for f in active_forms if f.cleaned_data.get("name")]
+        names = [
+            f.cleaned_data["name"] for f in active_forms if f.cleaned_data.get("name")
+        ]
         if len(names) != len(set(names)):
             raise ValidationError("Option names must be unique within a group.")
 

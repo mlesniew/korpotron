@@ -196,8 +196,8 @@ No migrations needed — no model changes.
 #### Automated
 
 - [ ] 1.1 `uv run pytest tests/test_generate.py tests/test_auth.py` passes *(verifiable after Phase 2)*
-- [ ] 1.2 `uv run ruff check .` passes
-- [ ] 1.3 `uv run ruff format .` produces no diff
+- [x] 1.2 `uv run ruff check .` passes
+- [x] 1.3 `uv run ruff format .` produces no diff
 
 #### Manual
 
@@ -209,14 +209,14 @@ No migrations needed — no model changes.
 
 #### Automated
 
-- [ ] 2.1 `uv run pytest tests/test_generate.py` passes (no 500 from missing template)
-- [ ] 2.2 `uv run ruff check .` passes
+- [x] 2.1 `uv run pytest tests/test_generate.py` passes (no 500 from missing template)
+- [x] 2.2 `uv run ruff check .` passes
 
 #### Manual
 
-- [ ] 2.3 Anonymous `GET /` shows full-viewport dark hero with headline, tagline, "Get started" button
-- [ ] 2.4 "Get started" leads to `/accounts/login/`
-- [ ] 2.5 No navbar or app nav links on landing page
+- [x] 2.3 Anonymous `GET /` shows full-viewport dark hero with headline, tagline, "Get started" button
+- [x] 2.4 "Get started" leads to `/accounts/login/`
+- [x] 2.5 No navbar or app nav links on landing page
 
 ### Phase 3: Test Updates
 
