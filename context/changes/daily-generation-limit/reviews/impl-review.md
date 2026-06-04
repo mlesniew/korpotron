@@ -39,7 +39,7 @@
   - Tradeoff: Five test signatures gain one parameter.
   - Confidence: HIGH — timezone mismatch is deterministic on non-UTC machines.
   - Blind spot: None significant.
-- **Decision**: PENDING
+- **Decision**: FIXED — afb0ed8 (replaced module-level TODAY with today fixture using timezone.now().date())
 
 ### F2 — today computed twice in generate_api
 
@@ -49,7 +49,7 @@
 - **Location**: core/views.py:202, 224
 - **Detail**: `timezone.now().date()` is called once in the check block and again in the increment block. A request straddling UTC midnight will check against day D but increment day D+1, creating a new row for D+1 with count=1 instead of updating D's row. Extremely unlikely but trivially avoidable.
 - **Fix**: Hoist `today = timezone.now().date()` above the first `if settings.DAILY_GENERATION_LIMIT > 0:` block and remove the second assignment.
-- **Decision**: PENDING
+- **Decision**: FIXED — 1605471
 
 ### F3 — DailyGenerationCount missing __str__
 
@@ -59,7 +59,7 @@
 - **Location**: core/models.py:54-64
 - **Detail**: `Template`, `OptionGroup`, and `Option` all define `__str__`. `DailyGenerationCount` does not.
 - **Fix**: Add `def __str__(self) -> str: return f"{self.user} / {self.date} ({self.count})"`
-- **Decision**: PENDING
+- **Decision**: FIXED — 7570567
 
 ### F4 — test_generate_creates_no_db_rows silently ignores counter rows
 
@@ -69,4 +69,4 @@
 - **Location**: tests/test_generate.py (test_generate_creates_no_db_rows)
 - **Detail**: The test asserts no extra DB rows are created by a successful generation, but its `counts()` tuple only covers Template/OptionGroup/Option/Session. With `DAILY_GENERATION_LIMIT=100` (default), a successful generation now inserts a `DailyGenerationCount` row that the test doesn't notice. The test name is now misleading.
 - **Fix**: Either add `DailyGenerationCount.objects.count()` to the `counts()` tuple, or set `settings.DAILY_GENERATION_LIMIT = 0` in the test scope to restore the "no rows" intent.
-- **Decision**: PENDING
+- **Decision**: FIXED — 3f8a91d (Fix A: added DailyGenerationCount to counts() tuple + set limit=0 in test scope)
