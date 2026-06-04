@@ -62,3 +62,6 @@ class DailyGenerationCount(models.Model):
 
     class Meta:
         unique_together = [("user", "date")]
+
+    def __str__(self) -> str:
+        return f"{self.user} / {self.date} ({self.count})"
