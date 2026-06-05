@@ -52,7 +52,7 @@ status: active
 
 | # | Phase name | Goal | Risks covered | Test types | Status | Change folder |
 |---|---|---|---|---|---|---|
-| 1 | CI quality gate | Wire pytest into GitHub Actions; configure as a required check so broken tests block merges to master | R1 | GitHub Actions YAML, branch protection | change opened | context/changes/testing-ci-quality-gate/ |
+| 1 | CI quality gate | Wire pytest into GitHub Actions; configure as a required check so broken tests block merges to master | R1 | GitHub Actions YAML, branch protection | done | context/changes/ci-quality-gate/ |
 | 2 | Authorization hardening | Prove ownership isolation for existing endpoint patterns and establish the contract for S-07/S-11 before they ship | R2, R3 | Django test client integration tests | not started | — |
 | 3 | LLM & abuse surface | Prove rate-limit edges are tamper-resistant; verify message construction puts user content in the user-message slot; extend input non-retention checks to new endpoints | R4, R5, R6 | Django integration tests, LLM unit tests | not started | — |
 | 4 | Docker deployment smoke | CI step that builds the image, starts the container, and verifies the app serves HTTP | R7 | CI shell step | not started | — |
@@ -95,7 +95,7 @@ status: active
 | LLM message construction and parsing | `tests/test_llm.py` | Covered (7 tests) |
 | Option group views (CRUD, ownership, validation) | `tests/test_option_group_views.py` | Covered (9 tests) |
 | Template views (CRUD, ownership) | `tests/test_template_views.py` | Covered (7 tests) |
-| CI gate (pytest runs in GitHub Actions) | — | **Not covered** → Phase 1 |
+| CI gate (pytest runs in GitHub Actions, required check on master) | `.github/workflows/ci.yml` | **Covered** — Phase 1 done |
 | S-07 JSON endpoint ownership checks | — | **Not covered** → Phase 2 |
 | S-11 registration + inactive-user login block | — | **Not covered** → Phase 2 |
 | Rate-limit midnight boundary + atomic check-and-increment | — | **Partial** → Phase 3 |
@@ -108,7 +108,16 @@ status: active
 ## §6 Cookbook (filled in as phases ship)
 
 ### Phase 1 — CI quality gate
-TBD — see §3 Phase 1. Pattern: pytest job in GitHub Actions, required status check on master.
+
+**Shipped.** See `context/changes/ci-quality-gate/`.
+
+Pattern — GitHub Actions workflow (`.github/workflows/ci.yml`):
+- `test` job: `uv run pytest` with `SECRET_KEY` env var set; triggers on every PR to master and push to master.
+- `lint` job: `uv run ruff check .`; parallel to `test`.
+- `deploy` job: `needs: [test, lint]`; only runs on push to master.
+- Branch protection: `CI / Test` and `CI / Lint` are required status checks on master (`strict: true`).
+
+Result: a PR with a broken test gets `mergeStateStatus = BLOCKED` — the merge button is disabled until both checks pass.
 
 ### Phase 2 — Authorization hardening
 TBD — see §3 Phase 2. Patterns: cross-user ownership assertion for JSON endpoints (R2 — IDOR denial/regression pattern); inactive-user login rejection for registration flow (R3).
