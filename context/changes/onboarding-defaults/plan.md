@@ -312,9 +312,9 @@ Existing users (created before this feature ships) who already have templates or
 
 #### Automated
 
-- [x] 3.1 Existing tests pass (`uv run pytest`)
-- [x] 3.2 Lint passes (`uv run ruff check .`)
-- [x] 3.3 Formatting clean (`uv run ruff format .`)
+- [x] 3.1 Existing tests pass (`uv run pytest`) — 65e4876
+- [x] 3.2 Lint passes (`uv run ruff check .`) — 65e4876
+- [x] 3.3 Formatting clean (`uv run ruff format .`) — 65e4876
 
 #### Manual
 
@@ -326,11 +326,11 @@ Existing users (created before this feature ships) who already have templates or
 
 #### Automated
 
-- [ ] 4.1 New tests pass (`uv run pytest tests/test_onboarding.py -v`)
-- [ ] 4.2 Full suite passes (`uv run pytest`)
-- [ ] 4.3 Lint passes (`uv run ruff check .`)
-- [ ] 4.4 Docker build passes (`docker build .`)
+- [x] 4.1 New tests pass (`uv run pytest tests/test_onboarding.py -v`)
+- [x] 4.2 Full suite passes (`uv run pytest`)
+- [x] 4.3 Lint passes (`uv run ruff check .`)
+- [x] 4.4 Docker build passes (`docker build .`)
 
 #### Manual
 
-- [ ] 4.5 Test names and assertions match the four described scenarios
+- [x] 4.5 Test names and assertions match the four described scenarios
