@@ -65,3 +65,15 @@ class DailyGenerationCount(models.Model):
 
     def __str__(self) -> str:
         return f"{self.user} / {self.date} ({self.count})"
+
+
+class OnboardingState(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="onboarding_state",
+    )
+    seeded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f"{self.user}"

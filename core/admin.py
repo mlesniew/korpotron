@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from core.models import Option, OptionGroup, Template
+from core.models import OnboardingState, Option, OptionGroup, Template
 
 
 @admin.register(Template)
@@ -19,3 +19,9 @@ class OptionGroupAdmin(admin.ModelAdmin):
 class OptionAdmin(admin.ModelAdmin):
     list_display = ["name", "group"]
     list_select_related = ["group"]
+
+
+@admin.register(OnboardingState)
+class OnboardingStateAdmin(admin.ModelAdmin):
+    list_display = ["user", "seeded_at"]
+    list_select_related = ["user"]

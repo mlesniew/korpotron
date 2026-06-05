@@ -290,9 +290,9 @@ Existing users (created before this feature ships) who already have templates or
 
 #### Automated
 
-- [ ] 1.1 Migration generates cleanly (`uv run manage.py makemigrations --check`)
-- [ ] 1.2 Migration applies cleanly (`uv run manage.py migrate`)
-- [ ] 1.3 Existing tests pass (`uv run pytest`)
+- [x] 1.1 Migration generates cleanly (`uv run manage.py makemigrations --check`)
+- [x] 1.2 Migration applies cleanly (`uv run manage.py migrate`)
+- [x] 1.3 Existing tests pass (`uv run pytest`)
 
 #### Manual
 

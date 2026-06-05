@@ -1,9 +1,10 @@
 ---
 change_id: onboarding-defaults
 title: Onboarding defaults
-status: plan_reviewed
+status: implementing
 created: 2026-06-05
 updated: 2026-06-05
+
 archived_at: null
 ---
 
