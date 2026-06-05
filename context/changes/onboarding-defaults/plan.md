@@ -174,6 +174,8 @@ Create `core/fixtures/onboarding_defaults.json` with the correct structure for 3
 
 **Implementation Note**: After completing this phase, pause for manual confirmation before proceeding.
 
+**Addendum (87f165e)**: Fixture content was replaced with real production content. Final shipped state: 3 templates (Professional Email, Jira Ticket, Meeting notes) and 6 option groups (Language, Tone, Corporate Buzzword Level, Audience, Reading complexity, Communication style). Tone has 5 options; Corporate Buzzword Level has 4 options. The "3 option groups" count in the original contract is superseded by the actual fixture.
+
 ---
 
 ## Phase 3: Signal Handler and Seeding Logic
@@ -233,7 +235,7 @@ Cover the four meaningful signal-handler paths: first-login seeding, second-logi
 
 - `test_first_login_seeds_defaults`: fire signal once → assert `Template.objects.filter(user=user).count() == 3`, `OptionGroup.objects.filter(user=user).count() == 3`, and `OnboardingState.objects.filter(user=user).exists() is True`
 - `test_second_login_does_not_reseed`: fire signal twice → assert counts are still 3 (not 6) and only one `OnboardingState` row exists
-- `test_user_with_existing_content_is_not_seeded`: create one `Template` for the user manually, fire signal → assert `Template.objects.filter(user=user).count() == 1` (unchanged), `OnboardingState` does not exist
+- `test_user_with_existing_content_is_not_seeded`: create one `Template` for the user manually, fire signal → assert `Template.objects.filter(user=user).count() == 1` (unchanged), `OnboardingState` exists (row is written as a guard so future logins skip cheaply)
 - `test_deleting_defaults_then_logging_in_does_not_reseed`: fire signal (seeded), delete all user templates and option groups, fire signal again → assert `Template.objects.filter(user=user).count() == 0` and `OptionGroup.objects.filter(user=user).count() == 0` (not re-seeded)
 
 ### Success Criteria:

@@ -76,4 +76,4 @@ class OnboardingState(models.Model):
     seeded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return f"{self.user}"
+        return str(self.user)

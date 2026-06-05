@@ -20,19 +20,23 @@ def seed_onboarding_defaults(
 
     from core.models import OnboardingState, Option, OptionGroup, Template
 
-    if OnboardingState.objects.filter(user=user).exists():
-        return
-
-    if (
-        Template.objects.filter(user=user).exists()
-        or OptionGroup.objects.filter(user=user).exists()
-    ):
-        return
-
     fixture_path = Path(__file__).parent / "fixtures" / "onboarding_defaults.json"
     data = json.loads(fixture_path.read_text())
 
     with transaction.atomic():
+        # Lock the user row so concurrent first-time logins are serialised.
+        user.__class__.objects.select_for_update().get(pk=user.pk)
+
+        if OnboardingState.objects.filter(user=user).exists():
+            return
+
+        if (
+            Template.objects.filter(user=user).exists()
+            or OptionGroup.objects.filter(user=user).exists()
+        ):
+            OnboardingState.objects.create(user=user)
+            return
+
         for t in data["templates"]:
             Template.objects.create(
                 user=user,
