@@ -39,6 +39,18 @@ Three gaps from the Phase 3 test-plan risk map are closed:
 - No R5/R6 tests for S-07/S-11 endpoints (they don't exist yet; those tests go in the PR that ships each endpoint)
 - No performance or load tests
 
+## Discovered Addendum: SQLite IMMEDIATE Transaction Mode
+
+**Discovered during Phase 1 implementation.** Django 6.x dropped `select_for_update()` support for SQLite in the default `DEFERRED` transaction mode. Without this change, the concurrency tests would appear to pass even if the lock were removed — defeating their purpose entirely.
+
+Two changes were made to `korpotron/settings.py` and `.gitignore` (contra the "no settings changes" guardrail):
+
+- `DATABASES["default"]["OPTIONS"]["transaction_mode"] = "IMMEDIATE"` — acquires the write lock at `BEGIN IMMEDIATE`, giving the same serialization guarantee as `select_for_update()`. Guarded by `ENGINE == sqlite3` so it only applies in SQLite environments (dev + CI), not Fly.io (PostgreSQL).
+- `DATABASES["default"]["TEST"]["NAME"] = BASE_DIR / "test.sqlite3"` — forces a file-based test DB. SQLite's in-memory shared-cache mode raises `SQLITE_LOCKED` (not `SQLITE_BUSY`) under concurrent `BEGIN IMMEDIATE`, bypassing the busy-handler retry; a file-based DB avoids this.
+- `.gitignore`: `test.sqlite3` added to avoid committing the test database.
+
+The `IMMEDIATE` mode also affects the dev server (not just tests). For a single-developer SQLite setup this is benign, but it is a behavioral change outside the original test scope.
+
 ## Implementation Approach
 
 Two phases, each adding tests to one or both files. Phase 1 closes R4 with threading tests; Phase 2 closes R5 and R6 with smaller, non-threaded additions. After each phase, run the full test suite and linter.

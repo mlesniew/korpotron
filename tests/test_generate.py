@@ -6,6 +6,8 @@ from unittest.mock import patch
 import httpx
 import pytest
 from django.contrib.auth.models import User
+from django.contrib.sessions.models import Session
+from django.db import models as _models
 from django.http import HttpResponse
 from django.test import Client
 from openai import APITimeoutError, OpenAIError
@@ -243,7 +245,6 @@ def test_generate_creates_no_db_rows(
 ) -> None:
     """R6 non-retention contract: the generate view must not persist user-supplied input text to any DB field. Extend this pattern to each new endpoint that accepts user text."""
     _login(client)
-    from django.contrib.sessions.models import Session
 
     def counts() -> tuple[int, int, int, int]:
         return (
@@ -268,9 +269,12 @@ def test_generate_creates_no_db_rows(
     assert counts() == before
 
     input_text = "rewrite me"
-    from django.db import models as _models
 
-    for obj in [*Template.objects.all(), *OptionGroup.objects.all(), *Option.objects.all()]:
+    for obj in [
+        *Template.objects.all(),
+        *OptionGroup.objects.all(),
+        *Option.objects.all(),
+    ]:
         for field in obj._meta.get_fields():
             if isinstance(field, (_models.CharField, _models.TextField)):
                 assert input_text not in (getattr(obj, field.name) or "")

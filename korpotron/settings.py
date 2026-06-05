@@ -88,7 +88,9 @@ DATABASES = {
 # instead of SQLITE_BUSY, bypassing the busy-handler retry on concurrent BEGIN IMMEDIATE).
 if DATABASES["default"].get("ENGINE") == "django.db.backends.sqlite3":
     DATABASES["default"].setdefault("OPTIONS", {})["transaction_mode"] = "IMMEDIATE"
-    DATABASES["default"].setdefault("TEST", {}).setdefault("NAME", str(BASE_DIR / "test.sqlite3"))
+    DATABASES["default"].setdefault("TEST", {}).setdefault(
+        "NAME", str(BASE_DIR / "test.sqlite3")
+    )
 
 AUTH_PASSWORD_VALIDATORS = [
     {
