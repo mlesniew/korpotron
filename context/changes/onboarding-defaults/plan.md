@@ -14,7 +14,7 @@ Seed new users with 3 default templates and 3 default option groups on first log
 ### Key Discoveries:
 
 - `core/apps.py:CoreConfig` — `ready()` is absent; safe to add without conflict
-- `core/models.py` — `Template`, `OptionGroup`, `Option` all use `settings.AUTH_USER_MODEL` FK pattern to follow
+- `core/models.py` — `Template` and `OptionGroup` use `settings.AUTH_USER_MODEL` FK; `Option` uses a FK to `OptionGroup` (`group = ForeignKey(OptionGroup, ...)`) — no user FK on `Option`
 - `tests/conftest.py` — `user` fixture creates `User` via `create_user`; signal tests fire `user_logged_in` manually
 - Last migration: `core/migrations/0004_dailygenerationcount.py` — new migration depends on it
 
@@ -85,6 +85,14 @@ Add a lightweight `OnboardingState` model that records whether a user was ever s
 #### Manual Verification:
 
 - `OnboardingState` is visible in Django admin (auto-registered via `admin.site.register` or just via admin autodiscovery — confirm it appears)
+
+#### 3. Admin registration
+
+**File**: `core/admin.py`
+
+**Intent**: Register `OnboardingState` with `@admin.register` so it appears in the Django admin for debugging purposes.
+
+**Contract**: `list_display = ["user", "seeded_at"]`.
 
 **Implementation Note**: After completing this phase and all automated verification passes, pause here for manual confirmation that `OnboardingState` is present before proceeding.
 
@@ -235,6 +243,7 @@ Cover the four meaningful signal-handler paths: first-login seeding, second-logi
 - `uv run pytest tests/test_onboarding.py -v` — all 4 tests pass
 - `uv run pytest` — full suite passes
 - `uv run ruff check .`
+- `docker build .` — Docker build passes
 
 #### Manual Verification:
 
@@ -320,7 +329,8 @@ Existing users (created before this feature ships) who already have templates or
 - [ ] 4.1 New tests pass (`uv run pytest tests/test_onboarding.py -v`)
 - [ ] 4.2 Full suite passes (`uv run pytest`)
 - [ ] 4.3 Lint passes (`uv run ruff check .`)
+- [ ] 4.4 Docker build passes (`docker build .`)
 
 #### Manual
 
-- [ ] 4.4 Test names and assertions match the four described scenarios
+- [ ] 4.5 Test names and assertions match the four described scenarios
