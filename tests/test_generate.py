@@ -119,6 +119,11 @@ def test_generate_page_renders_form_and_options(
 def test_generate_page_empty_state_when_no_templates(
     client: Client, user: User
 ) -> None:
+    # Pre-create OnboardingState so the login signal skips seeding.
+    # This represents a user who was onboarded but deleted all their templates.
+    from core.models import OnboardingState
+
+    OnboardingState.objects.create(user=user)
     _login(client)
     html = client.get("/").content.decode()
     # empty state links to template creation, no Generate button presented
