@@ -290,9 +290,9 @@ Existing users (created before this feature ships) who already have templates or
 
 #### Automated
 
-- [x] 1.1 Migration generates cleanly (`uv run manage.py makemigrations --check`)
-- [x] 1.2 Migration applies cleanly (`uv run manage.py migrate`)
-- [x] 1.3 Existing tests pass (`uv run pytest`)
+- [x] 1.1 Migration generates cleanly (`uv run manage.py makemigrations --check`) — c6e6073
+- [x] 1.2 Migration applies cleanly (`uv run manage.py migrate`) — c6e6073
+- [x] 1.3 Existing tests pass (`uv run pytest`) — c6e6073
 
 #### Manual
 
@@ -302,11 +302,11 @@ Existing users (created before this feature ships) who already have templates or
 
 #### Automated
 
-- [ ] 2.1 JSON parses cleanly (`python -c "import json; json.load(open('core/fixtures/onboarding_defaults.json'))"`)
+- [x] 2.1 JSON parses cleanly (`python -c "import json; json.load(open('core/fixtures/onboarding_defaults.json'))"`)
 
 #### Manual
 
-- [ ] 2.2 Spot-check: 3 templates and 3 option groups with correct keys
+- [x] 2.2 Spot-check: 3 templates and 3 option groups with correct keys
 
 ### Phase 3: Signal Handler and Seeding Logic
 

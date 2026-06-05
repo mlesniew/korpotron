@@ -1,0 +1,45 @@
+{
+  "templates": [
+    {
+      "name": "Corporate Email",
+      "base_prompt": "TODO: write the corporate email base prompt here.",
+      "generate_title": true
+    },
+    {
+      "name": "Teams / IM Message",
+      "base_prompt": "TODO: write the Teams/IM message base prompt here.",
+      "generate_title": false
+    },
+    {
+      "name": "Peer Feedback",
+      "base_prompt": "TODO: write the peer feedback base prompt here.",
+      "generate_title": false
+    }
+  ],
+  "option_groups": [
+    {
+      "name": "Language",
+      "options": [
+        {"name": "English", "instruction": "TODO: English instruction."},
+        {"name": "Polish", "instruction": "TODO: Polish instruction."},
+        {"name": "German", "instruction": "TODO: German instruction."}
+      ]
+    },
+    {
+      "name": "Tone",
+      "options": [
+        {"name": "TODO option 1", "instruction": "TODO instruction 1."},
+        {"name": "TODO option 2", "instruction": "TODO instruction 2."},
+        {"name": "TODO option 3", "instruction": "TODO instruction 3."}
+      ]
+    },
+    {
+      "name": "Corporate Buzzword Level",
+      "options": [
+        {"name": "TODO option 1", "instruction": "TODO instruction 1."},
+        {"name": "TODO option 2", "instruction": "TODO instruction 2."},
+        {"name": "TODO option 3", "instruction": "TODO instruction 3."}
+      ]
+    }
+  ]
+}
