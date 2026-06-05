@@ -48,7 +48,7 @@ Create `.github/workflows/ci.yml` with `test`, `lint`, and `deploy` jobs. Remove
 
 **Intent**: Define the full CI/CD pipeline — parallel test and lint jobs that run on every PR to master and every push to master, with a deploy job that runs only on push to master and requires both to pass.
 
-**Contract**: The workflow name must be `CI` (this determines the check context name prefix, e.g. `CI / Test`, `CI / Lint`, which is what branch protection references). The deploy job must carry `needs: [test, lint]` and `if: github.event_name == 'push' && github.ref == 'refs/heads/master'`. The `test` job must set `SECRET_KEY` to any non-empty string in its `env:`. The `astral-sh/setup-uv` action installs uv and Python 3.12; use `enable-cache: true`.
+**Contract**: The workflow name must be `CI` (this determines the check context name prefix, e.g. `CI / Test`, `CI / Lint`, which is what branch protection references). The deploy job must carry `needs: [test, lint]` and `if: github.event_name == 'push' && github.ref == 'refs/heads/master'`. The `test` job must set `SECRET_KEY` to any non-empty string in its `env:`. The `astral-sh/setup-uv` action installs uv and Python 3.12; use `enable-cache: true`. Pin `superfly/flyctl-actions/setup-flyctl` to a specific release tag (not `@master`) — check the current tag at https://github.com/superfly/flyctl-actions/releases before committing.
 
 ```yaml
 name: CI
@@ -96,7 +96,7 @@ jobs:
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
-      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - uses: superfly/flyctl-actions/setup-flyctl@v0.0.3  # pin to current release — verify before committing
       - run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
@@ -116,6 +116,7 @@ jobs:
 - `uv run ruff check .` passes locally
 - `.github/workflows/deploy.yml` no longer exists
 - `.github/workflows/ci.yml` exists and is valid YAML
+- `astral-sh/setup-uv@v6` is the current major release (verified on GitHub Marketplace)
 
 #### Manual Verification
 
@@ -203,11 +204,12 @@ EOF
 - [ ] 1.2 `uv run ruff check .` passes locally
 - [ ] 1.3 `.github/workflows/deploy.yml` no longer exists
 - [ ] 1.4 `.github/workflows/ci.yml` exists and is valid YAML
+- [ ] 1.5 `astral-sh/setup-uv@v6` is the current major release (verified on GitHub Marketplace)
 
 #### Manual
 
-- [ ] 1.5 PR shows `CI / Test` and `CI / Lint` check runs
-- [ ] 1.6 Both checks pass on the PR before merging
+- [ ] 1.6 PR shows `CI / Test` and `CI / Lint` check runs
+- [ ] 1.7 Both checks pass on the PR before merging
 
 ### Phase 2: Branch protection
 
