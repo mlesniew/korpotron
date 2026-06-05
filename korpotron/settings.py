@@ -81,6 +81,17 @@ DATABASES = {
     )
 }
 
+# SQLite doesn't support select_for_update() row-level locking (Django 6.x dropped
+# support). IMMEDIATE mode acquires the write lock at transaction start, giving the
+# same serialisation guarantee needed by the rate-limit check.
+# File-based test DB avoids in-memory shared-cache mode (which raises SQLITE_LOCKED
+# instead of SQLITE_BUSY, bypassing the busy-handler retry on concurrent BEGIN IMMEDIATE).
+if DATABASES["default"].get("ENGINE") == "django.db.backends.sqlite3":
+    DATABASES["default"].setdefault("OPTIONS", {})["transaction_mode"] = "IMMEDIATE"
+    DATABASES["default"].setdefault("TEST", {}).setdefault(
+        "NAME", str(BASE_DIR / "test.sqlite3")
+    )
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"

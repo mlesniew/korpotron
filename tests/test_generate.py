@@ -1,10 +1,13 @@
 import json
+import threading
 from datetime import date, timedelta
 from unittest.mock import patch
 
 import httpx
 import pytest
 from django.contrib.auth.models import User
+from django.contrib.sessions.models import Session
+from django.db import models as _models
 from django.http import HttpResponse
 from django.test import Client
 from openai import APITimeoutError, OpenAIError
@@ -240,8 +243,8 @@ def test_generate_timeout_maps_to_friendly_error(
 def test_generate_creates_no_db_rows(
     client: Client, user: User, template: Template, options: list[Option]
 ) -> None:
+    """R6 non-retention contract: the generate view must not persist user-supplied input text to any DB field. Extend this pattern to each new endpoint that accepts user text."""
     _login(client)
-    from django.contrib.sessions.models import Session
 
     def counts() -> tuple[int, int, int, int]:
         return (
@@ -264,6 +267,17 @@ def test_generate_creates_no_db_rows(
         )
     assert response.status_code == 200
     assert counts() == before
+
+    input_text = "rewrite me"
+
+    for obj in [
+        *Template.objects.all(),
+        *OptionGroup.objects.all(),
+        *Option.objects.all(),
+    ]:
+        for field in obj._meta.get_fields():
+            if isinstance(field, (_models.CharField, _models.TextField)):
+                assert input_text not in (getattr(obj, field.name) or "")
 
 
 # --- Daily generation limit -----------------------------------------------
@@ -347,3 +361,70 @@ def test_daily_limit_resets_next_day(
     ):
         response = _post(client, template_id=template.pk, text="hi")
     assert response.status_code == 200
+
+
+@pytest.mark.django_db(transaction=True)
+def test_rate_limit_concurrent_requests_at_boundary(
+    user: User, template: Template, settings: object, today: date
+) -> None:
+    settings.DAILY_GENERATION_LIMIT = 2  # type: ignore[attr-defined]
+    DailyGenerationCount.objects.create(user=user, date=today, count=1)
+
+    # Authenticate both clients in the main thread to avoid concurrent session writes
+    clients = [Client(), Client()]
+    for c in clients:
+        c.force_login(user)
+
+    statuses: list[int] = []
+    barrier = threading.Barrier(2)
+
+    def make_request(c: Client) -> None:
+        barrier.wait()
+        resp = _post(c, template_id=template.pk, text="hi")
+        statuses.append(resp.status_code)
+
+    with patch(
+        "core.views.llm.generate",
+        return_value=GenerateResult(title="", body="ok"),
+    ):
+        threads = [threading.Thread(target=make_request, args=(c,)) for c in clients]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+
+    assert sorted(statuses) == [200, 429]
+    assert DailyGenerationCount.objects.get(user=user, date=today).count == 2
+
+
+@pytest.mark.django_db(transaction=True)
+def test_rate_limit_first_of_day_concurrent_requests(
+    user: User, template: Template, settings: object, today: date
+) -> None:
+    settings.DAILY_GENERATION_LIMIT = 1  # type: ignore[attr-defined]
+
+    # Authenticate both clients in the main thread to avoid concurrent session writes
+    clients = [Client(), Client()]
+    for c in clients:
+        c.force_login(user)
+
+    statuses: list[int] = []
+    barrier = threading.Barrier(2)
+
+    def make_request(c: Client) -> None:
+        barrier.wait()
+        resp = _post(c, template_id=template.pk, text="hi")
+        statuses.append(resp.status_code)
+
+    with patch(
+        "core.views.llm.generate",
+        return_value=GenerateResult(title="", body="ok"),
+    ):
+        threads = [threading.Thread(target=make_request, args=(c,)) for c in clients]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+
+    assert sorted(statuses) == [200, 429]
+    assert DailyGenerationCount.objects.get(user=user, date=today).count == 1

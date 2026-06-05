@@ -54,7 +54,7 @@ status: active
 |---|---|---|---|---|---|---|
 | 1 | CI quality gate | Wire pytest into GitHub Actions; configure as a required check so broken tests block merges to master | R1 | GitHub Actions YAML, branch protection | done | context/changes/ci-quality-gate/ |
 | 2 | Authorization hardening | Prove ownership isolation for existing endpoint patterns and establish the contract for S-07/S-11 before they ship | R2, R3 | Django test client integration tests | not started | — |
-| 3 | LLM & abuse surface | Prove rate-limit edges are tamper-resistant; verify message construction puts user content in the user-message slot; extend input non-retention checks to new endpoints | R4, R5, R6 | Django integration tests, LLM unit tests | not started | — |
+| 3 | LLM & abuse surface | Prove rate-limit edges are tamper-resistant; verify message construction puts user content in the user-message slot; extend input non-retention checks to new endpoints | R4, R5, R6 | Django integration tests, LLM unit tests | done | context/changes/rate-limit-testing/ |
 | 4 | Docker deployment smoke | CI step that builds the image, starts the container, and verifies the app serves HTTP | R7 | CI shell step | not started | — |
 
 ---
@@ -98,9 +98,9 @@ status: active
 | CI gate (pytest runs in GitHub Actions, required check on master) | `.github/workflows/ci.yml` | **Covered** — Phase 1 done |
 | S-07 JSON endpoint ownership checks | — | **Not covered** → Phase 2 |
 | S-11 registration + inactive-user login block | — | **Not covered** → Phase 2 |
-| Rate-limit midnight boundary + atomic check-and-increment | — | **Partial** → Phase 3 |
-| LLM message slot structure (prompt injection structural) | `tests/test_llm.py` (partial) | Partial → Phase 3 |
-| Input non-retention for future endpoints | — | **Not covered** → Phase 3 |
+| Rate-limit midnight boundary + atomic check-and-increment | `tests/test_generate.py` (concurrent boundary tests) | **Covered** — Phase 3 done |
+| LLM message slot structure (prompt injection structural) | `tests/test_llm.py` (system_message test) | **Covered** — Phase 3 done |
+| Input non-retention for future endpoints | `tests/test_generate.py` (field-value scan) | **Covered pattern** — Phase 3 done |
 | Docker build + container startup | — | **Not covered** → Phase 4 |
 
 ---
@@ -123,7 +123,23 @@ Result: a PR with a broken test gets `mergeStateStatus = BLOCKED` — the merge 
 TBD — see §3 Phase 2. Patterns: cross-user ownership assertion for JSON endpoints (R2 — IDOR denial/regression pattern); inactive-user login rejection for registration flow (R3).
 
 ### Phase 3 — LLM & abuse surface
-TBD — see §3 Phase 3. Patterns: rate-limit boundary assertion with mocked time (R4); `build_messages()` role-slot structural check (R5); input non-retention pattern for new endpoints (R6).
+
+**Shipped.** See `context/changes/rate-limit-testing/`.
+
+Pattern — Rate-limit boundaries (R4):
+- Two threading-based concurrency tests (`transaction=True` marker) using `Barrier` to synchronize thread entry into the critical section.
+- One test at an existing-row boundary (`count = limit - 1`), one at first-of-day (no pre-existing row).
+- Each asserts `sorted(statuses) == [200, 429]` (one request succeeds, one is rate-limited) and final DB count matches limit.
+- Requires SQLite `transaction_mode = IMMEDIATE` in settings to enable row-level locking (Django 6.x dropped DEFERRED mode support).
+
+Pattern — Prompt injection structural (R5):
+- Unit test `test_build_messages_user_text_absent_from_system_message` verifies user input text is absent from `messages[0]["content"]` (the system-message slot).
+- Negative assertion: if `build_messages()` were modified to embed user text in system prompt, this test catches it.
+
+Pattern — Input non-retention (R6):
+- Existing `test_generate_creates_no_db_rows` strengthened with a field-value scan.
+- Iterates over all Template, OptionGroup, and Option instances and their CharField/TextField fields, asserting none contain the literal input string `"rewrite me"`.
+- Docstring marks it as the R6 pattern contract for future endpoints (S-07, S-11).
 
 ### Phase 4 — Docker deployment smoke
 TBD — see §3 Phase 4. Pattern: CI shell step for Docker build + startup + HTTP health check (R7).
