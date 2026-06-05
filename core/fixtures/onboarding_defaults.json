@@ -1,18 +1,18 @@
 {
   "templates": [
     {
-      "name": "Corporate Email",
-      "base_prompt": "TODO: write the corporate email base prompt here.",
+      "name": "Professional Email",
+      "base_prompt": "You are an experienced corporate communication specialist.\nTransform the text into a polished business email.\nImprove structure and readability.",
       "generate_title": true
     },
     {
-      "name": "Teams / IM Message",
-      "base_prompt": "TODO: write the Teams/IM message base prompt here.",
+      "name": "Jira Ticket",
+      "base_prompt": "You are a senior software engineer writing high-quality Jira tickets.  Convert the input into a well-structured Jira issue.\n\nStructure should start with a short (1-2 sentence) section with a high level description of what needs done.  \n\nThe second section should describe the issue more in depth, in narrative style, explaining things like current state, reason for the change, impact, priority and dependencies.  \n\nThis should be followed by two more sections with bullet point lists: \n* a TODO section (acceptance criteria) \n* an out of scope section",
       "generate_title": false
     },
     {
-      "name": "Peer Feedback",
-      "base_prompt": "TODO: write the peer feedback base prompt here.",
+      "name": "Meeting notes",
+      "base_prompt": "You are an experienced facilitator and manager.  Prepare structured meeting notes based on the input.  Use bullet points.  Organize information logically.  Clearly identify owners and deadlines when available.",
       "generate_title": false
     }
   ],
@@ -20,25 +20,119 @@
     {
       "name": "Language",
       "options": [
-        {"name": "English", "instruction": "TODO: English instruction."},
-        {"name": "Polish", "instruction": "TODO: Polish instruction."},
-        {"name": "German", "instruction": "TODO: German instruction."}
+        {
+          "name": "English",
+          "instruction": "Write the result in English"
+        },
+        {
+          "name": "Polish",
+          "instruction": "Write the result in Polish"
+        },
+        {
+          "name": "German",
+          "instruction": "Write the result in German"
+        }
       ]
     },
     {
       "name": "Tone",
       "options": [
-        {"name": "TODO option 1", "instruction": "TODO instruction 1."},
-        {"name": "TODO option 2", "instruction": "TODO instruction 2."},
-        {"name": "TODO option 3", "instruction": "TODO instruction 3."}
+        {
+          "name": "Casual",
+          "instruction": "Use natural and conversational language.  Sound like a competent colleague."
+        },
+        {
+          "name": "Professional",
+          "instruction": "User professional business language.  Be clear, concise and respectful."
+        },
+        {
+          "name": "Direct",
+          "instruction": "Be direct and straightforward.  Minimize fluff.  Focus on decisions, actions, and outcomes."
+        },
+        {
+          "name": "Diplomatic",
+          "instruction": "Use tactful language.  Reduce potential friction.  Present criticism or bad news carefully."
+        },
+        {
+          "name": "Passive-Aggressive",
+          "instruction": "Remain polite and professional, but act passive aggressive.  Imply dissatisfaction through caareful phrasing, use indirect wording, but avoid direct confrontation."
+        }
       ]
     },
     {
       "name": "Corporate Buzzword Level",
       "options": [
-        {"name": "TODO option 1", "instruction": "TODO instruction 1."},
-        {"name": "TODO option 2", "instruction": "TODO instruction 2."},
-        {"name": "TODO option 3", "instruction": "TODO instruction 3."}
+        {
+          "name": "Human",
+          "instruction": "Prefer plain English.  Avoid corporate jargon."
+        },
+        {
+          "name": "Corporate",
+          "instruction": "Use moderate corporate language.  Include common business terminology where appropriate."
+        },
+        {
+          "name": "Enterprise",
+          "instruction": "Use language commonly found in large organizations.  Example vocabulary to include: alignment, stakeholders, roadmap, delivery, ownership, visibility, cross-functional, prioritization."
+        },
+        {
+          "name": "Korpotron Ultra",
+          "instruction": "Maximize corporate jargon.  Frequently use concepts such as: strategic alignment, synergies, streamlining, value streams, cross-functional collaboration, operational excellence, leveraging capabilities, organizational scalability, stakeholder engagement."
+        }
+      ]
+    },
+    {
+      "name": "Audience",
+      "options": [
+        {
+          "name": "Engineer",
+          "instruction": "Assume the audience is technical.  Be precise and concise."
+        },
+        {
+          "name": "Manager",
+          "instruction": "Assume the audience are managers.  Focus on outcomes, risks, timelines and ownership."
+        },
+        {
+          "name": "Customer",
+          "instruction": "Assume the audience are external customers.  Focus on clarity and reassurence.  Avoid internal or technical jargon."
+        }
+      ]
+    },
+    {
+      "name": "Reading complexity",
+      "options": [
+        {
+          "name": "Simple",
+          "instruction": "Use simple vocabulary.  Write short sentences.  Assume the reader is not a native speaker."
+        },
+        {
+          "name": "Advanced",
+          "instruction": "Use sophisticated vocabulary and varied sentence structure."
+        },
+        {
+          "name": "Executive",
+          "instruction": "Use polished executive-level language.  Prefer nuanced phrasing and precise terminology."
+        },
+        {
+          "name": "Shakespeare",
+          "instruction": "Rewrite the text in elevated, Shakespeare-inspired English.  Use archaic and dramatic language.  Remain understandable but delightfully theatrical."
+        }
+      ]
+    },
+    {
+      "name": "Communication style",
+      "options": [
+        {
+          "name": "No emojis",
+          "instruction": "Never use emojis."
+        },
+        {
+          "name": "Social Energy",
+          "instruction": "Use emojis regularly.  Keep the message positive and approachable."
+        },
+        {
+          "name": "Kawaii",
+          "instruction": "Use a cheerful kawaii communication style.  Add appropriate emojis and kamoji."
+        }
       ]
     }
   ]
