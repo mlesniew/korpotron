@@ -208,15 +208,15 @@ EOF
 
 #### Manual
 
-- [ ] 1.6 PR shows `CI / Test` and `CI / Lint` check runs
-- [ ] 1.7 Both checks pass on the PR before merging
+- [x] 1.6 PR shows `CI / Test` and `CI / Lint` check runs — 84b0505
+- [x] 1.7 Both checks pass on the PR before merging — 84b0505
 
 ### Phase 2: Branch protection
 
 #### Automated
 
-- [ ] 2.1 `gh api` returns protection with `CI / Test` and `CI / Lint` in required contexts
+- [x] 2.1 `gh api` returns protection with `CI / Test` and `CI / Lint` in required contexts
 
 #### Manual
 
-- [ ] 2.2 PR with broken test shows merge button disabled with required-checks message
+- [x] 2.2 PR with broken test shows merge button disabled with required-checks message
