@@ -32,7 +32,7 @@
   - Tradeoff: Requires manual bump on new patch releases.
   - Confidence: HIGH — standard CI hardening practice.
   - Blind spot: Verify current latest v6 patch before pinning.
-- **Decision**: PENDING
+- **Decision**: FIXED — pinned to v6.8.0
 
 ### F2 — actions/checkout uses floating major @v4
 
@@ -42,7 +42,7 @@
 - **Location**: .github/workflows/ci.yml:15, :29, :44
 - **Detail**: `actions/checkout@v4` follows GitHub's own convention (floating major kept current by GitHub). Widely accepted, low-risk. Noting for completeness only.
 - **Fix**: Acceptable as-is. SHA-pin only if adopting a strict org-wide policy.
-- **Decision**: PENDING
+- **Decision**: SKIPPED — acceptable per project policy
 
 ### F3 — flyctl action pinned to minor, not commit SHA
 
@@ -52,4 +52,4 @@
 - **Location**: .github/workflows/ci.yml:46
 - **Detail**: `superfly/flyctl-actions/setup-flyctl@1.5` is a specific release tag (satisfies plan requirement of not @master). Theoretically force-pushable but extremely unlikely. No action required.
 - **Fix**: Acceptable as-is. SHA-pin only if adopting a strict org-wide policy.
-- **Decision**: PENDING
+- **Decision**: SKIPPED — acceptable per project policy
