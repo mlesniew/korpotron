@@ -326,11 +326,11 @@ Existing users (created before this feature ships) who already have templates or
 
 #### Automated
 
-- [x] 4.1 New tests pass (`uv run pytest tests/test_onboarding.py -v`)
-- [x] 4.2 Full suite passes (`uv run pytest`)
-- [x] 4.3 Lint passes (`uv run ruff check .`)
-- [x] 4.4 Docker build passes (`docker build .`)
+- [x] 4.1 New tests pass (`uv run pytest tests/test_onboarding.py -v`) — f8827ae
+- [x] 4.2 Full suite passes (`uv run pytest`) — f8827ae
+- [x] 4.3 Lint passes (`uv run ruff check .`) — f8827ae
+- [x] 4.4 Docker build passes (`docker build .`) — f8827ae
 
 #### Manual
 
-- [x] 4.5 Test names and assertions match the four described scenarios
+- [x] 4.5 Test names and assertions match the four described scenarios — f8827ae
