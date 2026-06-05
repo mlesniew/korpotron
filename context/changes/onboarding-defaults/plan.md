@@ -302,19 +302,19 @@ Existing users (created before this feature ships) who already have templates or
 
 #### Automated
 
-- [x] 2.1 JSON parses cleanly (`python -c "import json; json.load(open('core/fixtures/onboarding_defaults.json'))"`)
+- [x] 2.1 JSON parses cleanly (`python -c "import json; json.load(open('core/fixtures/onboarding_defaults.json'))"`) — fc075d8
 
 #### Manual
 
-- [x] 2.2 Spot-check: 3 templates and 3 option groups with correct keys
+- [x] 2.2 Spot-check: 3 templates and 3 option groups with correct keys — fc075d8
 
 ### Phase 3: Signal Handler and Seeding Logic
 
 #### Automated
 
-- [ ] 3.1 Existing tests pass (`uv run pytest`)
-- [ ] 3.2 Lint passes (`uv run ruff check .`)
-- [ ] 3.3 Formatting clean (`uv run ruff format .`)
+- [x] 3.1 Existing tests pass (`uv run pytest`)
+- [x] 3.2 Lint passes (`uv run ruff check .`)
+- [x] 3.3 Formatting clean (`uv run ruff format .`)
 
 #### Manual
 
