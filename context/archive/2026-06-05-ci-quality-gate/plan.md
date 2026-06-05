@@ -200,11 +200,11 @@ EOF
 
 #### Automated
 
-- [x] 1.1 `uv run pytest` passes locally
-- [x] 1.2 `uv run ruff check .` passes locally
-- [x] 1.3 `.github/workflows/deploy.yml` no longer exists
-- [x] 1.4 `.github/workflows/ci.yml` exists and is valid YAML
-- [x] 1.5 `astral-sh/setup-uv@v6` is the current major release (verified on GitHub Marketplace)
+- [x] 1.1 `uv run pytest` passes locally — 84b0505
+- [x] 1.2 `uv run ruff check .` passes locally — 84b0505
+- [x] 1.3 `.github/workflows/deploy.yml` no longer exists — 84b0505
+- [x] 1.4 `.github/workflows/ci.yml` exists and is valid YAML — 84b0505
+- [x] 1.5 `astral-sh/setup-uv@v6` is the current major release (verified on GitHub Marketplace) — 84b0505
 
 #### Manual
 
