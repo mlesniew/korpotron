@@ -189,11 +189,11 @@ Two small, non-threaded additions: a focused negative-assertion test for the sys
 
 #### Automated
 
-- [x] 2.1 R5 test passes: `uv run pytest tests/test_llm.py -k "system_message"`
-- [x] 2.2 Full test suite passes: `uv run pytest`
-- [x] 2.3 Linter passes: `uv run ruff check .`
+- [x] 2.1 R5 test passes: `uv run pytest tests/test_llm.py -k "system_message"` — 5e4aebc
+- [x] 2.2 Full test suite passes: `uv run pytest` — 5e4aebc
+- [x] 2.3 Linter passes: `uv run ruff check .` — 5e4aebc
 
 #### Manual
 
-- [x] 2.4 R5 test name makes the intent self-evident
-- [x] 2.5 R6 docstring in `test_generate_creates_no_db_rows` names it as the R6 pattern contract
+- [x] 2.4 R5 test name makes the intent self-evident — 5e4aebc
+- [x] 2.5 R6 docstring in `test_generate_creates_no_db_rows` names it as the R6 pattern contract — 5e4aebc
