@@ -241,6 +241,7 @@ def test_generate_timeout_maps_to_friendly_error(
 def test_generate_creates_no_db_rows(
     client: Client, user: User, template: Template, options: list[Option]
 ) -> None:
+    """R6 non-retention contract: the generate view must not persist user-supplied input text to any DB field. Extend this pattern to each new endpoint that accepts user text."""
     _login(client)
     from django.contrib.sessions.models import Session
 
@@ -265,6 +266,14 @@ def test_generate_creates_no_db_rows(
         )
     assert response.status_code == 200
     assert counts() == before
+
+    input_text = "rewrite me"
+    from django.db import models as _models
+
+    for obj in [*Template.objects.all(), *OptionGroup.objects.all(), *Option.objects.all()]:
+        for field in obj._meta.get_fields():
+            if isinstance(field, (_models.CharField, _models.TextField)):
+                assert input_text not in (getattr(obj, field.name) or "")
 
 
 # --- Daily generation limit -----------------------------------------------

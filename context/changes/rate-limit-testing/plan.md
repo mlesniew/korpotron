@@ -176,24 +176,24 @@ Two small, non-threaded additions: a focused negative-assertion test for the sys
 
 #### Automated
 
-- [x] 1.1 New concurrency tests pass: `uv run pytest tests/test_generate.py -k "concurrent"`
-- [x] 1.2 Full test suite passes with no regressions: `uv run pytest`
-- [x] 1.3 Linter passes: `uv run ruff check .`
+- [x] 1.1 New concurrency tests pass: `uv run pytest tests/test_generate.py -k "concurrent"` — 741d3e7
+- [x] 1.2 Full test suite passes with no regressions: `uv run pytest` — 741d3e7
+- [x] 1.3 Linter passes: `uv run ruff check .` — 741d3e7
 
 #### Manual
 
-- [x] 1.4 Confirm both new tests are marked `transaction=True`
-- [x] 1.5 Confirm each thread instantiates its own `Client()`
+- [x] 1.4 Confirm both new tests are marked `transaction=True` — 741d3e7
+- [x] 1.5 Confirm each thread instantiates its own `Client()` — 741d3e7
 
 ### Phase 2: LLM & Non-Retention Hardening (R5 + R6)
 
 #### Automated
 
-- [ ] 2.1 R5 test passes: `uv run pytest tests/test_llm.py -k "system_message"`
-- [ ] 2.2 Full test suite passes: `uv run pytest`
-- [ ] 2.3 Linter passes: `uv run ruff check .`
+- [x] 2.1 R5 test passes: `uv run pytest tests/test_llm.py -k "system_message"`
+- [x] 2.2 Full test suite passes: `uv run pytest`
+- [x] 2.3 Linter passes: `uv run ruff check .`
 
 #### Manual
 
-- [ ] 2.4 R5 test name makes the intent self-evident
-- [ ] 2.5 R6 docstring in `test_generate_creates_no_db_rows` names it as the R6 pattern contract
+- [x] 2.4 R5 test name makes the intent self-evident
+- [x] 2.5 R6 docstring in `test_generate_creates_no_db_rows` names it as the R6 pattern contract

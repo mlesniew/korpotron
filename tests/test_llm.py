@@ -69,6 +69,14 @@ def test_build_messages_user_block_delimits_instructions_and_content(
     assert "Hello there" in content
 
 
+@pytest.mark.django_db
+def test_build_messages_user_text_absent_from_system_message(
+    template: Template,
+) -> None:
+    messages = llm.build_messages(template, [], "Hello there")
+    assert "Hello there" not in messages[0]["content"]
+
+
 def test_parse_result_title_and_body() -> None:
     raw = "<title>My Title</title>\n<body>The body text.</body>"
     result = llm.parse_result(raw)
