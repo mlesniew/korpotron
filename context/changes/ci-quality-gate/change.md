@@ -1,7 +1,7 @@
 ---
 change_id: ci-quality-gate
 title: Wire pytest into GitHub Actions as a required status check
-status: implementing
+status: implemented
 created: 2026-06-05
 updated: 2026-06-05
 archived_at: null

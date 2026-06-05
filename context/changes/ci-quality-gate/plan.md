@@ -215,8 +215,8 @@ EOF
 
 #### Automated
 
-- [x] 2.1 `gh api` returns protection with `CI / Test` and `CI / Lint` in required contexts
+- [x] 2.1 `gh api` returns protection with `CI / Test` and `CI / Lint` in required contexts — 2cd37dd
 
 #### Manual
 
-- [x] 2.2 PR with broken test shows merge button disabled with required-checks message
+- [x] 2.2 PR with broken test shows merge button disabled with required-checks message — 2cd37dd
