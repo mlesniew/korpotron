@@ -176,14 +176,14 @@ Two small, non-threaded additions: a focused negative-assertion test for the sys
 
 #### Automated
 
-- [ ] 1.1 New concurrency tests pass: `uv run pytest tests/test_generate.py -k "concurrent"`
-- [ ] 1.2 Full test suite passes with no regressions: `uv run pytest`
-- [ ] 1.3 Linter passes: `uv run ruff check .`
+- [x] 1.1 New concurrency tests pass: `uv run pytest tests/test_generate.py -k "concurrent"`
+- [x] 1.2 Full test suite passes with no regressions: `uv run pytest`
+- [x] 1.3 Linter passes: `uv run ruff check .`
 
 #### Manual
 
-- [ ] 1.4 Confirm both new tests are marked `transaction=True`
-- [ ] 1.5 Confirm each thread instantiates its own `Client()`
+- [x] 1.4 Confirm both new tests are marked `transaction=True`
+- [x] 1.5 Confirm each thread instantiates its own `Client()`
 
 ### Phase 2: LLM & Non-Retention Hardening (R5 + R6)
 
