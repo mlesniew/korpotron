@@ -1,9 +1,9 @@
 ---
 change_id: option-group-edit-ux
 title: Option group edit UX — full AJAX redesign
-status: planned
+status: plan_reviewed
 created: 2026-06-05
-updated: 2026-06-05
+updated: 2026-06-06
 archived_at: null
 ---
 
