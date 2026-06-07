@@ -298,7 +298,7 @@ Existing users (created before this feature ships) who already have templates or
 
 #### Manual
 
-- [ ] 1.4 OnboardingState visible in Django admin
+- [x] 1.4 OnboardingState visible in Django admin
 
 ### Phase 2: Fixture File
 
@@ -320,9 +320,9 @@ Existing users (created before this feature ships) who already have templates or
 
 #### Manual
 
-- [ ] 3.4 Fresh login seeds templates and option groups
-- [ ] 3.5 Second login produces no duplicates
-- [ ] 3.6 Delete-all then log back in does not re-seed
+- [x] 3.4 Fresh login seeds templates and option groups
+- [x] 3.5 Second login produces no duplicates
+- [x] 3.6 Delete-all then log back in does not re-seed
 
 ### Phase 4: Tests
 
