@@ -3,7 +3,7 @@ project: "Korpotron"
 version: 1
 status: active
 created: 2026-05-26
-updated: 2026-06-04
+updated: 2026-06-07
 prd_version: 1
 main_goal: speed
 top_blocker: decisions
@@ -36,7 +36,7 @@ Knowledge workers who repeatedly paste stored prompts into LLM chat tools to pol
 | S-03 | text-generation-flow    | select a template, pick options, enter text, generate result, copy to clipboard   | F-01, F-02, S-01, S-02 | FR-007, FR-008, FR-009, FR-011, FR-012, US-01   | done |
 | S-04 | landing-page            | unauthenticated visitors see a branded landing page with a "Get started" CTA      | F-01                   | —                                               | planned |
 | S-05 | daily-generation-limit  | generation is rate-limited per user per day via env var; users see a friendly message when the limit is reached | F-01, F-02, S-03 | —                          | planned |
-| S-06 | onboarding-defaults     | new users get 3 default templates and default option groups seeded from a repo JSON fixture on first login      | F-01, F-02, S-01, S-02 | —                     | planned |
+| S-06 | onboarding-defaults     | new users get 3 default templates and default option groups seeded from a repo JSON fixture on first login      | F-01, F-02, S-01, S-02 | —                     | done |
 | S-07 | option-group-edit-ux    | option group edit page shows a collapsible per-option list with inline editing and icon-based delete + confirm  | F-01, S-02             | —                     | planned |
 | S-08 | template-list-ux        | template list page shows a name + delete-icon row per template; clicking the name navigates to the edit page    | F-01, S-01             | —                     | planned |
 | S-09 | option-group-list-ux    | option group list page shows a name + delete-icon row per group; clicking the name navigates to the edit page   | F-01, S-02             | —                     | planned |
@@ -176,7 +176,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
   - Default option groups: Language (English, Polish, German), Tone, Corporate Buzzword level (controls how heavily corporate jargon is applied).
   - Exact prompt text for templates and options is defined during the planning phase.
 - **Risk:** Low — seeding is a one-time write at login; idempotency guard (zero templates + zero option groups) prevents double-seeding. JSON fixture keeps content auditable and easy to update without code changes.
-- **Status:** planned
+- **Status:** done
 
 ### S-07: Option group edit UX
 
@@ -305,3 +305,4 @@ See the `## Done` section below for MVP archive locations.
 - **S-01: create, view, edit, and delete templates** — Archived 2026-06-01 → `context/archive/2026-05-29-template-management/`. Lesson: —.
 - **S-02: create, view, edit, and delete option groups with their options** — Archived 2026-06-01 → `context/archive/2026-05-29-option-group-management/`. Lesson: —.
 - **S-03: user can select a template, optionally select one option per group, enter text to transform, trigger generation, see the verbatim result, and copy it to the clipboard.** — Archived 2026-06-01 → `context/archive/2026-06-01-text-generation-flow/`. Lesson: —.
+- **S-06: new users get 3 default templates and default option groups seeded from a repo JSON fixture on first login** — Archived 2026-06-07 → `context/archive/2026-06-05-onboarding-defaults/`. Lesson: —.
