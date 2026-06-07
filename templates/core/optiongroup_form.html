@@ -17,17 +17,39 @@
   <div id="option-rows">
     {% for option_form in formset %}
     <div class="option-row border rounded p-3 mb-2">
+      {% for hidden in option_form.hidden_fields %}{{ hidden }}{% endfor %}
+      <div style="display:none">{{ option_form.DELETE }}</div>
       {% if option_form.non_field_errors %}
         <div class="alert alert-danger">{{ option_form.non_field_errors }}</div>
       {% endif %}
-      {{ option_form.as_p }}
+      <div class="mb-2">
+        <label for="{{ option_form.name.id_for_label }}">Name</label>
+        {{ option_form.name }}
+        {% if option_form.name.errors %}<div class="text-danger small">{{ option_form.name.errors }}</div>{% endif %}
+      </div>
+      <div class="mb-2">
+        <label for="{{ option_form.instruction.id_for_label }}">Instructions</label>
+        {{ option_form.instruction }}
+        {% if option_form.instruction.errors %}<div class="text-danger small">{{ option_form.instruction.errors }}</div>{% endif %}
+      </div>
+      <button type="button" class="btn btn-outline-danger btn-sm delete-option">Delete</button>
     </div>
     {% endfor %}
   </div>
 
   <template id="empty-option-row">
     <div class="option-row border rounded p-3 mb-2">
-      {{ formset.empty_form.as_p }}
+      {% for hidden in formset.empty_form.hidden_fields %}{{ hidden }}{% endfor %}
+      <div style="display:none">{{ formset.empty_form.DELETE }}</div>
+      <div class="mb-2">
+        <label for="{{ formset.empty_form.name.id_for_label }}">Name</label>
+        {{ formset.empty_form.name }}
+      </div>
+      <div class="mb-2">
+        <label for="{{ formset.empty_form.instruction.id_for_label }}">Instructions</label>
+        {{ formset.empty_form.instruction }}
+      </div>
+      <button type="button" class="btn btn-outline-danger btn-sm delete-option">Delete</button>
     </div>
   </template>
 
@@ -40,6 +62,20 @@
 </form>
 
 <script>
+  function wireDeleteButton(row) {
+    row.querySelector('.delete-option').addEventListener('click', function () {
+      if (confirm('Delete this option?')) {
+        var deleteCheckbox = row.querySelector('input[id$="-DELETE"]');
+        if (deleteCheckbox) {
+          deleteCheckbox.checked = true;
+        }
+        row.style.display = 'none';
+      }
+    });
+  }
+
+  document.querySelectorAll('.option-row').forEach(wireDeleteButton);
+
   document.getElementById('add-option').addEventListener('click', function () {
     const container = document.getElementById('option-rows');
     const totalForms = document.getElementById('id_options-TOTAL_FORMS');
@@ -54,6 +90,7 @@
       });
     });
     container.appendChild(newRow);
+    wireDeleteButton(container.lastElementChild);
     totalForms.value = count + 1;
   });
 </script>

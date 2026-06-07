@@ -37,10 +37,10 @@ Knowledge workers who repeatedly paste stored prompts into LLM chat tools to pol
 | S-04 | landing-page            | unauthenticated visitors see a branded landing page with a "Get started" CTA      | F-01                   | —                                               | done |
 | S-05 | daily-generation-limit  | generation is rate-limited per user per day via env var; users see a friendly message when the limit is reached | F-01, F-02, S-03 | —                          | done |
 | S-06 | onboarding-defaults     | new users get 3 default templates and default option groups seeded from a repo JSON fixture on first login      | F-01, F-02, S-01, S-02 | —                     | done |
-| S-07 | option-group-edit-ux    | option group edit page shows a collapsible per-option list with inline editing and icon-based delete + confirm  | F-01, S-02             | —                     | planned |
-| S-08 | template-list-ux        | template list page shows a name + delete-icon row per template; clicking the name navigates to the edit page    | F-01, S-01             | —                     | planned |
-| S-09 | option-group-list-ux    | option group list page shows a name + delete-icon row per group; clicking the name navigates to the edit page   | F-01, S-02             | —                     | planned |
-| S-10 | ui-refresh              | all app pages get a modern, non-generic visual style; forms and layout overhauled; framework TBD via research    | S-04–S-09              | —                     | planned |
+| S-07 | option-group-edit-ux    | option group edit page shows all options with editable name and instructions; each option has a delete button with JS confirmation | F-01, S-02             | —                     | planned |
+| S-08 | template-list-ux        | ~~template list page shows a name + delete-icon row per template; clicking the name navigates to the edit page~~ | F-01, S-01             | —                     | dropped |
+| S-09 | option-group-list-ux    | ~~option group list page shows a name + delete-icon row per group; clicking the name navigates to the edit page~~ | F-01, S-02             | —                     | dropped |
+| S-10 | ui-refresh              | all app pages get a modern, non-generic visual style; forms and layout overhauled; framework TBD via research    | S-04–S-07, S-11        | —                     | planned |
 | S-11 | user-registration       | users can self-register; accounts are inactive until an admin approves them via the Django admin panel           | F-01                   | —                     | planned |
 
 ## Streams
@@ -54,7 +54,7 @@ Navigation aid — groups items that share a Prerequisites chain. Canonical orde
 | A      | Foundations → Template management → Generation | `F-01` / `F-02` → `S-01` → `S-03`           | F-01 and F-02 run in parallel; S-03 also requires S-02 from Stream B. **MVP complete.**                    |
 | B      | Option group management                        | `F-01` / `F-02` → `S-02`                    | Branches from F-01+F-02 (parallel with S-01); converges at S-03 via shared prerequisites. **MVP complete.**|
 | C      | Cost control & onboarding                      | `S-05`, `S-06`                               | Independent of each other; both require MVP foundations. S-05 limits daily generation cost; S-06 seeds new users with useful defaults. **Shipped.** |
-| D      | UX polish — list & edit pages                  | `S-07` → `S-08`, `S-09`                     | S-07 establishes the icon/confirm-dialog pattern; S-08 and S-09 apply it to template and option group lists. S-08 and S-09 are parallel. |
+| D      | UX polish — edit page                          | `S-07`                                       | S-07 improves the option group edit form with explicit field rendering and a JS delete-with-confirm button. S-08 and S-09 were dropped — minor list UX deferred to S-10. |
 | E      | Discovery & entry point                        | `S-04`                                       | Standalone; no dependencies on C or D. Adds a public landing page for unauthenticated visitors. **Shipped.** |
 | F      | Visual refresh                                 | `S-10`                                       | Sequenced after all other post-MVP slices so structural HTML is stable before the visual layer is applied. Framework choice requires research before planning. |
 
@@ -180,7 +180,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 
 ### S-07: Option group edit UX
 
-- **Outcome:** the option group edit page is redesigned for clarity. The page shows the group title (editable) and a collapsed list of its options. Each row shows the option name and a delete icon (MDI or similar, already in the project). Clicking a row expands it inline to reveal editable title and instructions fields plus a Save button; saving collapses the row. Clicking the delete icon shows a confirmation dialog; confirming deletes the option. No full-page reloads for individual option edits or deletes.
+- **Outcome:** the option group edit page is improved for clarity. The page shows the group title (editable) and all options at once, each with editable name and instructions fields. Each option row has a Delete button; clicking it shows a browser confirmation dialog and, on confirm, hides the row. The hidden row is only removed from the database when the user submits the form. All changes (edits, deletes, new options) are committed in a single form POST — no REST endpoints.
 - **Change ID:** option-group-edit-ux
 - **PRD refs:** —
 - **Prerequisites:** F-01 (auth), S-02 (option group management to build upon)
@@ -188,41 +188,19 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Blockers:** —
 - **Unknowns:** —
 - **Notes:**
-  - Vanilla JS only — no new JS libraries or build steps introduced.
-  - Backed by lightweight JSON CRUD endpoints for individual option create / update / delete.
-  - Icon set: MDI icons (or equivalent already present in the project).
-- **Risk:** Low-medium — introduces JS and REST endpoints for the first time; keeping JS vanilla and scoped to this page limits blast radius.
+  - Vanilla JS only — replaces the raw Django formset DELETE checkbox with a visible Delete button that checks the hidden checkbox and hides the row.
+  - No REST endpoints — existing Django formset POST unchanged.
+  - S-08 and S-09 (list page UX for templates and option groups) were dropped; minor list UX improvements deferred to S-10.
+- **Risk:** Low — JS-only change on a single template; no backend changes.
 - **Status:** planned
 
-### S-08: Template list UX
+### ~~S-08: Template list UX~~ — DROPPED
 
-- **Outcome:** the template list page is redesigned for consistency with S-07. Each template is shown as a row with its name on the left and a delete icon button on the right. Clicking the delete icon shows the same confirmation dialog as S-07; confirming deletes the template. Clicking the template name navigates to the existing edit page (no inline editing on the list).
-- **Change ID:** template-list-ux
-- **PRD refs:** —
-- **Prerequisites:** F-01 (auth), S-01 (template management to build upon)
-- **Parallel with:** S-04, S-05, S-06, S-07, S-09
-- **Blockers:** —
-- **Unknowns:** —
-- **Notes:**
-  - Delete uses the same icon and confirmation pattern established in S-07 for visual consistency.
-  - No inline editing — clicking the name navigates to the existing template edit page.
-- **Risk:** Low — primarily a template/view change; reuses the delete-with-confirmation pattern from S-07.
-- **Status:** planned
+Dropped 2026-06-07. The template list page has no material UX problem; minor visual improvements are deferred to S-10.
 
-### S-09: Option group list UX
+### ~~S-09: Option group list UX~~ — DROPPED
 
-- **Outcome:** the option group list page is redesigned for consistency with S-07 and S-08. Each group is shown as a row with its name on the left and a delete icon button on the right. Clicking the delete icon shows a confirmation dialog; confirming deletes the group. Clicking the name navigates to the existing option group edit page.
-- **Change ID:** option-group-list-ux
-- **PRD refs:** —
-- **Prerequisites:** F-01 (auth), S-02 (option group management to build upon)
-- **Parallel with:** S-04, S-05, S-06, S-07, S-08
-- **Blockers:** —
-- **Unknowns:** —
-- **Notes:**
-  - Delete uses the same icon and confirmation pattern established in S-07.
-  - No inline editing — clicking the name navigates to the existing option group edit page.
-- **Risk:** Low — primarily a template/view change; reuses the delete-with-confirmation pattern from S-07.
-- **Status:** planned
+Dropped 2026-06-07. The option group list page has no material UX problem; minor visual improvements are deferred to S-10.
 
 ### S-11: User registration
 
@@ -245,7 +223,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Outcome:** all app pages have a modern, cohesive visual style. Forms are no longer rendered with bare Django widgets. The look is fresh and distinct from a default Bootstrap theme, without introducing a SPA or a JS build pipeline. CSS/JS loaded from CDN is acceptable.
 - **Change ID:** ui-refresh
 - **PRD refs:** —
-- **Prerequisites:** S-04, S-05, S-06, S-07, S-08, S-09 — sequenced last so all structural HTML changes from earlier slices are in place before the visual layer is applied, avoiding double-rework.
+- **Prerequisites:** S-04, S-05, S-06, S-07, S-11 — sequenced last so all structural HTML changes from earlier slices are in place before the visual layer is applied, avoiding double-rework. (S-08 and S-09 were dropped.)
 - **Parallel with:** —
 - **Blockers:** —
 - **Unknowns:**
@@ -259,7 +237,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 
 ## Implementation Summary
 
-MVP (F-01, F-02, S-01–S-03) shipped and archived as of 2026-06-01. Three post-MVP slices — S-04 (landing-page), S-05 (daily-generation-limit), and S-06 (onboarding-defaults) — have since shipped and been archived. S-07–S-11 remain planned as of 2026-06-07.
+MVP (F-01, F-02, S-01–S-03) shipped and archived as of 2026-06-01. Three post-MVP slices — S-04 (landing-page), S-05 (daily-generation-limit), and S-06 (onboarding-defaults) — have since shipped and been archived. S-08 and S-09 were dropped 2026-06-07 (minor list UX deferred to S-10). S-07, S-10, and S-11 remain planned as of 2026-06-07.
 
 | Roadmap ID | Change ID               | Status  | Archived |
 |------------|-------------------------|---------|----------|
@@ -272,8 +250,8 @@ MVP (F-01, F-02, S-01–S-03) shipped and archived as of 2026-06-01. Three post-
 | S-05       | daily-generation-limit  | done    | 2026-06-04 |
 | S-06       | onboarding-defaults     | done    | 2026-06-07 |
 | S-07       | option-group-edit-ux    | planned | — |
-| S-08       | template-list-ux        | planned | — |
-| S-09       | option-group-list-ux    | planned | — |
+| S-08       | template-list-ux        | dropped | 2026-06-07 |
+| S-09       | option-group-list-ux    | dropped | 2026-06-07 |
 | S-10       | ui-refresh              | planned | — |
 | S-11       | user-registration       | planned | — |
 
