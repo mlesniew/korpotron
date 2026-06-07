@@ -34,8 +34,8 @@ Knowledge workers who repeatedly paste stored prompts into LLM chat tools to pol
 | S-01 | template-management     | create, view, edit, and delete templates                                          | F-01, F-02             | FR-001, FR-002, FR-003                          | done |
 | S-02 | option-group-management | create, view, edit, and delete option groups with their options                   | F-01, F-02             | FR-004, FR-005, FR-006                          | done |
 | S-03 | text-generation-flow    | select a template, pick options, enter text, generate result, copy to clipboard   | F-01, F-02, S-01, S-02 | FR-007, FR-008, FR-009, FR-011, FR-012, US-01   | done |
-| S-04 | landing-page            | unauthenticated visitors see a branded landing page with a "Get started" CTA      | F-01                   | —                                               | planned |
-| S-05 | daily-generation-limit  | generation is rate-limited per user per day via env var; users see a friendly message when the limit is reached | F-01, F-02, S-03 | —                          | planned |
+| S-04 | landing-page            | unauthenticated visitors see a branded landing page with a "Get started" CTA      | F-01                   | —                                               | done |
+| S-05 | daily-generation-limit  | generation is rate-limited per user per day via env var; users see a friendly message when the limit is reached | F-01, F-02, S-03 | —                          | done |
 | S-06 | onboarding-defaults     | new users get 3 default templates and default option groups seeded from a repo JSON fixture on first login      | F-01, F-02, S-01, S-02 | —                     | done |
 | S-07 | option-group-edit-ux    | option group edit page shows a collapsible per-option list with inline editing and icon-based delete + confirm  | F-01, S-02             | —                     | planned |
 | S-08 | template-list-ux        | template list page shows a name + delete-icon row per template; clicking the name navigates to the edit page    | F-01, S-01             | —                     | planned |
@@ -53,9 +53,9 @@ Navigation aid — groups items that share a Prerequisites chain. Canonical orde
 |--------|------------------------------------------------|----------------------------------------------|-------------------------------------------------------------------------------------------------------------|
 | A      | Foundations → Template management → Generation | `F-01` / `F-02` → `S-01` → `S-03`           | F-01 and F-02 run in parallel; S-03 also requires S-02 from Stream B. **MVP complete.**                    |
 | B      | Option group management                        | `F-01` / `F-02` → `S-02`                    | Branches from F-01+F-02 (parallel with S-01); converges at S-03 via shared prerequisites. **MVP complete.**|
-| C      | Cost control & onboarding                      | `S-05`, `S-06`                               | Independent of each other; both require MVP foundations. S-05 limits daily generation cost; S-06 seeds new users with useful defaults. |
+| C      | Cost control & onboarding                      | `S-05`, `S-06`                               | Independent of each other; both require MVP foundations. S-05 limits daily generation cost; S-06 seeds new users with useful defaults. **Shipped.** |
 | D      | UX polish — list & edit pages                  | `S-07` → `S-08`, `S-09`                     | S-07 establishes the icon/confirm-dialog pattern; S-08 and S-09 apply it to template and option group lists. S-08 and S-09 are parallel. |
-| E      | Discovery & entry point                        | `S-04`                                       | Standalone; no dependencies on C or D. Adds a public landing page for unauthenticated visitors.             |
+| E      | Discovery & entry point                        | `S-04`                                       | Standalone; no dependencies on C or D. Adds a public landing page for unauthenticated visitors. **Shipped.** |
 | F      | Visual refresh                                 | `S-10`                                       | Sequenced after all other post-MVP slices so structural HTML is stable before the visual layer is applied. Framework choice requires research before planning. |
 
 ## Baseline
@@ -147,7 +147,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** Low — pure front-end addition with no data model changes; only affects the unauthenticated entry point.
-- **Status:** planned
+- **Status:** done
 
 ### S-05: Daily generation limit
 
@@ -159,7 +159,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** Low — accuracy is explicitly not required; a per-user counter reset at midnight UTC is sufficient. Env var default of 100 keeps runaway costs in check.
-- **Status:** planned
+- **Status:** done
 
 ### S-06: Onboarding defaults
 
@@ -259,7 +259,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 
 ## Implementation Summary
 
-MVP (F-01, F-02, S-01–S-03) shipped and archived as of 2026-06-01. Six post-MVP slices (S-04–S-09) are planned as of 2026-06-04.
+MVP (F-01, F-02, S-01–S-03) shipped and archived as of 2026-06-01. Three post-MVP slices — S-04 (landing-page), S-05 (daily-generation-limit), and S-06 (onboarding-defaults) — have since shipped and been archived. S-07–S-11 remain planned as of 2026-06-07.
 
 | Roadmap ID | Change ID               | Status  | Archived |
 |------------|-------------------------|---------|----------|
@@ -268,9 +268,9 @@ MVP (F-01, F-02, S-01–S-03) shipped and archived as of 2026-06-01. Six post-MV
 | S-01       | template-management     | done    | 2026-05-29 |
 | S-02       | option-group-management | done    | 2026-05-29 |
 | S-03       | text-generation-flow    | done    | 2026-06-01 |
-| S-04       | landing-page            | planned | — |
-| S-05       | daily-generation-limit  | planned | — |
-| S-06       | onboarding-defaults     | planned | — |
+| S-04       | landing-page            | done    | 2026-06-04 |
+| S-05       | daily-generation-limit  | done    | 2026-06-04 |
+| S-06       | onboarding-defaults     | done    | 2026-06-07 |
 | S-07       | option-group-edit-ux    | planned | — |
 | S-08       | template-list-ux        | planned | — |
 | S-09       | option-group-list-ux    | planned | — |
@@ -278,6 +278,8 @@ MVP (F-01, F-02, S-01–S-03) shipped and archived as of 2026-06-01. Six post-MV
 | S-11       | user-registration       | planned | — |
 
 See the `## Done` section below for MVP archive locations.
+
+> **Note:** Test/quality changes (e.g. `ci-quality-gate`, `rate-limit-testing`) are tracked in `context/foundation/test-plan.md`, not as roadmap slices. Their absence from the slice list above is intentional — this roadmap covers product slices only.
 
 ## Open Roadmap Questions
 
@@ -305,4 +307,6 @@ See the `## Done` section below for MVP archive locations.
 - **S-01: create, view, edit, and delete templates** — Archived 2026-06-01 → `context/archive/2026-05-29-template-management/`. Lesson: —.
 - **S-02: create, view, edit, and delete option groups with their options** — Archived 2026-06-01 → `context/archive/2026-05-29-option-group-management/`. Lesson: —.
 - **S-03: user can select a template, optionally select one option per group, enter text to transform, trigger generation, see the verbatim result, and copy it to the clipboard.** — Archived 2026-06-01 → `context/archive/2026-06-01-text-generation-flow/`. Lesson: —.
+- **S-04: unauthenticated visitors see a branded landing page with a "Get started" CTA** — Archived 2026-06-04 → `context/archive/2026-06-04-landing-page/`. Lesson: —.
+- **S-05: generation is rate-limited per user per day via env var; users see a friendly message when the limit is reached** — Archived 2026-06-04 → `context/archive/2026-06-04-daily-generation-limit/`. Lesson: —.
 - **S-06: new users get 3 default templates and default option groups seeded from a repo JSON fixture on first login** — Archived 2026-06-07 → `context/archive/2026-06-05-onboarding-defaults/`. Lesson: —.
