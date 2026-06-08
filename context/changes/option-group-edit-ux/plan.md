@@ -215,10 +215,10 @@ None. No model or schema changes.
 
 #### Manual
 
-- [ ] 1.4 Title + all options render with editable fields
-- [ ] 1.5 Delete shows confirm; cancel keeps row, confirm hides it
-- [ ] 1.6 Deleted option removed from DB only after Save
-- [ ] 1.7 Added option row is fully wired (incl. Delete)
+- [x] 1.4 Title + all options render with editable fields
+- [x] 1.5 Delete shows confirm; cancel keeps row, confirm hides it
+- [x] 1.6 Deleted option removed from DB only after Save
+- [x] 1.7 Added option row is fully wired (incl. Delete)
 
 ### Phase 2: Close the Delete Round-Trip Test Gap
 
@@ -243,5 +243,5 @@ None. No model or schema changes.
 
 #### Manual
 
-- [ ] 3.4 Roadmap reads coherently (Stream D + S-07 row agree)
-- [ ] 3.5 Issue #14 closing comment reflects shipped behavior
+- [x] 3.4 Roadmap reads coherently (Stream D + S-07 row agree)
+- [x] 3.5 Issue #14 closing comment reflects shipped behavior
