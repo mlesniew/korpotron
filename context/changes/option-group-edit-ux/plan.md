@@ -209,9 +209,9 @@ None. No model or schema changes.
 
 #### Automated
 
-- [ ] 1.1 Existing option group tests pass
-- [ ] 1.2 Lint clean
-- [ ] 1.3 Delete button present and raw checkbox suppressed (grep)
+- [x] 1.1 Existing option group tests pass
+- [x] 1.2 Lint clean
+- [x] 1.3 Delete button present and raw checkbox suppressed (grep)
 
 #### Manual
 
