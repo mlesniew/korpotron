@@ -155,3 +155,41 @@ def test_option_group_create_rejects_duplicate_option_names(
     response = client.post("/option-groups/new/", data)
     assert response.status_code == 200
     assert not OptionGroup.objects.filter(user=user, name="Dupe").exists()
+
+
+@pytest.mark.django_db
+def test_option_group_update_delete_option(
+    client: Client, user: User, option_group: OptionGroup
+) -> None:
+    """POSTing with one option's DELETE=on removes it from the DB; group and surviving option remain."""
+    # Add a second option so deleting one doesn't trip the ≥1-option rule.
+    surviving_option = Option.objects.create(
+        group=option_group, name="Casual", instruction="Be casual."
+    )
+    deleted_option = option_group.options.exclude(pk=surviving_option.pk).first()
+    assert deleted_option is not None
+
+    client.login(username="tester", password="pass1234")
+    data: dict[str, str] = {
+        "name": option_group.name,
+        "options-TOTAL_FORMS": "2",
+        "options-INITIAL_FORMS": "2",
+        "options-MIN_NUM_FORMS": "0",
+        "options-MAX_NUM_FORMS": "1000",
+        # First option (to be deleted)
+        "options-0-id": str(deleted_option.pk),
+        "options-0-name": deleted_option.name,
+        "options-0-instruction": deleted_option.instruction,
+        "options-0-DELETE": "on",
+        # Second option (to survive)
+        "options-1-id": str(surviving_option.pk),
+        "options-1-name": surviving_option.name,
+        "options-1-instruction": surviving_option.instruction,
+        "options-1-DELETE": "",
+    }
+    response = client.post(f"/option-groups/{option_group.pk}/edit/", data)
+    assert response.status_code == 302
+    assert response["Location"] == "/option-groups/"
+    assert not Option.objects.filter(pk=deleted_option.pk).exists()
+    assert Option.objects.filter(pk=surviving_option.pk).exists()
+    assert OptionGroup.objects.filter(pk=option_group.pk).exists()

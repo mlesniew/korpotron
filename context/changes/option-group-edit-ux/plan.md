@@ -209,9 +209,9 @@ None. No model or schema changes.
 
 #### Automated
 
-- [x] 1.1 Existing option group tests pass
-- [x] 1.2 Lint clean
-- [x] 1.3 Delete button present and raw checkbox suppressed (grep)
+- [x] 1.1 Existing option group tests pass — 520dc2e
+- [x] 1.2 Lint clean — 520dc2e
+- [x] 1.3 Delete button present and raw checkbox suppressed (grep) — 520dc2e
 
 #### Manual
 
@@ -224,14 +224,14 @@ None. No model or schema changes.
 
 #### Automated
 
-- [ ] 2.1 New delete-on-submit test passes
-- [ ] 2.2 Full suite passes
-- [ ] 2.3 Lint clean
-- [ ] 2.4 Format check clean
+- [x] 2.1 New delete-on-submit test passes
+- [x] 2.2 Full suite passes
+- [x] 2.3 Lint clean
+- [x] 2.4 Format check clean
 
 #### Manual
 
-- [ ] 2.5 Test fails when `can_delete=True` is removed (exercises delete path)
+- [x] 2.5 Test fails when `can_delete=True` is removed (exercises delete path)
 
 ### Phase 3: Reconcile Tracking Artifacts
 
