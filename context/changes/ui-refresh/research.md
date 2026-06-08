@@ -41,6 +41,12 @@ replace Bootstrap? Focus on **ease of integration** and **what each framework of
 
 ## Summary
 
+> **⚠️ Superseded (2026-06-08):** This framework comparison is retained as historical
+> context, but its Bootswatch recommendation is **no longer the plan**. A custom
+> high-fidelity design was produced (`design_handoff/`) that **keeps raw Bootstrap 5** and
+> adds a bespoke design system (`static/css/korpotron.css`, IBM Plex fonts). See the Decision
+> section in `change.md`. No framework swap will happen.
+
 The decisive factor is **migration cost**, because every template already uses Bootstrap
 classes and there is no build step. That splits the candidate field cleanly:
 
