@@ -237,9 +237,9 @@ None. No model or schema changes.
 
 #### Automated
 
-- [x] 3.1 Roadmap S-07 marked done (grep)
-- [x] 3.2 change.md status done (grep)
-- [x] 3.3 GitHub issue #14 CLOSED
+- [x] 3.1 Roadmap S-07 marked done (grep) — 6c168db
+- [x] 3.2 change.md status done (grep) — 6c168db
+- [x] 3.3 GitHub issue #14 CLOSED — 6c168db
 
 #### Manual
 

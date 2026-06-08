@@ -1,7 +1,7 @@
 ---
 change_id: option-group-edit-ux
 title: Option group edit UX
-status: implementing
+status: implemented
 created: 2026-06-08
 updated: 2026-06-08
 archived_at: null
