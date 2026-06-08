@@ -118,7 +118,24 @@ body { font-family: 'IBM Plex Sans', system-ui, sans-serif; }
   - In Django: the overlay form POSTs to `{% url 'login' %}`. On the page itself,
     render the login form inside the overlay markup and show any `form.errors` inline.
 
-### 2. Generate — `Korpotron Generate.html`
+### 2. Login — `Korpotron Login.html`
+
+**File:** `templates/registration/login.html`
+
+This is the standalone login page Django serves when `@login_required` redirects
+an unauthenticated user. It matches the modal card from the landing page exactly,
+but rendered as a full page.
+
+- Same dark background and subtle CSS grid as the landing page.
+- Minimal fixed nav: brand name only (links back to landing), no other links.
+- Centred login card (max-width 360px): title + subtitle in the header, username +
+  password fields + submit button in the body.
+- Error bar (shown when `form.errors` is non-empty): dark red tinted, lists errors.
+- "← Back to home" link below the card.
+- The form POSTs to `{% url 'login' %}` with `{% csrf_token %}`; Django's auth view
+  handles validation and redirect.
+
+### 3. Generate — `Korpotron Generate.html`
 
 **File:** `templates/core/generate.html`
 
@@ -320,16 +337,15 @@ Content-Type: application/json
 | File | Django template to replace |
 |---|---|
 | `Korpotron Landing.html` | `templates/core/landing.html` |
+| `Korpotron Login.html` | `templates/registration/login.html` |
 | `Korpotron Generate.html` | `templates/core/generate.html` |
 | `Korpotron Templates.html` | `templates/core/template_list.html` |
 | `Korpotron Template Form.html` | `templates/core/template_form.html` |
 | `Korpotron Modifiers.html` | `templates/core/optiongroup_list.html` |
 | `Korpotron Modifier Form.html` | `templates/core/optiongroup_form.html` |
 
-The `templates/registration/login.html` view is now **embedded inside the landing
-page** as a modal overlay. If Django's auth system requires a standalone login page
-(e.g. for redirects from `@login_required`), keep a minimal styled version at that
-URL that matches the modal's look.
+The `templates/registration/login.html` standalone page is now designed
+(see `Korpotron Login.html`) to match the modal card on the landing page.
 
 ---
 
