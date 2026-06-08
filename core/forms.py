@@ -27,6 +27,6 @@ OptionFormSet = inlineformset_factory(
     Option,
     formset=RequiredOptionInlineFormSet,
     fields=["name", "instruction"],
-    extra=1,
+    extra=0,
     can_delete=True,
 )
