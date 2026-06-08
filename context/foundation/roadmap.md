@@ -3,7 +3,7 @@ project: "Korpotron"
 version: 1
 status: active
 created: 2026-05-26
-updated: 2026-06-07
+updated: 2026-06-08
 prd_version: 1
 main_goal: speed
 top_blocker: decisions
@@ -288,3 +288,4 @@ See the `## Done` section below for MVP archive locations.
 - **S-04: unauthenticated visitors see a branded landing page with a "Get started" CTA** — Archived 2026-06-04 → `context/archive/2026-06-04-landing-page/`. Lesson: —.
 - **S-05: generation is rate-limited per user per day via env var; users see a friendly message when the limit is reached** — Archived 2026-06-04 → `context/archive/2026-06-04-daily-generation-limit/`. Lesson: —.
 - **S-06: new users get 3 default templates and default option groups seeded from a repo JSON fixture on first login** — Archived 2026-06-07 → `context/archive/2026-06-05-onboarding-defaults/`. Lesson: —.
+- **S-07: option group edit page shows all options with editable name and instructions; each option has a delete button with JS confirmation** — Archived 2026-06-08 → `context/archive/2026-06-08-option-group-edit-ux/`. Lesson: —.
