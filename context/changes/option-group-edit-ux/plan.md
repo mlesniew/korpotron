@@ -224,22 +224,22 @@ None. No model or schema changes.
 
 #### Automated
 
-- [x] 2.1 New delete-on-submit test passes
-- [x] 2.2 Full suite passes
-- [x] 2.3 Lint clean
-- [x] 2.4 Format check clean
+- [x] 2.1 New delete-on-submit test passes — 2c98572
+- [x] 2.2 Full suite passes — 2c98572
+- [x] 2.3 Lint clean — 2c98572
+- [x] 2.4 Format check clean — 2c98572
 
 #### Manual
 
-- [x] 2.5 Test fails when `can_delete=True` is removed (exercises delete path)
+- [x] 2.5 Test fails when `can_delete=True` is removed (exercises delete path) — 2c98572
 
 ### Phase 3: Reconcile Tracking Artifacts
 
 #### Automated
 
-- [ ] 3.1 Roadmap S-07 marked done (grep)
-- [ ] 3.2 change.md status done (grep)
-- [ ] 3.3 GitHub issue #14 CLOSED
+- [x] 3.1 Roadmap S-07 marked done (grep)
+- [x] 3.2 change.md status done (grep)
+- [x] 3.3 GitHub issue #14 CLOSED
 
 #### Manual
 

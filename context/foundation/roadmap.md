@@ -37,7 +37,7 @@ Knowledge workers who repeatedly paste stored prompts into LLM chat tools to pol
 | S-04 | landing-page            | unauthenticated visitors see a branded landing page with a "Get started" CTA      | F-01                   | —                                               | done |
 | S-05 | daily-generation-limit  | generation is rate-limited per user per day via env var; users see a friendly message when the limit is reached | F-01, F-02, S-03 | —                          | done |
 | S-06 | onboarding-defaults     | new users get 3 default templates and default option groups seeded from a repo JSON fixture on first login      | F-01, F-02, S-01, S-02 | —                     | done |
-| S-07 | option-group-edit-ux    | option group edit page shows all options with editable name and instructions; each option has a delete button with JS confirmation | F-01, S-02             | —                     | planned |
+| S-07 | option-group-edit-ux    | option group edit page shows all options with editable name and instructions; each option has a delete button with JS confirmation | F-01, S-02             | —                     | done |
 | S-08 | template-list-ux        | ~~template list page shows a name + delete-icon row per template; clicking the name navigates to the edit page~~ | F-01, S-01             | —                     | dropped |
 | S-09 | option-group-list-ux    | ~~option group list page shows a name + delete-icon row per group; clicking the name navigates to the edit page~~ | F-01, S-02             | —                     | dropped |
 | S-10 | ui-refresh              | all app pages get a modern, non-generic visual style; forms and layout overhauled; framework TBD via research    | S-04–S-07, S-11        | —                     | planned |
@@ -54,7 +54,7 @@ Navigation aid — groups items that share a Prerequisites chain. Canonical orde
 | A      | Foundations → Template management → Generation | `F-01` / `F-02` → `S-01` → `S-03`           | F-01 and F-02 run in parallel; S-03 also requires S-02 from Stream B. **MVP complete.**                    |
 | B      | Option group management                        | `F-01` / `F-02` → `S-02`                    | Branches from F-01+F-02 (parallel with S-01); converges at S-03 via shared prerequisites. **MVP complete.**|
 | C      | Cost control & onboarding                      | `S-05`, `S-06`                               | Independent of each other; both require MVP foundations. S-05 limits daily generation cost; S-06 seeds new users with useful defaults. **Shipped.** |
-| D      | UX polish — edit page                          | `S-07`                                       | S-07 improves the option group edit form with explicit field rendering and a JS delete-with-confirm button. S-08 and S-09 were dropped — minor list UX deferred to S-10. |
+| D      | UX polish — edit page                          | `S-07`                                       | S-07 shipped: option group edit form with explicit field rendering and a JS delete-with-confirm button. S-08 and S-09 were dropped — minor list UX deferred to S-10. **Shipped.** |
 | E      | Discovery & entry point                        | `S-04`                                       | Standalone; no dependencies on C or D. Adds a public landing page for unauthenticated visitors. **Shipped.** |
 | F      | Visual refresh                                 | `S-10`                                       | Sequenced after all other post-MVP slices so structural HTML is stable before the visual layer is applied. Framework choice requires research before planning. |
 
@@ -192,7 +192,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
   - No REST endpoints — existing Django formset POST unchanged.
   - S-08 and S-09 (list page UX for templates and option groups) were dropped; minor list UX improvements deferred to S-10.
 - **Risk:** Low — JS-only change on a single template; no backend changes.
-- **Status:** planned
+- **Status:** done
 
 ### ~~S-08: Template list UX~~ — DROPPED
 
@@ -237,7 +237,7 @@ Dropped 2026-06-07. The option group list page has no material UX problem; minor
 
 ## Implementation Summary
 
-MVP (F-01, F-02, S-01–S-03) shipped and archived as of 2026-06-01. Three post-MVP slices — S-04 (landing-page), S-05 (daily-generation-limit), and S-06 (onboarding-defaults) — have since shipped and been archived. S-08 and S-09 were dropped 2026-06-07 (minor list UX deferred to S-10). S-07, S-10, and S-11 remain planned as of 2026-06-07.
+MVP (F-01, F-02, S-01–S-03) shipped and archived as of 2026-06-01. Three post-MVP slices — S-04 (landing-page), S-05 (daily-generation-limit), and S-06 (onboarding-defaults) — have since shipped and been archived. S-07 (option-group-edit-ux) shipped 2026-06-08. S-08 and S-09 were dropped 2026-06-07 (minor list UX deferred to S-10). S-10 and S-11 remain planned.
 
 | Roadmap ID | Change ID               | Status  | Archived |
 |------------|-------------------------|---------|----------|
@@ -249,7 +249,7 @@ MVP (F-01, F-02, S-01–S-03) shipped and archived as of 2026-06-01. Three post-
 | S-04       | landing-page            | done    | 2026-06-04 |
 | S-05       | daily-generation-limit  | done    | 2026-06-04 |
 | S-06       | onboarding-defaults     | done    | 2026-06-07 |
-| S-07       | option-group-edit-ux    | planned | — |
+| S-07       | option-group-edit-ux    | done    | — |
 | S-08       | template-list-ux        | dropped | 2026-06-07 |
 | S-09       | option-group-list-ux    | dropped | 2026-06-07 |
 | S-10       | ui-refresh              | planned | — |
