@@ -8,6 +8,11 @@ from core.models import Option, OptionGroup
 
 
 class RequiredOptionInlineFormSet(BaseInlineFormSet):
+    def _construct_form(self, i: int, **kwargs: object) -> object:
+        form = super()._construct_form(i, **kwargs)
+        form.empty_permitted = False
+        return form
+
     def clean(self) -> None:
         super().clean()
         active_forms = [
