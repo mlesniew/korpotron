@@ -20,6 +20,7 @@ def other_option_group(other_user: User) -> OptionGroup:
 
 
 def formset_data(group_name: str, options: list[dict[str, str]]) -> dict[str, str]:
+    # Create-only helper: sets INITIAL_FORMS=0. Update/delete tests must build POST dicts manually with correct INITIAL_FORMS and per-row id fields.
     data: dict[str, str] = {
         "name": group_name,
         "options-TOTAL_FORMS": str(len(options)),
