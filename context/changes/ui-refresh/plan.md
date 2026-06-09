@@ -546,32 +546,32 @@ Docker build before merging (per `context/foundation/lessons.md`).
 
 #### Automated
 
-- [x] 2.1 Django check passes: `uv run manage.py check`
-- [x] 2.2 Templates render without errors (smoke): `uv run pytest`
-- [x] 2.3 Lint passes: `uv run ruff check .`
+- [x] 2.1 Django check passes: `uv run manage.py check` — aa216cf
+- [x] 2.2 Templates render without errors (smoke): `uv run pytest` — aa216cf
+- [x] 2.3 Lint passes: `uv run ruff check .` — aa216cf
 
 #### Manual
 
-- [x] 2.4 Anonymous `/` shows new landing; both "Log in" triggers link to the standalone login page (modal removed per user request — single login form)
-- [x] 2.5 Valid login redirects to generate; invalid login shows standalone page with error bar
-- [x] 2.6 Protected URL while logged out redirects to the designed standalone login
-- [x] 2.7 Landing and login match the prototypes
+- [x] 2.4 Anonymous `/` shows new landing; both "Log in" triggers link to the standalone login page (modal removed per user request — single login form) — aa216cf
+- [x] 2.5 Valid login redirects to generate; invalid login shows standalone page with error bar — aa216cf
+- [x] 2.6 Protected URL while logged out redirects to the designed standalone login — aa216cf
+- [x] 2.7 Landing and login match the prototypes — aa216cf
 
 ### Phase 3: Lists, forms & delete flow
 
 #### Automated
 
-- [ ] 3.1 Existing + new tests pass: `uv run pytest` (incl. delete → 204 test)
-- [ ] 3.2 Django check passes: `uv run manage.py check`
-- [ ] 3.3 Lint passes: `uv run ruff check .`
-- [ ] 3.4 Format check passes: `uv run ruff format --check .`
+- [x] 3.1 Existing + new tests pass: `uv run pytest` (incl. delete → 204 test)
+- [x] 3.2 Django check passes: `uv run manage.py check`
+- [x] 3.3 Lint passes: `uv run ruff check .`
+- [x] 3.4 Format check passes: `uv run ruff format --check .`
 
 #### Manual
 
-- [ ] 3.5 Template create/edit works; `generate_title` toggle reflects and saves state
-- [ ] 3.6 Modifier create/edit works; option rows add/delete; zero-option + duplicate-name errors show
-- [ ] 3.7 Delete dialog opens with right name, deletes on confirm (row fades, no reload), cancels/backdrop-closes — both lists
-- [ ] 3.8 Empty states render for both lists
+- [x] 3.5 Template create/edit works; `generate_title` toggle reflects and saves state
+- [x] 3.6 Modifier create/edit works; option rows add/delete; zero-option + duplicate-name errors show
+- [x] 3.7 Delete dialog opens with right name, deletes on confirm (row fades, no reload), cancels/backdrop-closes — both lists
+- [x] 3.8 Empty states render for both lists
 
 ### Phase 4: Generate workspace
 

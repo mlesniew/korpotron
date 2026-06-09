@@ -103,8 +103,7 @@ def test_option_group_delete(
     pk = option_group.pk
     client.login(username="tester", password="pass1234")
     response = client.post(f"/option-groups/{pk}/delete/")
-    assert response.status_code == 302
-    assert response["Location"] == "/option-groups/"
+    assert response.status_code == 204
     assert not OptionGroup.objects.filter(pk=pk).exists()
     assert not Option.objects.filter(group_id=pk).exists()
 

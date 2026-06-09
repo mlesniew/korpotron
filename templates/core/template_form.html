@@ -1,12 +1,62 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>{% if object %}Edit template{% else %}New template{% endif %}</h1>
+<div class="k-form-wrap">
+<div class="k-breadcrumb">
+  <a href="{% url 'template-list' %}">Templates</a>
+  <span class="k-breadcrumb-sep">›</span>
+  <span>{% if object %}Edit template{% else %}New template{% endif %}</span>
+</div>
 
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit" class="btn btn-primary">Save</button>
-  <a href="{% url 'template-list' %}" class="btn btn-outline-secondary ms-2">Cancel</a>
-</form>
+<div class="k-card k-form-card">
+  <div class="k-card-hdr">
+    <div class="k-card-title">{% if object %}Edit template{% else %}New template{% endif %}</div>
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="k-card-body">
+      {% if form.non_field_errors %}
+      <div class="k-error-bar visible">{{ form.non_field_errors|striptags }}</div>
+      {% endif %}
+
+      <div class="k-field">
+        <label class="k-label" for="{{ form.name.id_for_label }}">Name</label>
+        <input type="text" class="k-input" id="{{ form.name.id_for_label }}"
+          name="{{ form.name.html_name }}" value="{{ form.name.value|default:'' }}"
+          placeholder="e.g. Quarterly Report">
+        {% if form.name.errors %}<div class="k-field-error">{{ form.name.errors|striptags }}</div>{% endif %}
+      </div>
+
+      <div class="k-field">
+        <label class="k-label" for="{{ form.base_prompt.id_for_label }}">Prompt</label>
+        <textarea class="k-input k-textarea" id="{{ form.base_prompt.id_for_label }}"
+          name="{{ form.base_prompt.html_name }}" rows="9" style="min-height:220px;"
+          placeholder="Describe how the AI should transform the input text. Be specific about tone, structure, and audience.">{{ form.base_prompt.value|default:'' }}</textarea>
+        {% if form.base_prompt.errors %}<div class="k-field-error">{{ form.base_prompt.errors|striptags }}</div>{% endif %}
+      </div>
+
+      <div class="k-field" style="margin-bottom:0;">
+        <div class="k-toggle-row">
+          <div style="flex:1;">
+            <div class="k-toggle-label">Generate title</div>
+            <div class="k-toggle-desc">Ask the AI to also produce a short title for the transformed text.</div>
+          </div>
+          <div>
+            <input type="checkbox" class="k-toggle-input" id="{{ form.generate_title.id_for_label }}"
+              name="{{ form.generate_title.html_name }}"{% if form.generate_title.value %} checked{% endif %}>
+            <label class="k-toggle-track" for="{{ form.generate_title.id_for_label }}"></label>
+          </div>
+        </div>
+        {% if form.generate_title.errors %}<div class="k-field-error">{{ form.generate_title.errors|striptags }}</div>{% endif %}
+      </div>
+    </div>
+
+    <div class="k-card-footer">
+      <button type="submit" class="k-btn k-btn-accent">Save template</button>
+      <a href="{% url 'template-list' %}" class="k-btn k-btn-ghost">Cancel</a>
+    </div>
+  </form>
+</div>
+</div>
 {% endblock %}

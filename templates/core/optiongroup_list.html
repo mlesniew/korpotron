@@ -1,34 +1,47 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <h1>Option Groups</h1>
-  <a href="{% url 'option-group-create' %}" class="btn btn-primary">New option group</a>
+<div class="k-page-header">
+  <div style="flex:1; display:flex; align-items:baseline; flex-wrap:wrap; gap:8px;">
+    <span class="k-page-title" style="flex:none;">Modifiers</span>
+    {% if object_list %}
+    <span class="k-page-count">{{ object_list|length }} group{{ object_list|length|pluralize }}</span>
+    {% endif %}
+  </div>
+  <a href="{% url 'option-group-create' %}" class="k-btn k-btn-accent">+ New modifier</a>
 </div>
 
 {% if object_list %}
-<table class="table">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Options</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for group in object_list %}
-    <tr>
-      <td>{{ group.name }}</td>
-      <td>{{ group.options_count }}</td>
-      <td class="text-end">
-        <a href="{% url 'option-group-update' group.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
-        <a href="{% url 'option-group-delete' group.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+<div class="k-list-card">
+  {% for group in object_list %}
+  <div class="k-list-row" data-row>
+    <div class="k-list-row-main">
+      <div class="k-list-row-name">{{ group.name }}</div>
+      {% if group.options.all %}
+      <div class="k-group-pills" style="margin-top:6px;">
+        {% for option in group.options.all %}
+        <span class="k-badge k-badge-neutral">{{ option.name }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    <div class="k-list-row-actions">
+      <a href="{% url 'option-group-update' group.pk %}" class="k-row-btn">Edit</a>
+      <button type="button" class="k-row-btn k-row-btn-danger"
+        data-delete-url="{% url 'option-group-delete' group.pk %}"
+        data-delete-name="{{ group.name }}"
+        data-delete-title="Delete modifier?">Delete</button>
+    </div>
+  </div>
+  {% endfor %}
+</div>
 {% else %}
-<p class="text-muted">No option groups yet. <a href="{% url 'option-group-create' %}">Create one</a>.</p>
+<div class="k-empty">
+  <div style="font-size:16px; font-weight:600; color:var(--k-text-mid); margin-bottom:6px;">No modifiers yet</div>
+  <div style="margin-bottom:18px;">Modifiers let you fine-tune the tone, length, and style of generated text. Create a group to get started.</div>
+  <a href="{% url 'option-group-create' %}" class="k-btn k-btn-accent">+ New modifier</a>
+</div>
 {% endif %}
+
+{% include "core/_delete_dialog.html" %}
 {% endblock %}

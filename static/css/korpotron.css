@@ -55,6 +55,9 @@ body {
 
 .k-mono { font-family: 'IBM Plex Mono', monospace; }
 
+/* No underlined links anywhere in the app. */
+a { text-decoration: none; }
+
 /* ---- Navigation ---- */
 .k-nav {
   position: sticky;
@@ -152,6 +155,29 @@ body {
   padding: 28px 32px;
 }
 
+/* Form card chrome (header / footer + width constraints).
+   The wrapper constrains width so the breadcrumb lines up with the card edge. */
+.k-form-wrap { max-width: 680px; margin: 0 auto; }
+.k-form-wrap-wide { max-width: 760px; margin: 0 auto; }
+.k-form-card { overflow: hidden; }
+
+.k-card-hdr {
+  padding: 20px 32px;
+  border-bottom: 1px solid var(--k-border);
+}
+.k-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--k-text);
+}
+.k-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 32px;
+  border-top: 1px solid var(--k-border);
+}
+
 /* ---- List cards ---- */
 .k-list-card {
   background: var(--k-surface);
@@ -232,10 +258,10 @@ body {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 7px 16px;
-  font-size: 13.5px;
-  font-weight: 500;
-  border-radius: var(--k-r);
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: var(--k-r-xl);
   border: 1.5px solid transparent;
   cursor: pointer;
   text-decoration: none;
@@ -247,7 +273,6 @@ body {
   background: var(--k-accent);
   color: #fff;
   border-color: var(--k-accent);
-  font-family: 'IBM Plex Mono', monospace;
 }
 .k-btn-accent:hover {
   background: var(--k-accent-h);
@@ -259,6 +284,7 @@ body {
   background: transparent;
   color: var(--k-text-mid);
   border-color: var(--k-border-s);
+  font-weight: 500;
 }
 .k-btn-ghost:hover {
   background: var(--k-surface-2);
@@ -291,6 +317,36 @@ body {
 .k-btn-icon:hover {
   color: var(--k-danger);
   background: var(--k-danger-bg);
+}
+
+/* ---- List-row action buttons (small pills) ---- */
+.k-row-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 13px;
+  font-size: 12.5px;
+  font-weight: 500;
+  font-family: inherit;
+  border-radius: 99px;
+  border: 1.5px solid var(--k-border-s);
+  background: transparent;
+  color: var(--k-text-mid);
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: border-color .13s, color .13s, background .13s;
+}
+.k-row-btn:hover { border-color: var(--k-text-mid); color: var(--k-text); }
+
+.k-row-btn-danger {
+  border-color: transparent;
+  color: var(--k-text-dim);
+  padding: 5px 10px;
+}
+.k-row-btn-danger:hover {
+  border-color: transparent;
+  background: transparent;
+  color: var(--k-danger);
 }
 
 /* ---- Template/modifier pill buttons ---- */
@@ -355,16 +411,6 @@ body {
   margin-bottom: 6px;
 }
 
-.k-label-hint {
-  font-size: 11.5px;
-  font-weight: 400;
-  color: var(--k-text-dim);
-  text-transform: none;
-  letter-spacing: 0;
-  float: right;
-  margin-top: 1px;
-}
-
 .k-input {
   display: block;
   width: 100%;
@@ -419,35 +465,43 @@ body {
 .k-opt-row {
   display: grid;
   grid-template-columns: 180px 1fr 32px;
-  gap: 0;
+  gap: 10px;
   align-items: start;
   background: var(--k-surface-2);
   border: 1.5px solid var(--k-border);
   border-radius: var(--k-r-lg);
+  padding: 10px 14px;
   margin-bottom: 8px;
-  overflow: hidden;
-  transition: border-color .15s;
+  transition: border-color .14s, opacity .2s;
 }
 .k-opt-row:focus-within { border-color: var(--k-accent); }
-.k-opt-row.deleted { opacity: 0; pointer-events: none; transition: opacity .2s; }
+.k-opt-row.deleted { opacity: 0; pointer-events: none; }
 
-.k-opt-cell {
-  padding: 10px 12px;
-  border-right: 1px solid var(--k-border);
-}
-.k-opt-cell:last-child { border-right: none; padding: 8px 6px; }
-
-.k-opt-name {
-  font-size: 13px;
-  font-weight: 500;
-  width: 100%;
-}
+/* Each input is its own white box sitting inside the tinted row. */
+.k-opt-name,
 .k-opt-instr {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1.5px solid var(--k-border-s);
+  border-radius: var(--k-r);
+  background: var(--k-surface);
+  color: var(--k-text);
+  font-family: inherit;
   font-size: 13px;
+  outline: none;
+  transition: border-color .14s;
+}
+.k-opt-name { font-weight: 500; }
+.k-opt-instr {
   min-height: 60px;
   resize: vertical;
-  width: 100%;
+  line-height: 1.55;
 }
+.k-opt-name:focus,
+.k-opt-instr:focus { border-color: var(--k-accent); }
+.k-opt-name::placeholder { color: var(--k-text-dim); font-weight: 400; }
+.k-opt-instr::placeholder { color: var(--k-text-dim); font-style: italic; }
+
 .k-opt-del {
   display: flex;
   align-items: center;
@@ -459,9 +513,10 @@ body {
   border-radius: var(--k-r);
   color: var(--k-text-dim);
   font-size: 16px;
+  line-height: 1;
   cursor: pointer;
   margin-top: 4px;
-  transition: color .12s, background .12s;
+  transition: color .13s, background .13s;
 }
 .k-opt-del:hover {
   color: var(--k-danger);
@@ -471,17 +526,16 @@ body {
 .k-col-heads {
   display: grid;
   grid-template-columns: 180px 1fr 32px;
-  gap: 0;
-  margin-bottom: 6px;
-  padding: 0 0 0 12px;
+  gap: 10px;
+  margin-bottom: 0;
+  padding: 0 14px 6px;
 }
 .k-col-head {
   font-size: 10.5px;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: .04em;
+  letter-spacing: .08em;
   color: var(--k-text-dim);
-  padding: 0 12px 0 0;
 }
 
 .k-btn-add-opt {
@@ -549,13 +603,13 @@ body {
 .k-btn-danger {
   display: inline-flex;
   align-items: center;
-  padding: 7px 18px;
-  font-size: 13.5px;
+  padding: 8px 18px;
+  font-size: 13px;
   font-weight: 600;
   background: var(--k-danger);
   color: #fff;
   border: none;
-  border-radius: var(--k-r);
+  border-radius: var(--k-r-xl);
   cursor: pointer;
   transition: opacity .15s;
 }
@@ -624,7 +678,7 @@ body {
   color: var(--k-accent-txt);
   text-decoration: none;
 }
-.k-section-label-link:hover { text-decoration: underline; }
+.k-section-label-link:hover { color: var(--k-accent); }
 
 /* ---- Output card ---- */
 .k-output-card {
