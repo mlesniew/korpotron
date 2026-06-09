@@ -530,17 +530,17 @@ Docker build before merging (per `context/foundation/lessons.md`).
 
 #### Automated
 
-- [ ] 1.1 Django check passes: `uv run manage.py check`
-- [ ] 1.2 Static files collect cleanly: `uv run manage.py collectstatic --noinput`
-- [ ] 1.3 Lint passes: `uv run ruff check .`
-- [ ] 1.4 Format check passes: `uv run ruff format --check .`
-- [ ] 1.5 Existing tests pass: `uv run pytest`
+- [x] 1.1 Django check passes: `uv run manage.py check`
+- [x] 1.2 Static files collect cleanly: `uv run manage.py collectstatic --noinput`
+- [x] 1.3 Lint passes: `uv run ruff check .`
+- [x] 1.4 Format check passes: `uv run ruff format --check .`
+- [x] 1.5 Existing tests pass: `uv run pytest`
 
 #### Manual
 
-- [ ] 1.6 Authenticated pages render with frosted nav, IBM Plex fonts, new background; brand `KORPOTRON™`, third nav item "Modifiers"
-- [ ] 1.7 No console errors; `korpotron.css` and fonts load on `runserver`
-- [ ] 1.8 Nav active/hover states behave per the design
+- [x] 1.6 Authenticated pages render with frosted nav, IBM Plex fonts, new background; brand `KORPOTRON™`, third nav item "Modifiers"
+- [x] 1.7 No console errors; `korpotron.css` and fonts load on `runserver`
+- [x] 1.8 Nav active/hover states behave per the design
 
 ### Phase 2: Landing page & login
 
