@@ -708,6 +708,36 @@ body {
   margin: 24px 0;
 }
 
+/* ---- Hero badge ---- */
+.k-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 99px;
+  border: 1px solid oklch(61% 0.16 40 / .35);
+  background: oklch(61% 0.16 40 / .1);
+  color: oklch(75% 0.1 40);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  margin-bottom: 28px;
+}
+.k-hero-badge-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--k-accent);
+  border-radius: 50%;
+  animation: k-blink 2s ease-in-out infinite;
+}
+@keyframes k-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .3; }
+}
+
 /* ---- Landing page ---- */
 .k-landing {
   min-height: 100vh;
@@ -721,31 +751,32 @@ body {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+    linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px);
   background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 100%);
   pointer-events: none;
 }
 
 .k-landing-glow {
   position: absolute;
-  top: -100px;
+  top: 10%;
   left: 50%;
   transform: translateX(-50%);
-  width: 700px;
-  height: 500px;
-  background: radial-gradient(ellipse at center, oklch(61% 0.16 40 / .18) 0%, transparent 70%);
+  width: 600px;
+  height: 300px;
+  background: radial-gradient(ellipse, oklch(61% 0.16 40 / .12) 0%, transparent 70%);
   pointer-events: none;
 }
 
 .k-landing-nav {
   position: fixed;
   top: 0; left: 0; right: 0;
-  height: 50px;
+  height: 52px;
   display: flex;
   align-items: center;
-  padding: 0 32px;
-  background: oklch(11% 0.012 270 / .85);
+  padding: 0 28px;
+  background: rgba(17,17,24,.85);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255,255,255,.06);
@@ -760,149 +791,266 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  padding: 100px 24px 48px;
+  padding: 100px 24px 72px;
   text-align: center;
 }
 
 .k-landing-headline {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: clamp(32px, 5vw, 52px);
-  font-weight: 700;
-  color: #fff;
+  font-size: clamp(36px, 6vw, 58px);
+  font-weight: 600;
+  color: oklch(93% 0.005 80);
   letter-spacing: -.01em;
-  margin-bottom: 18px;
+  margin-bottom: 22px;
   line-height: 1.1;
 }
 
 .k-landing-sub {
   font-size: 16px;
   line-height: 1.75;
-  color: oklch(75% 0.005 270);
-  max-width: 480px;
-  margin-bottom: 36px;
+  color: oklch(62% 0.007 270);
+  max-width: 520px;
+  margin-bottom: 40px;
+  text-wrap: pretty;
 }
 
 .k-landing-cta {
   display: inline-flex;
   align-items: center;
-  padding: 12px 28px;
+  gap: 8px;
+  padding: 13px 32px;
   background: var(--k-accent);
   color: #fff;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
-  border-radius: 99px;
+  letter-spacing: .05em;
+  border-radius: var(--k-r-xl);
   text-decoration: none;
   border: none;
   cursor: pointer;
-  transition: background .15s;
-  margin-bottom: 56px;
+  box-shadow: 0 4px 20px oklch(61% 0.16 40 / .35);
+  transition: background .15s, transform .08s, box-shadow .15s;
 }
-.k-landing-cta:hover { background: var(--k-accent-h); color: #fff; }
+.k-landing-cta:hover {
+  background: var(--k-accent-h);
+  color: #fff;
+  box-shadow: 0 6px 28px oklch(61% 0.16 40 / .5);
+}
+.k-landing-cta:active { transform: translateY(1px); }
 
 .k-feature-strip {
   display: flex;
-  border: 1px solid rgba(255,255,255,.1);
+  border: 1px solid oklch(26% 0.012 270);
   border-radius: var(--k-r-xl);
   overflow: hidden;
-  max-width: 760px;
+  max-width: 640px;
   width: 100%;
+  background: oklch(16% 0.012 270);
+  margin-top: 72px;
 }
 
 .k-feature-tile {
   flex: 1;
-  padding: 22px 24px;
-  border-right: 1px solid rgba(255,255,255,.1);
+  padding: 20px 22px;
+  border-right: 1px solid oklch(26% 0.012 270);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 .k-feature-tile:last-child { border-right: none; }
 
 .k-feature-cat {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
-  letter-spacing: .1em;
+  letter-spacing: .08em;
   text-transform: uppercase;
   color: var(--k-accent);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .k-feature-title {
-  font-size: 14px;
-  font-weight: 700;
-  color: #fff;
-  margin-bottom: 6px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: oklch(93% 0.005 80);
 }
 
 .k-feature-desc {
-  font-size: 13px;
-  color: oklch(60% 0.005 270);
-  line-height: 1.5;
+  font-size: 12px;
+  color: oklch(44% 0.007 270);
+  line-height: 1.55;
 }
+
+/* ---- Landing nav brand (flex:1 pushes login button to the right) ---- */
+.k-landing-brand {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  color: oklch(93% 0.005 80);
+  flex: 1;
+}
+.k-landing-brand sup { font-size: 8px; opacity: .4; letter-spacing: 0; vertical-align: super; }
 
 /* ---- Landing login button (nav) ---- */
 .k-landing-login-btn {
+  padding: 6px 18px;
+  border-radius: var(--k-r-xl);
+  border: 1.5px solid rgba(255,255,255,.18);
+  background: transparent;
+  color: oklch(93% 0.005 80);
   font-size: 13px;
   font-weight: 500;
-  color: var(--k-nav-text);
-  background: rgba(255,255,255,.08);
-  border: 1px solid rgba(255,255,255,.15);
-  border-radius: var(--k-r);
-  padding: 5px 14px;
+  font-family: inherit;
+  white-space: nowrap;
   cursor: pointer;
-  transition: background .15s, border-color .15s;
   text-decoration: none;
+  transition: border-color .15s, color .15s;
 }
 .k-landing-login-btn:hover {
-  background: rgba(255,255,255,.14);
-  border-color: rgba(255,255,255,.3);
-  color: #fff;
+  border-color: var(--k-accent);
+  color: oklch(80% 0.08 40);
 }
 
 /* ---- Login modal overlay (landing) ---- */
 .k-modal-overlay {
-  display: none;
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,.6);
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   z-index: 200;
+  display: flex;
   align-items: center;
   justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s;
 }
-.k-modal-overlay.open { display: flex; }
+.k-modal-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
 
-/* ---- Login card (modal + standalone) ---- */
+/* ---- Login card (dark — used on landing modal + standalone login) ---- */
 .k-login-card {
-  background: var(--k-surface);
-  border: 1.5px solid var(--k-border);
+  background: oklch(16% 0.012 270);
+  border: 1.5px solid oklch(26% 0.012 270);
   border-radius: var(--k-r-xl);
-  box-shadow: var(--k-shadow-md);
-  padding: 36px 32px;
+  box-shadow: 0 4px 24px rgba(0,0,0,.45), 0 2px 8px rgba(0,0,0,.3);
   width: 100%;
   max-width: 360px;
+  margin: 20px;
+  transform: translateY(12px);
+  transition: transform .2s;
+}
+.k-modal-overlay.open .k-login-card { transform: none; }
+
+.k-login-card-hdr {
+  padding: 24px 26px 20px;
+  border-bottom: 1px solid oklch(26% 0.012 270);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.k-login-card-hdr--row {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .k-login-title {
-  font-size: 22px;
+  font-size: 16px;
   font-weight: 700;
-  color: var(--k-text);
-  margin-bottom: 4px;
+  color: oklch(93% 0.005 80);
 }
 
 .k-login-sub {
-  font-size: 13.5px;
-  color: var(--k-text-dim);
-  margin-bottom: 24px;
+  font-size: 12.5px;
+  color: oklch(44% 0.007 270);
 }
 
-.k-login-error {
-  padding: 10px 14px;
-  background: var(--k-danger-bg);
-  border: 1.5px solid var(--k-danger-b);
+.k-login-card-body {
+  padding: 22px 26px;
+}
+
+.k-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.k-login-close {
+  background: none;
+  border: none;
+  color: oklch(44% 0.007 270);
+  font-size: 18px;
+  line-height: 1;
+  padding: 2px 6px;
   border-radius: var(--k-r);
-  color: var(--k-danger);
-  font-size: 13px;
-  margin-bottom: 16px;
+  cursor: pointer;
+  transition: background .12s, color .12s;
+}
+.k-login-close:hover {
+  background: oklch(26% 0.012 270);
+  color: oklch(93% 0.005 80);
+}
+
+/* ---- Login form fields (dark) ---- */
+.k-login-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.k-login-lbl {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: oklch(93% 0.005 80);
+}
+
+.k-login-input {
+  width: 100%;
+  padding: 10px 13px;
+  border: 1.5px solid oklch(32% 0.012 270);
+  border-radius: var(--k-r-lg);
+  background: oklch(20% 0.01 270);
+  color: oklch(93% 0.005 80);
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: border-color .15s;
+}
+.k-login-input:focus { border-color: var(--k-accent); }
+.k-login-input::placeholder { color: oklch(44% 0.007 270); }
+
+.k-login-submit {
+  width: 100%;
+  padding: 11px;
+  border-radius: var(--k-r-xl);
+  background: var(--k-accent);
+  color: #fff;
+  border: none;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  cursor: pointer;
+  box-shadow: 0 3px 14px oklch(61% 0.16 40 / .3);
+  transition: background .14s, transform .08s;
+}
+.k-login-submit:hover { background: var(--k-accent-h); }
+.k-login-submit:active { transform: translateY(1px); }
+
+/* ---- Login error bar (dark page) ---- */
+.k-login-error {
+  background: oklch(20% 0.04 22);
+  border: 1px solid oklch(40% 0.12 22);
+  color: oklch(75% 0.1 22);
+  padding: 9px 13px;
+  border-radius: var(--k-r);
+  font-size: 12.5px;
 }
 
 /* ---- Standalone login page wrapper ---- */

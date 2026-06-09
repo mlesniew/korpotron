@@ -66,7 +66,7 @@ def _post(client: Client, **body: object) -> HttpResponse:
 def test_anonymous_home_shows_landing_page(client: Client) -> None:
     response = client.get("/")
     assert response.status_code == 200
-    assert b"Get started" in response.content
+    assert b"Log in" in response.content
     assert b'id="generate-btn"' not in response.content
 
 
