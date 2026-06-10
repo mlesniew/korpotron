@@ -16,7 +16,8 @@ I want a faster, purpose-built tool to transform text using predefined instructi
 
 ### Templates
 
-Users can create and manage templates for common use cases (e.g. email, Jira ticket, announcement, documentation). Each template defines:
+Users can create and manage templates for common use cases (e.g. email, Jira ticket, announcement, documentation). Each
+template defines:
 
 - **Name** — a human-readable label
 - **Base prompt** — the core instruction sent to the LLM
@@ -25,7 +26,8 @@ Users can create and manage templates for common use cases (e.g. email, Jira tic
 
 ### Option Groups
 
-Users can create reusable option groups to layer additional instructions on top of a template (e.g. tone, style, language). Each group contains:
+Users can create reusable option groups to layer additional instructions on top of a template (e.g. tone, style,
+language). Each group contains:
 
 - **Name** — a human-readable label
 - **Options** — a set of selectable items, each with:
