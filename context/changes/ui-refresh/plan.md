@@ -577,17 +577,17 @@ Docker build before merging (per `context/foundation/lessons.md`).
 
 #### Automated
 
-- [ ] 4.1 Tests pass: `uv run pytest`
-- [ ] 4.2 Django check passes: `uv run manage.py check`
-- [ ] 4.3 Static files collect cleanly: `uv run manage.py collectstatic --noinput`
-- [ ] 4.4 Lint passes: `uv run ruff check .`
-- [ ] 4.5 Format check passes: `uv run ruff format --check .`
+- [x] 4.1 Tests pass: `uv run pytest`
+- [x] 4.2 Django check passes: `uv run manage.py check`
+- [x] 4.3 Static files collect cleanly: `uv run manage.py collectstatic --noinput`
+- [x] 4.4 Lint passes: `uv run ruff check .`
+- [x] 4.5 Format check passes: `uv run ruff format --check .`
 
 #### Manual
 
-- [ ] 4.6 Template + modifier pills behave (single-select per group, reclick deselects); `?template=pk` preselects
-- [ ] 4.7 Generate shows loading quips then output card; Title only for `generate_title` templates
-- [ ] 4.8 "Edit text" preserves text; "Regenerate" reruns
-- [ ] 4.9 Copy buttons (per-field + full) copy and flash "Copied!"
-- [ ] 4.10 Error states surface: empty text, no template, API 400/429/502/timeout
-- [ ] 4.11 Empty-state prompt shows when the user has no templates
+- [x] 4.6 Template + modifier pills behave (single-select per group, reclick deselects); `?template=pk` preselects
+- [x] 4.7 Generate shows loading quips then output card; Title only for `generate_title` templates
+- [x] 4.8 "Edit text" preserves text; "Regenerate" reruns
+- [x] 4.9 Copy buttons (per-field + full) copy and flash "Copied!"
+- [x] 4.10 Error states surface: empty text, no template, API 400/429/502/timeout
+- [x] 4.11 Empty-state prompt shows when the user has no templates
