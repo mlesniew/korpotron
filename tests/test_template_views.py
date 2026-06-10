@@ -64,8 +64,7 @@ def test_template_update(client: Client, user: User, template: Template) -> None
 def test_template_delete(client: Client, user: User, template: Template) -> None:
     client.login(username="tester", password="pass1234")
     response = client.post(f"/templates/{template.pk}/delete/")
-    assert response.status_code == 302
-    assert response["Location"] == "/templates/"
+    assert response.status_code == 204
     assert not Template.objects.filter(pk=template.pk).exists()
 
 

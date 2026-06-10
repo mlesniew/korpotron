@@ -1,32 +1,53 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1>Templates</h1>
-        <a href="{% url 'template-create' %}" class="btn btn-primary">New template</a>
+    <div class="k-page-header">
+        <div style="flex:1;
+                    display:flex;
+                    align-items:baseline;
+                    flex-wrap:wrap;
+                    gap:8px">
+            <span class="k-page-title" style="flex:none;">Templates</span>
+            {% if object_list %}
+                <span class="k-page-count">{{ object_list|length }} template{{ object_list|length|pluralize }}</span>
+            {% endif %}
+        </div>
+        <a href="{% url 'template-create' %}" class="k-btn k-btn-accent">+ New template</a>
     </div>
     {% if object_list %}
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for template in object_list %}
-                    <tr>
-                        <td>{{ template.name }}</td>
-                        <td class="text-end">
-                            <a href="{% url 'template-update' template.pk %}"
-                               class="btn btn-sm btn-outline-secondary">Edit</a>
-                            <a href="{% url 'template-delete' template.pk %}"
-                               class="btn btn-sm btn-outline-danger">Delete</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="k-list-card">
+            {% for template in object_list %}
+                <div class="k-list-row" data-row>
+                    <div class="k-list-row-main">
+                        <div class="k-list-row-name">
+                            {{ template.name }}
+                            {% if template.generate_title %}<span class="k-badge k-badge-accent">Generates title</span>{% endif %}
+                        </div>
+                        {% if template.base_prompt %}
+                            <div class="k-list-row-preview">{{ template.base_prompt }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="k-list-row-actions">
+                        <a href="{% url 'home' %}?template={{ template.pk }}"
+                           class="k-btn-tinted">Use →</a>
+                        <a href="{% url 'template-update' template.pk %}" class="k-row-btn">Edit</a>
+                        <button type="button"
+                                class="k-row-btn k-row-btn-danger"
+                                data-delete-url="{% url 'template-delete' template.pk %}"
+                                data-delete-name="{{ template.name }}"
+                                data-delete-title="Delete template?">Delete</button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     {% else %}
-        <p class="text-muted">No templates yet. <a href="{% url 'template-create' %}">Create one</a>.</p>
+        <div class="k-empty">
+            <div style="font-size:16px;
+                        font-weight:600;
+                        color:var(--k-text-mid);
+                        margin-bottom:6px">No templates yet</div>
+            <div style="margin-bottom:18px;">Templates define how your text gets transformed. Create one to get started.</div>
+            <a href="{% url 'template-create' %}" class="k-btn k-btn-accent">+ New template</a>
+        </div>
     {% endif %}
+    {% include "core/_delete_dialog.html" %}
 {% endblock %}

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Korpotron — Edit Template (Mockup)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ── Variables ─────────────────────────────── */
+    :root {
+      --bg:         oklch(97% 0.008 85);
+      --surface:    #fff;
+      --surface-2:  oklch(98.5% 0.005 85);
+      --border:     oklch(90% 0.007 80);
+      --border-s:   oklch(83% 0.009 80);
+      --text:       oklch(14% 0.01 270);
+      --text-mid:   oklch(50% 0.012 270);
+      --text-dim:   oklch(70% 0.008 270);
+      --accent:     oklch(61% 0.16 40);
+      --accent-h:   oklch(55% 0.16 40);
+      --accent-bg:  oklch(94% 0.055 40);
+      --accent-txt: oklch(32% 0.12 40);
+      --nav:        oklch(14% 0.012 270);
+      --nav-text:   oklch(93% 0.005 80);
+      --nav-dim:    oklch(55% 0.008 270);
+      --r:          7px;
+      --r-lg:       11px;
+      --r-xl:       15px;
+      --shadow-sm:  0 1px 3px rgba(0,0,0,.05), 0 1px 2px rgba(0,0,0,.04);
+      --shadow-md:  0 4px 20px rgba(0,0,0,.09), 0 2px 6px rgba(0,0,0,.05);
+    }
+    .dark {
+      --bg:         oklch(13% 0.012 270);
+      --surface:    oklch(18% 0.012 270);
+      --surface-2:  oklch(20% 0.012 270);
+      --border:     oklch(28% 0.012 270);
+      --border-s:   oklch(33% 0.012 270);
+      --text:       oklch(93% 0.005 80);
+      --text-mid:   oklch(62% 0.007 270);
+      --text-dim:   oklch(44% 0.007 270);
+      --nav:        oklch(9% 0.01 270);
+      --shadow-sm:  0 1px 3px rgba(0,0,0,.2), 0 1px 2px rgba(0,0,0,.16);
+      --shadow-md:  0 4px 20px rgba(0,0,0,.35), 0 2px 6px rgba(0,0,0,.2);
+    }
+
+    /* ── Reset ──────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; }
+
+    /* ── Nav ────────────────────────────────────── */
+    .nav {
+      background: var(--nav); height: 50px;
+      display: flex; align-items: center; padding: 0 20px; gap: 2px;
+      position: sticky; top: 0; z-index: 50;
+    }
+    .nav-brand {
+      font-family: 'IBM Plex Mono', monospace; font-size: 12.5px;
+      font-weight: 600; letter-spacing: .12em; color: var(--nav-text);
+      margin-right: 14px; white-space: nowrap;
+    }
+    .nav-brand sup { font-size: 8px; opacity: .45; letter-spacing: 0; vertical-align: super; }
+    .nav-links { display: flex; gap: 2px; flex: 1; }
+    .nav-link {
+      color: var(--nav-dim); padding: 5px 12px; border-radius: var(--r);
+      font-size: 13px; font-weight: 500; white-space: nowrap;
+      transition: color .14s, background .14s;
+    }
+    .nav-link:hover  { color: var(--nav-text); background: rgba(255,255,255,.07); }
+    .nav-link.active { color: var(--nav-text); background: rgba(255,255,255,.11); }
+    .nav-end { display: flex; align-items: center; gap: 10px; }
+    .nav-user { font-size: 12px; color: var(--nav-dim); }
+    .nav-logout {
+      font-size: 12px; padding: 4px 12px; border-radius: var(--r);
+      border: 1px solid rgba(255,255,255,.14); background: transparent;
+      color: var(--nav-dim); transition: all .14s;
+    }
+    .nav-logout:hover { border-color: rgba(255,255,255,.28); color: var(--nav-text); }
+
+    /* ── Page ───────────────────────────────────── */
+    .page { max-width: 1120px; margin: 0 auto; padding: 36px 22px 72px; }
+
+    /* ── Breadcrumb ─────────────────────────────── */
+    .breadcrumb {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 13px; color: var(--text-dim); margin-bottom: 24px;
+    }
+    .breadcrumb a { color: var(--text-dim); transition: color .13s; }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb-sep { opacity: .4; }
+    .breadcrumb-cur { color: var(--text-mid); font-weight: 500; white-space: nowrap; }
+
+    /* ── Form card ──────────────────────────────── */
+    .form-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-xl);
+      box-shadow: var(--shadow-sm);
+      max-width: 680px;
+    }
+    .form-card-hdr {
+      padding: 22px 26px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .form-card-title { font-size: 17px; font-weight: 700; letter-spacing: -.01em; }
+    .form-card-body  { padding: 24px 26px; display: flex; flex-direction: column; gap: 24px; }
+
+    /* ── Field ──────────────────────────────────── */
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field-lbl {
+      font-size: 12.5px; font-weight: 600; color: var(--text);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .field-hint { font-size: 12px; color: var(--text-dim); font-weight: 400; }
+    .field-input {
+      width: 100%; padding: 10px 13px;
+      border: 1.5px solid var(--border-s); border-radius: var(--r-lg);
+      background: var(--surface); color: var(--text);
+      font-family: inherit; font-size: 14px;
+      outline: none; transition: border-color .15s;
+    }
+    .field-input:focus { border-color: var(--accent); }
+    .field-input::placeholder { color: var(--text-dim); }
+    .field-ta {
+      width: 100%; padding: 12px 13px;
+      border: 1.5px solid var(--border-s); border-radius: var(--r-lg);
+      background: var(--surface); color: var(--text);
+      font-family: inherit; font-size: 13.5px; line-height: 1.7;
+      resize: vertical; min-height: 220px;
+      outline: none; transition: border-color .15s;
+    }
+    .field-ta:focus { border-color: var(--accent); }
+    .field-ta::placeholder { color: var(--text-dim); font-style: italic; }
+
+    /* ── Toggle row ─────────────────────────────── */
+    .toggle-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 16px;
+      background: var(--surface-2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-lg);
+      gap: 16px;
+    }
+    .toggle-info { display: flex; flex-direction: column; gap: 2px; }
+    .toggle-lbl  { font-size: 13.5px; font-weight: 600; }
+    .toggle-desc { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+
+    /* Toggle switch */
+    .toggle-wrap { flex-shrink: 0; }
+    .toggle-input { display: none; }
+    .toggle-track {
+      display: block; width: 40px; height: 22px;
+      background: var(--border-s); border-radius: 99px;
+      position: relative; cursor: pointer;
+      transition: background .2s;
+    }
+    .toggle-input:checked + .toggle-track { background: var(--accent); }
+    .toggle-track::after {
+      content: '';
+      position: absolute; top: 3px; left: 3px;
+      width: 16px; height: 16px;
+      background: #fff; border-radius: 50%;
+      transition: transform .2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,.2);
+    }
+    .toggle-input:checked + .toggle-track::after { transform: translateX(18px); }
+
+    /* ── Form footer ────────────────────────────── */
+    .form-card-footer {
+      padding: 18px 26px;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .btn-save {
+      padding: 9px 24px; border-radius: var(--r-xl);
+      background: var(--accent); color: #fff; border: none;
+      font-family: inherit; font-size: 13.5px; font-weight: 600;
+      transition: background .14s, transform .08s;
+    }
+    .btn-save:hover  { background: var(--accent-h); }
+    .btn-save:active { transform: translateY(1px); }
+    .btn-cancel-link {
+      padding: 9px 18px; border-radius: var(--r-xl);
+      border: 1.5px solid var(--border-s); background: transparent;
+      color: var(--text-mid); font-family: inherit;
+      font-size: 13px; font-weight: 500; transition: all .13s;
+    }
+    .btn-cancel-link:hover { border-color: var(--text-mid); color: var(--text); }
+
+    /* ── Prototype toggle ───────────────────────── */
+    .proto-toggle {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 28px;
+    }
+    .proto-lbl { font-size: 11px; color: var(--text-dim); font-weight: 500; }
+    .proto-btn {
+      padding: 4px 11px; border-radius: 99px;
+      border: 1.5px solid var(--border); background: transparent;
+      color: var(--text-mid); font-size: 11.5px; font-family: inherit;
+      transition: all .12s; white-space: nowrap;
+    }
+    .proto-btn.active {
+      border-color: var(--accent); background: var(--accent-bg);
+      color: var(--accent-txt); font-weight: 600;
+    }
+
+    /* ── Tweaks ─────────────────────────────────── */
+    .tweaks {
+      position: fixed; bottom: 20px; right: 20px; width: 216px;
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: var(--r-xl); box-shadow: var(--shadow-md);
+      z-index: 999; display: none;
+    }
+    .tweaks.open { display: block; }
+    .tweaks-hdr {
+      padding: 11px 14px 10px; border-bottom: 1px solid var(--border);
+      font-weight: 600; font-size: 12px; letter-spacing: .04em;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .tweaks-x {
+      background: none; border: none; color: var(--text-dim);
+      font-size: 14px; line-height: 1; padding: 2px 3px;
+      border-radius: 3px; transition: background .12s;
+    }
+    .tweaks-x:hover { background: var(--border); }
+    .tweaks-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 14px; }
+    .tweak       { display: flex; flex-direction: column; gap: 6px; }
+    .tweak-lbl   {
+      font-size: 10.5px; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--text-dim);
+    }
+    .swatches { display: flex; gap: 6px; }
+    .swatch {
+      width: 20px; height: 20px; border-radius: 50%; cursor: pointer;
+      outline: 2px solid transparent; outline-offset: 2px;
+      transition: transform .12s, outline-color .12s;
+    }
+    .swatch:hover  { transform: scale(1.15); }
+    .swatch.active { outline-color: var(--text); }
+    .radio-row { display: flex; gap: 4px; }
+    .t-radio {
+      padding: 4px 10px; border-radius: 99px;
+      border: 1.5px solid var(--border); background: transparent;
+      color: var(--text-mid); font-size: 11.5px; font-family: inherit; transition: all .12s;
+    }
+    .t-radio.active {
+      border-color: var(--accent); background: var(--accent-bg);
+      color: var(--accent-txt); font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Nav ────────────────────────────────────────── -->
+<nav class="nav">
+  <span class="nav-brand">KORPOTRON<sup>™</sup></span>
+  <div class="nav-links">
+    <a href="Korpotron Generate.html"  class="nav-link">Generate</a>
+    <a href="Korpotron Templates.html" class="nav-link active">Templates</a>
+    <a href="Korpotron Modifiers.html" class="nav-link">Modifiers</a>
+  </div>
+  <div class="nav-end">
+    <span class="nav-user">j.smith</span>
+    <button class="nav-logout">Logout</button>
+  </div>
+</nav>
+
+<!-- ── Page ───────────────────────────────────────── -->
+<div class="page">
+
+  <!-- Prototype state toggle -->
+  <div class="proto-toggle">
+    <span class="proto-lbl">Preview state:</span>
+    <button class="proto-btn active" data-state="edit">Edit existing</button>
+    <button class="proto-btn"        data-state="new">New template</button>
+  </div>
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a href="Korpotron Templates.html">Templates</a>
+    <span class="breadcrumb-sep">›</span>
+    <span class="breadcrumb-cur" id="bc-label">Edit template</span>
+  </div>
+
+  <!-- Form card -->
+  <div class="form-card">
+    <div class="form-card-hdr">
+      <div class="form-card-title" id="form-title">Edit template</div>
+    </div>
+
+    <div class="form-card-body">
+
+      <!-- Name -->
+      <div class="field">
+        <label class="field-lbl" for="f-name">
+          Name
+        </label>
+        <input id="f-name" class="field-input" type="text"
+          value="Email Blast" placeholder="e.g. Quarterly Report">
+      </div>
+
+      <!-- Base prompt -->
+      <div class="field">
+        <label class="field-lbl" for="f-prompt">
+          Prompt
+          <span class="field-hint">Tells the AI how to transform the text</span>
+        </label>
+        <textarea id="f-prompt" class="field-ta" rows="9"
+          placeholder="Describe how the AI should transform the input text. Be specific about tone, structure, and audience.">Rewrite the following text as a professional, engaging email suitable for a corporate all-hands or team announcement. Keep it concise, lead with the most important information, and close with a clear call to action.</textarea>
+
+      </div>
+
+      <!-- Generate title toggle -->
+      <div class="field">
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-lbl">Generate title</div>
+            <div class="toggle-desc">Ask the AI to also produce a short title for the transformed text.</div>
+          </div>
+          <div class="toggle-wrap">
+            <input type="checkbox" class="toggle-input" id="f-gen-title" checked="">
+            <label class="toggle-track" for="f-gen-title"></label>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="form-card-footer">
+      <button class="btn-save">Save template</button>
+      <a href="Korpotron Templates.html" class="btn-cancel-link">Cancel</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Tweaks Panel ────────────────────────────────── -->
+<div class="tweaks" id="tweaks">
+  <div class="tweaks-hdr">
+    Tweaks
+    <button class="tweaks-x" id="tweaks-x">✕</button>
+  </div>
+  <div class="tweaks-body">
+    <div class="tweak">
+      <div class="tweak-lbl">Accent color</div>
+      <div class="swatches">
+        <div class="swatch active" data-accent="amber"  style="background:oklch(61% 0.16 40)"  title="Amber"></div>
+        <div class="swatch"        data-accent="violet" style="background:oklch(58% 0.19 290)" title="Violet"></div>
+        <div class="swatch"        data-accent="teal"   style="background:oklch(56% 0.15 195)" title="Teal"></div>
+        <div class="swatch"        data-accent="rose"   style="background:oklch(58% 0.19 15)"  title="Rose"></div>
+      </div>
+    </div>
+    <div class="tweak">
+      <div class="tweak-lbl">Theme</div>
+      <div class="radio-row">
+        <button class="t-radio active" data-theme="light">Light</button>
+        <button class="t-radio"        data-theme="dark">Dark</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+
+  /* ── Prototype state toggle ────────────────── */
+  document.querySelectorAll('.proto-btn[data-state]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var s = btn.dataset.state;
+      var isNew = s === 'new';
+      document.querySelectorAll('.proto-btn[data-state]').forEach(function (b) {
+        b.classList.toggle('active', b.dataset.state === s);
+      });
+      document.getElementById('bc-label').textContent   = isNew ? 'New template'  : 'Edit template';
+      document.getElementById('form-title').textContent = isNew ? 'New template'  : 'Edit template';
+      var nameInput = document.getElementById('f-name');
+      var promptTA  = document.getElementById('f-prompt');
+      var genTitle  = document.getElementById('f-gen-title');
+      if (isNew) {
+        nameInput.value   = '';
+        promptTA.value    = '';
+        genTitle.checked  = false;
+      } else {
+        nameInput.value   = 'Email Blast';
+        promptTA.value    = 'Rewrite the following text as a professional, engaging email suitable for a corporate all-hands or team announcement. Keep it concise, lead with the most important information, and close with a clear call to action.';
+        genTitle.checked  = true;
+      }
+    });
+  });
+
+  /* ── Tweaks protocol ───────────────────────── */
+  var tweaksEl = document.getElementById('tweaks');
+  window.addEventListener('message', function (e) {
+    if (!e.data) return;
+    if (e.data.type === 'tweaks:show') tweaksEl.classList.add('open');
+    if (e.data.type === 'tweaks:hide') tweaksEl.classList.remove('open');
+  });
+  document.getElementById('tweaks-x').addEventListener('click', function () {
+    tweaksEl.classList.remove('open');
+    try { window.parent.postMessage({ type: 'tweaks:closed' }, '*'); } catch (e) {}
+  });
+
+  /* ── Accent colors ─────────────────────────── */
+  var ACCENTS = {
+    amber:  ['oklch(61% 0.16 40)',  'oklch(55% 0.16 40)',  'oklch(94% 0.055 40)', 'oklch(32% 0.12 40)'],
+    violet: ['oklch(58% 0.19 290)', 'oklch(52% 0.19 290)', 'oklch(94% 0.05 290)', 'oklch(30% 0.14 290)'],
+    teal:   ['oklch(56% 0.15 195)', 'oklch(50% 0.15 195)', 'oklch(94% 0.05 195)', 'oklch(28% 0.10 195)'],
+    rose:   ['oklch(58% 0.19 15)',  'oklch(52% 0.19 15)',  'oklch(95% 0.06 15)',  'oklch(30% 0.14 15)'],
+  };
+  function setAccent(name) {
+    var c = ACCENTS[name], s = document.documentElement.style;
+    s.setProperty('--accent',     c[0]);
+    s.setProperty('--accent-h',   c[1]);
+    s.setProperty('--accent-bg',  c[2]);
+    s.setProperty('--accent-txt', c[3]);
+    document.querySelectorAll('.swatch').forEach(function (sw) {
+      sw.classList.toggle('active', sw.dataset.accent === name);
+    });
+  }
+  document.querySelectorAll('.swatch').forEach(function (sw) {
+    sw.addEventListener('click', function () { setAccent(sw.dataset.accent); });
+  });
+
+  /* ── Theme ─────────────────────────────────── */
+  function setTheme(t) {
+    document.body.classList.toggle('dark', t === 'dark');
+    document.querySelectorAll('.t-radio[data-theme]').forEach(function (b) {
+      b.classList.toggle('active', b.dataset.theme === t);
+    });
+  }
+  document.querySelectorAll('.t-radio[data-theme]').forEach(function (b) {
+    b.addEventListener('click', function () { setTheme(b.dataset.theme); });
+  });
+
+})();
+</script>
+</body>
+</html>

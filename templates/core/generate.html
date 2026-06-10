@@ -1,35 +1,35 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1 class="h3 mb-3">Generate</h1>
     {% if templates %}
-        <div class="row g-4">
-            <div class="col-lg-6">
-                <div class="mb-3">
-                    <label for="template-select" class="form-label">Template</label>
-                    <select id="template-select" class="form-select">
-                        {% for template in templates %}
-                            <option value="{{ template.pk }}"
-                                    data-generate-title="{{ template.generate_title|yesno:'1,0' }}">{{ template.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="input-text" class="form-label">Text to transform</label>
-                    <textarea id="input-text"
-                              class="form-control"
-                              rows="8"
-                              placeholder="Paste the text you want to rewrite…"></textarea>
-                </div>
+        <!-- 1 · Template selector -->
+        <div class="k-section-label">
+            <span class="k-section-label-text">Template</span>
+            <a href="{% url 'template-list' %}" class="k-section-label-link">Manage →</a>
+        </div>
+        <div class="k-group-pills" id="template-row" style="margin-bottom:28px;">
+            {% for template in templates %}
+                <button type="button"
+                        class="tmpl-btn"
+                        data-template-id="{{ template.pk }}"
+                        data-generate-title="{{ template.generate_title|yesno:'1,0' }}"><span class="tmpl-check">✓</span>{{ template.name }}</button>
+            {% endfor %}
+            <a href="{% url 'template-create' %}" class="tmpl-btn tmpl-btn-dashed">+ New template</a>
+        </div>
+        <!-- 2 · Modifiers -->
+        {% if option_groups %}
+            <div class="k-section-label">
+                <span class="k-section-label-text">Modifiers</span>
+                <a href="{% url 'option-group-list' %}" class="k-section-label-link">Manage →</a>
+            </div>
+            <div class="k-group-grid" style="margin-bottom:26px;">
                 {% for group in option_groups %}
                     {% if group.options.all %}
-                        <div class="mb-3 option-group" data-group-id="{{ group.pk }}">
-                            <div class="form-label">{{ group.name }}</div>
-                            <div class="btn-group flex-wrap"
-                                 role="group"
-                                 aria-label="{{ group.name }}">
+                        <div class="option-group" data-group-id="{{ group.pk }}">
+                            <span class="k-group-name">{{ group.name }}</span>
+                            <div class="k-group-pills">
                                 {% for option in group.options.all %}
                                     <button type="button"
-                                            class="btn btn-outline-primary option-btn"
+                                            class="opt-btn"
                                             data-option-id="{{ option.pk }}"
                                             aria-pressed="false">{{ option.name }}</button>
                                 {% endfor %}
@@ -37,58 +37,191 @@
                         </div>
                     {% endif %}
                 {% endfor %}
-                <button type="button" id="generate-btn" class="btn btn-primary">
-                    <span id="generate-spinner"
-                          class="spinner-border spinner-border-sm d-none"
-                          role="status"
-                          aria-hidden="true"></span>
-                    <span id="generate-label">Generate</span>
-                </button>
             </div>
-            <div class="col-lg-6">
-                <div id="error-alert" class="alert alert-danger d-none" role="alert"></div>
-                <div id="result-region" class="d-none">
-                    <div id="title-field-wrap" class="mb-3 d-none">
-                        <label for="result-title"
-                               class="form-label d-flex justify-content-between align-items-center">
-                            <span>Title</span>
-                            <button type="button"
-                                    class="btn btn-outline-secondary btn-sm copy-btn"
-                                    data-copy-target="result-title">Copy</button>
-                        </label>
-                        <input id="result-title" type="text" class="form-control" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label for="result-body"
-                               class="form-label d-flex justify-content-between align-items-center">
-                            <span>Result</span>
-                            <button type="button"
-                                    class="btn btn-outline-secondary btn-sm copy-btn"
-                                    data-copy-target="result-body">Copy</button>
-                        </label>
-                        <textarea id="result-body" class="form-control" rows="12" readonly></textarea>
-                    </div>
+        {% endif %}
+        <hr class="k-divider">
+        <!-- 3 · Input / Output workspace -->
+        <div class="k-workspace-input" id="workspace-input">
+            <label for="input-text" class="k-label">Text to transform</label>
+            <textarea id="input-text"
+                      class="k-input k-textarea"
+                      rows="8"
+                      style="min-height:180px;
+                             border-radius:var(--k-r-xl)"
+                      placeholder="Paste the raw, unsynergized content here…"></textarea>
+            <div id="error-bar"
+                 class="k-error-bar"
+                 style="margin-top:12px;
+                        margin-bottom:0"></div>
+            <button type="button"
+                    id="generate-btn"
+                    class="k-generate-btn"
+                    style="margin-top:12px">
+                <span id="generate-label">Generate</span>
+                <span id="generate-spinner"
+                      class="k-spinner"
+                      style="display:none;
+                             vertical-align:middle;
+                             margin-left:9px;
+                             width:15px;
+                             height:15px;
+                             border-width:2px"></span>
+            </button>
+        </div>
+        <div class="k-workspace-loading" id="workspace-loading">
+            <div class="k-output-controls">
+                <button type="button" class="k-btn-back" id="loading-cancel">← Edit text</button>
+            </div>
+            <div class="k-output-card">
+                <div class="k-loading-state">
+                    <div class="k-spinner"
+                         style="border-color:var(--k-border);
+                                border-top-color:var(--k-accent);
+                                width:28px;
+                                height:28px"></div>
+                    <div class="k-loading-quip" id="loading-quip"></div>
                 </div>
             </div>
+        </div>
+        <div class="k-workspace-output" id="workspace-output">
+            <div class="k-output-controls">
+                <button type="button" class="k-btn-back" id="edit-btn">← Edit text</button>
+                <button type="button" class="k-row-btn" id="regen-btn">↻ Regenerate</button>
+            </div>
+            <div class="k-output-card">
+                <div class="k-output-field" id="title-field-wrap" style="display:none;">
+                    <div class="k-output-field-header">
+                        <span class="k-output-label">Title</span>
+                        <button type="button"
+                                class="k-copy-btn copy-btn"
+                                data-copy-target="result-title">Copy</button>
+                    </div>
+                    <input id="result-title"
+                           type="text"
+                           class="k-output-text"
+                           readonly
+                           style="min-height:auto;
+                                  font-weight:600;
+                                  font-size:15px">
+                </div>
+                <div class="k-output-field">
+                    <div class="k-output-field-header">
+                        <span class="k-output-label">Result</span>
+                        <button type="button"
+                                class="k-copy-btn copy-btn"
+                                data-copy-target="result-body">Copy</button>
+                    </div>
+                    <textarea id="result-body" class="k-output-text" rows="10" readonly></textarea>
+                </div>
+            </div>
+            <button type="button"
+                    class="k-btn k-btn-ghost"
+                    id="copy-all-btn"
+                    style="width:100%;
+                           margin-top:12px">Copy to clipboard</button>
         </div>
         <script>
   (function () {
     const GENERATE_URL = "{% url 'generate-api' %}";
-    // group_id -> option_id; the single source of truth for the payload.
+
+    // group_id -> option_id; single source of truth for the modifier payload.
     const selected = {};
+    let selectedTemplateId = null;
 
     function getCookie(name) {
       const match = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
       return match ? match.pop() : '';
     }
 
-    // (a) Button-group toggle: select deselects siblings; re-click clears the group.
+    const wsInput = document.getElementById('workspace-input');
+    const wsLoading = document.getElementById('workspace-loading');
+    const wsOutput = document.getElementById('workspace-output');
+    const generateBtn = document.getElementById('generate-btn');
+    const generateLabel = document.getElementById('generate-label');
+    const generateSpinner = document.getElementById('generate-spinner');
+    const errorBar = document.getElementById('error-bar');
+    const inputText = document.getElementById('input-text');
+    const loadingQuip = document.getElementById('loading-quip');
+    const titleWrap = document.getElementById('title-field-wrap');
+    const titleField = document.getElementById('result-title');
+    const bodyField = document.getElementById('result-body');
+
+    let inFlight = false;
+    let cancelled = false;
+    let controller = null;
+
+    const QUIPS = [
+      'Leveraging core competencies…',
+      'Synergising the deliverables…',
+      'Aligning stakeholder objectives…',
+      'Actioning the key takeaways…',
+      'Pivoting the bandwidth…',
+      'Boiling the ocean…',
+      'Moving the needle…',
+      'Operationalising the value-add…',
+      'Circling back on synergies…',
+    ];
+
+    function setState(state) {
+      [wsInput, wsLoading, wsOutput].forEach(function (el) {
+        el.classList.remove('state-loading', 'state-output');
+        if (state === 'loading') el.classList.add('state-loading');
+        if (state === 'output') el.classList.add('state-output');
+      });
+    }
+
+    function showError(message) {
+      errorBar.textContent = message;  // textContent, never innerHTML
+      errorBar.classList.add('visible');
+    }
+    function clearError() {
+      errorBar.classList.remove('visible');
+      errorBar.textContent = '';
+    }
+    function setLoading(loading) {
+      inFlight = loading;
+      generateBtn.disabled = loading;
+      generateLabel.textContent = loading ? 'Generating…' : 'Generate';
+      generateSpinner.style.display = loading ? 'inline-block' : 'none';
+    }
+
+    function showQuip() {
+      // Pick one random quip per generation; do not cycle it.
+      loadingQuip.textContent = QUIPS[Math.floor(Math.random() * QUIPS.length)];
+    }
+
+    // (a) Template pills: single active; reading data-generate-title.
+    // The "+ New template" link has no data-template-id, so it is never selectable.
+    function selectTemplate(btn) {
+      document.querySelectorAll('#template-row .tmpl-btn[data-template-id]').forEach(function (b) {
+        b.classList.remove('active');
+      });
+      btn.classList.add('active');
+      selectedTemplateId = btn.dataset.templateId;
+    }
+    const templateBtns = Array.from(document.querySelectorAll('#template-row .tmpl-btn[data-template-id]'));
+    templateBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () { selectTemplate(btn); });
+    });
+    // Preselect from ?template=pk, else default to the first template.
+    (function preselect() {
+      const params = new URLSearchParams(window.location.search);
+      const wanted = params.get('template');
+      let match = null;
+      if (wanted) {
+        match = templateBtns.find(function (b) { return b.dataset.templateId === wanted; });
+      }
+      if (!match && templateBtns.length) match = templateBtns[0];
+      if (match) selectTemplate(match);
+    })();
+
+    // (b) Modifier pills: radio-per-group with deselect-on-reclick.
     document.querySelectorAll('.option-group').forEach(function (group) {
       const groupId = group.dataset.groupId;
-      group.querySelectorAll('.option-btn').forEach(function (btn) {
+      group.querySelectorAll('.opt-btn').forEach(function (btn) {
         btn.addEventListener('click', function () {
           const wasActive = btn.classList.contains('active');
-          group.querySelectorAll('.option-btn').forEach(function (sibling) {
+          group.querySelectorAll('.opt-btn').forEach(function (sibling) {
             sibling.classList.remove('active');
             sibling.setAttribute('aria-pressed', 'false');
           });
@@ -103,51 +236,33 @@
       });
     });
 
-    const btn = document.getElementById('generate-btn');
-    const spinner = document.getElementById('generate-spinner');
-    const errorAlert = document.getElementById('error-alert');
-    const resultRegion = document.getElementById('result-region');
-    const titleWrap = document.getElementById('title-field-wrap');
-    const titleField = document.getElementById('result-title');
-    const bodyField = document.getElementById('result-body');
-    const templateSelect = document.getElementById('template-select');
-    const inputText = document.getElementById('input-text');
-
-    let inFlight = false;
-
-    function showError(message) {
-      errorAlert.textContent = message;  // textContent, never innerHTML
-      errorAlert.classList.remove('d-none');
-    }
-    function clearError() {
-      errorAlert.classList.add('d-none');
-      errorAlert.textContent = '';
-    }
-    function setLoading(loading) {
-      inFlight = loading;
-      btn.disabled = loading;
-      spinner.classList.toggle('d-none', !loading);
-    }
-
-    // (b) Generate.
-    btn.addEventListener('click', async function () {
+    // (c) Generate.
+    async function doGenerate() {
       if (inFlight) return;  // only one in-flight request at a time
+      cancelled = false;
       clearError();
       const text = inputText.value;
       if (!text.trim()) {
         showError('Please enter some text to transform.');
         return;
       }
+      if (!selectedTemplateId) {
+        showError('Please choose a template.');
+        return;
+      }
       const payload = {
-        template_id: templateSelect.value,
+        template_id: Number(selectedTemplateId),
         option_ids: Object.values(selected).map(Number),
         text: text,
       };
 
       setLoading(true);
+      setState('loading');
+      showQuip();
+
       // Client-side abort just above the 60s server timeout so the spinner
       // always resolves to either a result or the inline error.
-      const controller = new AbortController();
+      controller = new AbortController();
       const timeoutId = setTimeout(function () { controller.abort(); }, 65000);
       try {
         const response = await fetch(GENERATE_URL, {
@@ -162,58 +277,95 @@
         const data = await response.json().catch(function () { return {}; });
         if (!response.ok) {
           showError(data.error || 'Text generation failed. Please try again.');
+          setState('input');
           return;
         }
-        // (c) Success: render verbatim into copyable fields (.value, never innerHTML).
+        // (d) Success: render verbatim into copyable fields (.value, never innerHTML).
         if (data.title) {
           titleField.value = data.title;
-          titleWrap.classList.remove('d-none');
+          titleWrap.style.display = '';
         } else {
           titleField.value = '';
-          titleWrap.classList.add('d-none');
+          titleWrap.style.display = 'none';
         }
         bodyField.value = data.body || '';
-        resultRegion.classList.remove('d-none');
+        setState('output');
       } catch (err) {
-        // (d) Error: inline alert, input preserved, button re-enabled (finally).
+        // (e) Error: inline alert above the Generate button, input preserved.
         if (err.name === 'AbortError') {
-          showError('The request timed out. Please try again.');
+          // Distinguish a timeout from a user-initiated cancel.
+          if (inFlight && !cancelled) showError('The request timed out. Please try again.');
         } else {
           showError('Network error. Please try again.');
         }
+        if (inFlight) setState('input');
       } finally {
         clearTimeout(timeoutId);
         setLoading(false);
+        controller = null;
       }
-    });
+    }
 
-    // (e) Clipboard copy with a select-all textarea fallback (FR-012).
+    generateBtn.addEventListener('click', doGenerate);
+    document.getElementById('regen-btn').addEventListener('click', doGenerate);
+
+    // (f) Edit text: return to the input state with the prior text intact.
+    function backToInput() {
+      cancelled = true;
+      if (controller) controller.abort();  // cancel an in-flight request
+      setState('input');
+    }
+    document.getElementById('edit-btn').addEventListener('click', backToInput);
+    document.getElementById('loading-cancel').addEventListener('click', backToInput);
+
+    // (g) Clipboard copy with a select-all textarea fallback.
+    function flash(btn) {
+      const original = btn.textContent;
+      btn.textContent = 'Copied!';
+      setTimeout(function () { btn.textContent = original; }, 1200);
+    }
+    async function copyText(btn, value) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        try {
+          await navigator.clipboard.writeText(value);
+          flash(btn);
+          return;
+        } catch (err) { /* fall through to the legacy fallback */ }
+      }
+      // Legacy fallback via a hidden textarea + execCommand.
+      const ta = document.createElement('textarea');
+      ta.value = value;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      try { document.execCommand('copy'); flash(btn); } catch (err) { /* ignore */ }
+      document.body.removeChild(ta);
+    }
+
     document.querySelectorAll('.copy-btn').forEach(function (copyBtn) {
-      copyBtn.addEventListener('click', async function () {
+      copyBtn.addEventListener('click', function () {
         const target = document.getElementById(copyBtn.dataset.copyTarget);
-        const original = copyBtn.textContent;
-        function flash() {
-          copyBtn.textContent = 'Copied!';
-          setTimeout(function () { copyBtn.textContent = original; }, 1200);
-        }
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          try {
-            await navigator.clipboard.writeText(target.value);
-            flash();
-            return;
-          } catch (err) { /* fall through to the legacy fallback */ }
-        }
-        target.removeAttribute('readonly');
-        target.focus();
-        target.select();
-        try { document.execCommand('copy'); flash(); } catch (err) { /* ignore */ }
-        target.setAttribute('readonly', '');
+        copyText(copyBtn, target.value);
       });
+    });
+    document.getElementById('copy-all-btn').addEventListener('click', function () {
+      const full = titleField.value
+        ? titleField.value + '\n\n' + bodyField.value
+        : bodyField.value;
+      copyText(this, full);
     });
   })();
         </script>
-    {% endif %}
-    {% if not templates %}
-        <p class="text-muted">You have no templates yet. <a href="{% url 'template-create' %}">Create one</a> to get started.</p>
+    {% else %}
+        <div class="k-empty">
+            <div style="font-size:16px;
+                        font-weight:600;
+                        color:var(--k-text-mid);
+                        margin-bottom:6px">No templates yet</div>
+            <div style="margin-bottom:18px;">Templates define how your text gets transformed. Create one to get started.</div>
+            <a href="{% url 'template-create' %}" class="k-btn k-btn-accent">+ New template</a>
+        </div>
     {% endif %}
 {% endblock %}

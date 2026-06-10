@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.db.models import Count, F, QuerySet
-from django.forms import BaseModelForm
+from django.forms import BaseModelForm, Form
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -53,18 +53,25 @@ class TemplateUpdateView(LoginRequiredMixin, UpdateView):
 
 class TemplateDeleteView(LoginRequiredMixin, DeleteView):
     model = Template
-    success_url = reverse_lazy("template-list")
+    http_method_names = ["post"]
 
     def get_queryset(self) -> QuerySet[Template]:
         return Template.objects.filter(user=self.request.user)
+
+    def form_valid(self, form: Form) -> HttpResponse:
+        # Deleted via fetch() from the list page; return 204 instead of redirecting.
+        self.object.delete()
+        return HttpResponse(status=204)
 
 
 class OptionGroupListView(LoginRequiredMixin, ListView):
     model = OptionGroup
 
     def get_queryset(self) -> QuerySet[OptionGroup]:
-        return OptionGroup.objects.filter(user=self.request.user).annotate(
-            options_count=Count("options")
+        return (
+            OptionGroup.objects.filter(user=self.request.user)
+            .annotate(options_count=Count("options"))
+            .prefetch_related("options")
         )
 
 
@@ -122,10 +129,15 @@ class OptionGroupUpdateView(LoginRequiredMixin, UpdateView):
 
 class OptionGroupDeleteView(LoginRequiredMixin, DeleteView):
     model = OptionGroup
-    success_url = reverse_lazy("option-group-list")
+    http_method_names = ["post"]
 
     def get_queryset(self) -> QuerySet[OptionGroup]:
         return OptionGroup.objects.filter(user=self.request.user)
+
+    def form_valid(self, form: Form) -> HttpResponse:
+        # Deleted via fetch() from the list page; return 204 instead of redirecting.
+        self.object.delete()
+        return HttpResponse(status=204)
 
 
 class HomeView(View):

@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Korpotron — Generate (Mockup)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ── Variables ─────────────────────────────── */
+    :root {
+      --bg:         oklch(97% 0.008 85);
+      --surface:    #fff;
+      --border:     oklch(90% 0.007 80);
+      --border-s:   oklch(83% 0.009 80);
+      --text:       oklch(14% 0.01 270);
+      --text-mid:   oklch(50% 0.012 270);
+      --text-dim:   oklch(70% 0.008 270);
+      --accent:     oklch(61% 0.16 40);
+      --accent-h:   oklch(55% 0.16 40);
+      --accent-bg:  oklch(94% 0.055 40);
+      --accent-txt: oklch(32% 0.12 40);
+      --nav:        oklch(14% 0.012 270);
+      --nav-text:   oklch(93% 0.005 80);
+      --nav-dim:    oklch(55% 0.008 270);
+      --danger:     oklch(52% 0.18 22);
+      --danger-bg:  oklch(96.5% 0.04 22);
+      --danger-b:   oklch(87% 0.08 22);
+      --ok:         oklch(55% 0.15 150);
+      --ok-bg:      oklch(96% 0.04 150);
+      --r:          7px;
+      --r-lg:       11px;
+      --r-xl:       15px;
+      --shadow-sm:  0 1px 3px rgba(0,0,0,.05), 0  1px 2px rgba(0,0,0,.04);
+      --shadow-md:  0 4px 20px rgba(0,0,0,.09), 0 2px 6px rgba(0,0,0,.05);
+    }
+    .dark {
+      --bg:         oklch(13% 0.012 270);
+      --surface:    oklch(18% 0.012 270);
+      --border:     oklch(28% 0.012 270);
+      --border-s:   oklch(33% 0.012 270);
+      --text:       oklch(93% 0.005 80);
+      --text-mid:   oklch(62% 0.007 270);
+      --text-dim:   oklch(44% 0.007 270);
+      --nav:        oklch(9% 0.01 270);
+      --shadow-sm:  0 1px 3px rgba(0,0,0,.2), 0 1px 2px rgba(0,0,0,.16);
+      --shadow-md:  0 4px 20px rgba(0,0,0,.35), 0 2px 6px rgba(0,0,0,.2);
+    }
+
+    /* ── Reset ──────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; }
+
+    /* ── Nav ────────────────────────────────────── */
+    .nav {
+      background: var(--nav);
+      height: 50px;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      gap: 2px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .nav-brand {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      color: var(--nav-text);
+      margin-right: 14px;
+      white-space: nowrap;
+    }
+    .nav-brand sup { font-size: 8px; opacity: .45; letter-spacing: 0; vertical-align: super; }
+    .nav-links { display: flex; gap: 2px; flex: 1; }
+    .nav-link {
+      color: var(--nav-dim);
+      padding: 5px 12px;
+      border-radius: var(--r);
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: color .14s, background .14s;
+    }
+    .nav-link:hover { color: var(--nav-text); background: rgba(255,255,255,.07); }
+    .nav-link.active { color: var(--nav-text); background: rgba(255,255,255,.11); }
+    .nav-end { display: flex; align-items: center; gap: 10px; }
+    .nav-user { font-size: 12px; color: var(--nav-dim); }
+    .nav-logout {
+      font-size: 12px; padding: 4px 12px;
+      border-radius: var(--r); border: 1px solid rgba(255,255,255,.14);
+      background: transparent; color: var(--nav-dim);
+      transition: all .14s;
+    }
+    .nav-logout:hover { border-color: rgba(255,255,255,.28); color: var(--nav-text); }
+
+    /* ── Page ───────────────────────────────────── */
+    .page { max-width: 1120px; margin: 0 auto; padding: 30px 22px 72px; }
+
+    /* ── Section label ──────────────────────────── */
+    .slabel {
+      font-size: 10.5px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--text-dim);
+      margin-bottom: 9px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .slabel-link {
+      font-size: 10.5px; font-weight: 500; letter-spacing: .04em;
+      text-transform: none; color: var(--text-dim); transition: color .13s;
+    }
+    .slabel-link:hover { color: var(--accent); }
+
+    /* ── Template selector ──────────────────────── */
+    .tmpl-row {
+      display: flex; flex-wrap: wrap; gap: 7px;
+      margin-bottom: 28px; align-items: center;
+    }
+    .tmpl-btn {
+      padding: 7px 16px; border-radius: 99px;
+      border: 1.5px solid var(--border-s); background: var(--surface);
+      color: var(--text-mid); font-size: 13px; font-weight: 500;
+      transition: all .14s;
+      display: flex; align-items: center; gap: 5px; white-space: nowrap;
+      box-shadow: var(--shadow-sm);
+    }
+    .tmpl-btn:hover { border-color: var(--accent); color: var(--accent-txt); box-shadow: none; }
+    .tmpl-btn.active {
+      border-color: var(--accent); background: var(--accent-bg);
+      color: var(--accent-txt); font-weight: 600; box-shadow: none;
+    }
+    .tmpl-check { font-size: 10px; display: none; }
+    .tmpl-btn.active .tmpl-check { display: inline; }
+    .tmpl-add {
+      padding: 7px 13px; border-radius: 99px;
+      border: 1.5px dashed var(--border-s);
+      background: transparent; color: var(--text-dim);
+      font-size: 12.5px; font-weight: 500; transition: all .14s; white-space: nowrap;
+    }
+    .tmpl-add:hover { border-color: var(--accent); color: var(--accent-txt); border-style: solid; }
+
+    /* ── Option groups ──────────────────────────── */
+    .opts-section { margin-bottom: 26px; }
+    .og { display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+    .og-lbl {
+      font-size: 12px; font-weight: 600; color: var(--text-mid);
+      min-width: 76px; text-align: right; flex-shrink: 0;
+    }
+    .og-pills { display: flex; gap: 5px; flex-wrap: wrap; }
+    .opt-btn {
+      padding: 5px 13px; border-radius: 99px;
+      border: 1.5px solid var(--border); background: transparent;
+      color: var(--text-mid); font-size: 12.5px; transition: all .12s; white-space: nowrap;
+    }
+    .opt-btn:hover { border-color: var(--accent); color: var(--accent-txt); }
+    .opt-btn.active {
+      border-color: var(--accent); background: var(--accent);
+      color: #fff; font-weight: 500;
+    }
+
+    /* ── Divider ────────────────────────────────── */
+    .divider { border: none; border-top: 1px solid var(--border); margin-bottom: 26px; }
+
+    /* ── Workspace ──────────────────────────────── */
+    .workspace { width: 100%; }
+
+    /* ── Input section ──────────────────────────── */
+    .input-label {
+      font-size: 10.5px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px;
+    }
+    .input-ta {
+      width: 100%; min-height: 180px;
+      padding: 13px 14px;
+      border: 1.5px solid var(--border-s); border-radius: var(--r-xl);
+      background: var(--surface); color: var(--text); font-family: inherit;
+      font-size: 14px; resize: vertical; line-height: 1.65;
+      outline: none; transition: border-color .15s;
+    }
+    .input-ta:focus { border-color: var(--accent); }
+    .input-ta::placeholder { color: var(--text-dim); font-style: italic; }
+    .err-bar {
+      background: var(--danger-bg); border: 1px solid var(--danger-b);
+      color: var(--danger); padding: 9px 13px; border-radius: var(--r);
+      font-size: 12.5px; display: none; margin-top: 10px;
+    }
+    .btn-gen {
+      width: 100%; margin-top: 10px; padding: 13px 20px;
+      background: var(--accent); color: #fff; border: none;
+      border-radius: var(--r-xl);
+      font-family: 'IBM Plex Mono', monospace; font-size: 13.5px;
+      font-weight: 600; letter-spacing: .06em;
+      transition: background .15s, transform .08s;
+      display: flex; align-items: center; justify-content: center; gap: 9px;
+    }
+    .btn-gen:hover:not(:disabled) { background: var(--accent-h); }
+    .btn-gen:active:not(:disabled) { transform: translateY(1px); }
+    .btn-gen:disabled { opacity: .62; cursor: not-allowed; }
+
+    /* ── Output section ─────────────────────────── */
+    .output-section { margin-top: 24px; }
+
+    /* Back row (replace mode) */
+    .back-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .btn-back {
+      display: flex; align-items: center; gap: 5px;
+      background: none; border: none;
+      font-size: 12.5px; font-weight: 500; color: var(--text-mid);
+      padding: 4px 0; transition: color .13s;
+    }
+    .btn-back:hover { color: var(--accent); }
+    .btn-regen {
+      padding: 6px 14px; border-radius: 99px;
+      border: 1.5px solid var(--border-s); background: transparent;
+      color: var(--text-mid); font-size: 12.5px; font-weight: 500;
+      transition: all .13s;
+    }
+    .btn-regen:hover { border-color: var(--accent); color: var(--accent-txt); }
+
+    /* Output card */
+    .out-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-xl);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+    .out-loading {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; padding: 52px 28px;
+      text-align: center; gap: 12px; color: var(--text-dim);
+    }
+    .out-loading-msg { font-size: 12.5px; font-style: italic; }
+    .out-fields { padding: 22px; display: flex; flex-direction: column; gap: 20px; }
+    .out-field-hdr {
+      display: flex; justify-content: space-between;
+      align-items: center; margin-bottom: 7px;
+    }
+    .out-field-lbl {
+      font-size: 10.5px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--text-dim);
+    }
+    .btn-copy-sm {
+      font-size: 11px; padding: 3px 10px; border-radius: var(--r);
+      border: 1px solid var(--border); background: transparent;
+      color: var(--text-mid); transition: all .12s;
+    }
+    .btn-copy-sm:hover { border-color: var(--accent); color: var(--accent-txt); }
+    .btn-copy-sm.done { border-color: var(--ok); color: var(--ok); background: var(--ok-bg); }
+    .out-title { font-size: 15px; font-weight: 600; line-height: 1.4; }
+    .out-body { font-size: 13.5px; line-height: 1.8; white-space: pre-wrap; }
+
+    /* Big copy button */
+    .btn-copy-lg {
+      width: 100%; margin-top: 10px; padding: 11px 20px;
+      background: transparent; color: var(--text-mid);
+      border: 1.5px solid var(--border-s); border-radius: var(--r-xl);
+      font-family: inherit; font-size: 13px; font-weight: 500;
+      transition: all .14s;
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+    }
+    .btn-copy-lg:hover { border-color: var(--accent); color: var(--accent-txt); background: var(--accent-bg); }
+    .btn-copy-lg.done { border-color: var(--ok); color: var(--ok); background: var(--ok-bg); }
+
+    /* ── Spinner ────────────────────────────────── */
+    @keyframes kspin { to { transform: rotate(360deg); } }
+    .spin-sm {
+      width: 15px; height: 15px;
+      border: 2px solid rgba(255,255,255,.3); border-top-color: #fff;
+      border-radius: 50%; animation: kspin .7s linear infinite; flex-shrink: 0;
+    }
+    .spin-lg {
+      width: 28px; height: 28px;
+      border: 2.5px solid var(--border); border-top-color: var(--accent);
+      border-radius: 50%; animation: kspin .9s linear infinite;
+    }
+
+    /* ── Tweaks ─────────────────────────────────── */
+    .tweaks {
+      position: fixed; bottom: 20px; right: 20px; width: 216px;
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: var(--r-xl); box-shadow: var(--shadow-md);
+      z-index: 999; display: none;
+    }
+    .tweaks.open { display: block; }
+    .tweaks-hdr {
+      padding: 11px 14px 10px; border-bottom: 1px solid var(--border);
+      font-weight: 600; font-size: 12px; letter-spacing: .04em;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .tweaks-x {
+      background: none; border: none; color: var(--text-dim);
+      font-size: 14px; line-height: 1; padding: 2px 3px;
+      border-radius: 3px; transition: background .12s;
+    }
+    .tweaks-x:hover { background: var(--border); }
+    .tweaks-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 14px; }
+    .tweak { display: flex; flex-direction: column; gap: 6px; }
+    .tweak-lbl {
+      font-size: 10.5px; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--text-dim);
+    }
+    .swatches { display: flex; gap: 6px; }
+    .swatch {
+      width: 20px; height: 20px; border-radius: 50%; cursor: pointer;
+      outline: 2px solid transparent; outline-offset: 2px;
+      transition: transform .12s, outline-color .12s;
+    }
+    .swatch:hover { transform: scale(1.15); }
+    .swatch.active { outline-color: var(--text); }
+    .radio-row { display: flex; gap: 4px; flex-wrap: wrap; }
+    .t-radio {
+      padding: 4px 10px; border-radius: 99px;
+      border: 1.5px solid var(--border);
+      background: transparent; color: var(--text-mid);
+      font-size: 11.5px; transition: all .12s;
+    }
+    .t-radio.active {
+      border-color: var(--accent); background: var(--accent-bg);
+      color: var(--accent-txt); font-weight: 600;
+    }
+
+    /* ── Animations ─────────────────────────────── */
+    @keyframes kfade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    .fade-in { animation: kfade .22s ease; }
+  </style>
+</head>
+<body>
+
+<!-- ── Nav ────────────────────────────────────────── -->
+<nav class="nav">
+  <span class="nav-brand">KORPOTRON<sup>™</sup></span>
+  <div class="nav-links">
+    <a href="#" class="nav-link active">Generate</a>
+    <a href="Korpotron Templates.html" class="nav-link">Templates</a>
+    <a href="#" class="nav-link">Modifiers</a>
+  </div>
+  <div class="nav-end">
+    <span class="nav-user">j.smith</span>
+    <button class="nav-logout">Logout</button>
+  </div>
+</nav>
+
+<!-- ── Generate Page ──────────────────────────────── -->
+<div class="page">
+
+  <!-- 1 · Template selector -->
+  <div class="slabel">
+    Template
+    <a href="#" class="slabel-link">Manage →</a>
+  </div>
+  <div class="tmpl-row" id="tmpl-row">
+    <button class="tmpl-btn" data-id="1"><span class="tmpl-check">✓</span>Quarterly Report</button>
+    <button class="tmpl-btn active" data-id="2"><span class="tmpl-check">✓</span>Email Blast</button>
+    <button class="tmpl-btn" data-id="3"><span class="tmpl-check">✓</span>Performance Review</button>
+    <button class="tmpl-btn" data-id="4"><span class="tmpl-check">✓</span>Meeting Summary</button>
+    <button class="tmpl-btn" data-id="5"><span class="tmpl-check">✓</span>Status Update</button>
+    <button class="tmpl-add">+ New template</button>
+  </div>
+
+  <!-- 2 · Modifiers -->
+  <div class="opts-section">
+    <div class="slabel">
+      Modifiers
+      <a href="#" class="slabel-link">Manage →</a>
+    </div>
+    <div class="og" data-group="tone">
+      <span class="og-lbl">Tone</span>
+      <div class="og-pills">
+        <button class="opt-btn active">Professional</button>
+        <button class="opt-btn">Diplomatic</button>
+        <button class="opt-btn">Assertive</button>
+        <button class="opt-btn">Casual</button>
+      </div>
+    </div>
+    <div class="og" data-group="length">
+      <span class="og-lbl">Length</span>
+      <div class="og-pills">
+        <button class="opt-btn">Brief</button>
+        <button class="opt-btn active">Standard</button>
+        <button class="opt-btn">Verbose</button>
+      </div>
+    </div>
+    <div class="og" data-group="formality">
+      <span class="og-lbl">Formality</span>
+      <div class="og-pills">
+        <button class="opt-btn active">Corporate</button>
+        <button class="opt-btn">Conversational</button>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 3 · Input + Output workspace -->
+  <div class="workspace">
+
+    <!-- Input section -->
+    <div id="input-section">
+      <div class="input-label">Text to transform</div>
+      <textarea class="input-ta" id="input-ta" rows="8"
+        placeholder="Paste the raw, unsynergized content here…"></textarea>
+      <div class="err-bar" id="err-bar"></div>
+      <button class="btn-gen" id="btn-gen">
+        <span id="gen-lbl">Generate</span>
+        <span id="gen-spin" style="display:none"><span class="spin-sm"></span></span>
+      </button>
+    </div>
+
+    <!-- Output section (hidden until generation) -->
+    <div id="output-section" class="output-section" style="display:none">
+
+      <!-- Back row — shown in "replace" mode only -->
+      <div class="back-row" id="back-row" style="display:none">
+        <button class="btn-back" id="btn-back">← Edit text</button>
+        <button class="btn-regen" id="btn-regen">↻ Regenerate</button>
+      </div>
+
+      <!-- Result card -->
+      <div class="out-card" id="out-card">
+        <!-- content injected by JS -->
+      </div>
+
+      <!-- Big copy button -->
+      <button class="btn-copy-lg" id="btn-copy-lg">
+        <span>Copy to clipboard</span>
+      </button>
+
+    </div>
+  </div>
+</div>
+
+<!-- ── Tweaks Panel ────────────────────────────────── -->
+<div class="tweaks" id="tweaks">
+  <div class="tweaks-hdr">
+    Tweaks
+    <button class="tweaks-x" id="tweaks-x">✕</button>
+  </div>
+  <div class="tweaks-body">
+    <div class="tweak">
+      <div class="tweak-lbl">Accent color</div>
+      <div class="swatches">
+        <div class="swatch active" data-accent="amber"  style="background:oklch(61% 0.16 40)"  title="Amber"></div>
+        <div class="swatch"        data-accent="violet" style="background:oklch(58% 0.19 290)" title="Violet"></div>
+        <div class="swatch"        data-accent="teal"   style="background:oklch(56% 0.15 195)" title="Teal"></div>
+        <div class="swatch"        data-accent="rose"   style="background:oklch(58% 0.19 15)"  title="Rose"></div>
+      </div>
+    </div>
+    <div class="tweak">
+      <div class="tweak-lbl">Theme</div>
+      <div class="radio-row">
+        <button class="t-radio active" data-theme="light">Light</button>
+        <button class="t-radio" data-theme="dark">Dark</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+
+  /* ── State ─────────────────────────────────── */
+  var lastResult = null;
+  var inFlight   = false;
+
+  /* ── DOM refs ──────────────────────────────── */
+  var taEl        = document.getElementById('input-ta');
+  var errEl       = document.getElementById('err-bar');
+  var btnGen      = document.getElementById('btn-gen');
+  var genLbl      = document.getElementById('gen-lbl');
+  var genSpin     = document.getElementById('gen-spin');
+  var inputSec    = document.getElementById('input-section');
+  var outputSec   = document.getElementById('output-section');
+  var backRow     = document.getElementById('back-row');
+  var outCard     = document.getElementById('out-card');
+  var btnCopyLg   = document.getElementById('btn-copy-lg');
+  var btnBack     = document.getElementById('btn-back');
+  var btnRegen    = document.getElementById('btn-regen');
+  var tweaksEl    = document.getElementById('tweaks');
+
+  /* ── Tweaks protocol ───────────────────────── */
+  window.addEventListener('message', function (e) {
+    if (!e.data) return;
+    if (e.data.type === 'tweaks:show') tweaksEl.classList.add('open');
+    if (e.data.type === 'tweaks:hide') tweaksEl.classList.remove('open');
+  });
+  document.getElementById('tweaks-x').addEventListener('click', function () {
+    tweaksEl.classList.remove('open');
+    try { window.parent.postMessage({ type: 'tweaks:closed' }, '*'); } catch (e) {}
+  });
+
+  /* ── Layout: always replace mode ─────────── */
+  function applyResultLayout() {
+    inputSec.style.display  = 'none';
+    outputSec.style.display = 'block';
+    backRow.style.display   = 'flex';
+  }
+
+  /* ── Back / Regenerate ─────────────────────── */
+  btnBack.addEventListener('click', function () {
+    outputSec.style.display = 'none';
+    inputSec.style.display = 'block';
+    lastResult = null;
+  });
+  btnRegen.addEventListener('click', function () {
+    doGenerate();
+  });
+
+  /* ── Accent colors ─────────────────────────── */
+  var ACCENTS = {
+    amber:  ['oklch(61% 0.16 40)',  'oklch(55% 0.16 40)',  'oklch(94% 0.055 40)', 'oklch(32% 0.12 40)'],
+    violet: ['oklch(58% 0.19 290)', 'oklch(52% 0.19 290)', 'oklch(94% 0.05 290)', 'oklch(30% 0.14 290)'],
+    teal:   ['oklch(56% 0.15 195)', 'oklch(50% 0.15 195)', 'oklch(94% 0.05 195)', 'oklch(28% 0.10 195)'],
+    rose:   ['oklch(58% 0.19 15)',  'oklch(52% 0.19 15)',  'oklch(95% 0.06 15)',  'oklch(30% 0.14 15)'],
+  };
+  function setAccent(name) {
+    var c = ACCENTS[name];
+    var s = document.documentElement.style;
+    s.setProperty('--accent',     c[0]);
+    s.setProperty('--accent-h',   c[1]);
+    s.setProperty('--accent-bg',  c[2]);
+    s.setProperty('--accent-txt', c[3]);
+    document.querySelectorAll('.swatch').forEach(function (sw) {
+      sw.classList.toggle('active', sw.dataset.accent === name);
+    });
+  }
+  document.querySelectorAll('.swatch').forEach(function (sw) {
+    sw.addEventListener('click', function () { setAccent(sw.dataset.accent); });
+  });
+
+  /* ── Theme ─────────────────────────────────── */
+  function setTheme(t) {
+    document.body.classList.toggle('dark', t === 'dark');
+    document.querySelectorAll('.t-radio[data-theme]').forEach(function (b) {
+      b.classList.toggle('active', b.dataset.theme === t);
+    });
+  }
+  document.querySelectorAll('.t-radio[data-theme]').forEach(function (b) {
+    b.addEventListener('click', function () { setTheme(b.dataset.theme); });
+  });
+
+  /* ── Template selection ────────────────────── */
+  document.querySelectorAll('.tmpl-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.tmpl-btn').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+    });
+  });
+
+  /* ── Option toggle (radio-within-group) ─────── */
+  document.querySelectorAll('.og').forEach(function (group) {
+    group.querySelectorAll('.opt-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var was = btn.classList.contains('active');
+        group.querySelectorAll('.opt-btn').forEach(function (b) { b.classList.remove('active'); });
+        if (!was) btn.classList.add('active');
+      });
+    });
+  });
+
+  /* ── Loading quips ─────────────────────────── */
+  var quips = [
+    'Leveraging core competencies…',
+    'Synergizing the deliverables…',
+    'Aligning stakeholder objectives…',
+    'Actioning the key takeaways…',
+    'Pivoting the bandwidth…',
+    'Boiling the ocean…',
+    'Moving the needle…',
+    'Operationalizing the value-add…',
+    'Circling back on synergies…',
+  ];
+
+  /* ── Generate ──────────────────────────────── */
+  btnGen.addEventListener('click', doGenerate);
+
+  async function doGenerate() {
+    if (inFlight) return;
+    clearErr();
+    if (!taEl.value.trim()) { showErr('Please paste some text to transform.'); return; }
+
+    setLoading(true);
+
+    /* Show loading state in output */
+    var q = quips[Math.floor(Math.random() * quips.length)];
+    outCard.innerHTML =
+      '<div class="out-loading"><div class="spin-lg"></div>' +
+      '<div class="out-loading-msg">' + q + '</div></div>';
+    outputSec.style.display  = 'block';
+    btnCopyLg.style.display  = 'none';
+    inputSec.style.display   = 'none';
+    backRow.style.display    = 'flex';
+    btnRegen.style.display   = 'none';
+
+    /* Simulated API call — real version POSTs to {% url 'generate-api' %} */
+    await new Promise(function (r) { setTimeout(r, 2100); });
+
+    setLoading(false);
+    lastResult = {
+      title: 'Q3 Strategic Initiatives: Stakeholder Alignment Summary',
+      body:  'As we navigate the current market landscape, our organization has demonstrated commendable resilience and adaptability in pursuit of our core strategic objectives.\n\nThe third quarter has been characterized by meaningful progress across key performance indicators, with particular strength noted in operational efficiency metrics and stakeholder engagement scores.\n\nLooking ahead to Q4, we remain firmly committed to executing against our strategic roadmap while maintaining the high standards of excellence our stakeholders have come to expect.'
+    };
+    renderResult(lastResult);
+    applyResultLayout();
+    btnRegen.style.display = '';
+    btnCopyLg.style.display = '';
+  }
+
+  /* ── Render result ─────────────────────────── */
+  function renderResult(data) {
+    var html = '<div class="out-fields fade-in">';
+    if (data.title) {
+      html +=
+        '<div>' +
+          '<div class="out-field-hdr">' +
+            '<span class="out-field-lbl">Title</span>' +
+            '<button class="btn-copy-sm" data-key="title">Copy</button>' +
+          '</div>' +
+          '<div class="out-title">' + esc(data.title) + '</div>' +
+        '</div>';
+    }
+    html +=
+      '<div>' +
+        '<div class="out-field-hdr">' +
+          '<span class="out-field-lbl">Result</span>' +
+          '<button class="btn-copy-sm" data-key="body">Copy</button>' +
+        '</div>' +
+        '<div class="out-body">' + esc(data.body) + '</div>' +
+      '</div>';
+    html += '</div>';
+    outCard.innerHTML = html;
+
+    outCard.querySelectorAll('.btn-copy-sm').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        copyText(btn, lastResult[btn.dataset.key] || '');
+      });
+    });
+  }
+
+  /* ── Big copy button ───────────────────────── */
+  btnCopyLg.addEventListener('click', function () {
+    if (!lastResult) return;
+    var full = lastResult.title
+      ? lastResult.title + '\n\n' + lastResult.body
+      : lastResult.body;
+    copyText(btnCopyLg, full);
+  });
+
+  async function copyText(btn, text) {
+    var orig = btn.innerHTML;
+    try { await navigator.clipboard.writeText(text); } catch (e) {}
+    btn.innerHTML = btn === btnCopyLg ? '<span>Copied!</span>' : 'Copied!';
+    btn.classList.add('done');
+    setTimeout(function () { btn.innerHTML = orig; btn.classList.remove('done'); }, 1300);
+  }
+
+  /* ── Helpers ────────────────────────────────── */
+  function showErr(msg) { errEl.textContent = msg; errEl.style.display = 'block'; }
+  function clearErr()   { errEl.style.display = 'none'; }
+  function setLoading(on) {
+    inFlight = on;
+    btnGen.disabled = on;
+    genLbl.textContent = on ? 'Generating…' : 'Generate';
+    genSpin.style.display = on ? '' : 'none';
+  }
+  function esc(s) {
+    return String(s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+})();
+</script>
+</body>
+</html>
+
+

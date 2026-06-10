@@ -1,0 +1,1263 @@
+/* ============================================================
+   Korpotron Design System
+   Loaded after Bootstrap 5 to override where needed.
+   ============================================================ */
+
+:root {
+  /* Palette */
+  --k-bg:           oklch(97% 0.008 85);
+  --k-surface:      #fff;
+  --k-surface-2:    oklch(98.5% 0.005 85);
+  --k-border:       oklch(90% 0.007 80);
+  --k-border-s:     oklch(83% 0.009 80);
+
+  /* Text */
+  --k-text:         oklch(14% 0.01 270);
+  --k-text-mid:     oklch(50% 0.012 270);
+  --k-text-dim:     oklch(70% 0.008 270);
+
+  /* Accent (amber) */
+  --k-accent:       oklch(61% 0.16 40);
+  --k-accent-h:     oklch(55% 0.16 40);
+  --k-accent-bg:    oklch(94% 0.055 40);
+  --k-accent-txt:   oklch(32% 0.12 40);
+
+  /* Navigation */
+  --k-nav:          oklch(14% 0.012 270);
+  --k-nav-text:     oklch(93% 0.005 80);
+  --k-nav-dim:      oklch(55% 0.008 270);
+
+  /* Danger */
+  --k-danger:       oklch(52% 0.18 22);
+  --k-danger-bg:    oklch(96.5% 0.04 22);
+  --k-danger-b:     oklch(87% 0.08 22);
+
+  /* Success */
+  --k-ok:           oklch(55% 0.15 150);
+  --k-ok-bg:        oklch(96% 0.04 150);
+
+  /* Radii */
+  --k-r:            7px;
+  --k-r-lg:         11px;
+  --k-r-xl:         15px;
+
+  /* Shadows */
+  --k-shadow-sm:    0 1px 3px rgba(0,0,0,.05), 0 1px 2px rgba(0,0,0,.04);
+  --k-shadow-md:    0 4px 20px rgba(0,0,0,.09), 0 2px 6px rgba(0,0,0,.05);
+}
+
+/* ---- Typography ---- */
+body {
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  background: var(--k-bg);
+  color: var(--k-text);
+}
+
+.k-mono { font-family: 'IBM Plex Mono', monospace; }
+
+/* No underlined links anywhere in the app. */
+a { text-decoration: none; }
+
+/* ---- Navigation ---- */
+.k-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 50px;
+  background: var(--k-nav);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 8px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.k-nav-brand {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+  font-size: 12.5px;
+  letter-spacing: .12em;
+  color: var(--k-nav-text);
+  text-decoration: none;
+  margin-right: 14px;
+  white-space: nowrap;
+}
+.k-nav-brand:hover { color: #fff; }
+.k-nav-brand sup { font-size: 8px; opacity: .45; letter-spacing: 0; vertical-align: super; }
+
+.k-nav-links {
+  display: flex;
+  gap: 2px;
+  flex: 1;
+}
+
+.k-nav-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--k-nav-dim);
+  text-decoration: none;
+  padding: 5px 12px;
+  border-radius: var(--k-r);
+  white-space: nowrap;
+  transition: color .14s, background .14s;
+}
+.k-nav-link:hover,
+.k-nav-link.active {
+  color: var(--k-nav-text);
+  background: rgba(255,255,255,.07);
+}
+.k-nav-link.active { background: rgba(255,255,255,.11); }
+
+.k-nav-end {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.k-nav-user {
+  font-size: 12px;
+  color: var(--k-nav-dim);
+}
+
+.k-nav-logout {
+  font-size: 12px;
+  color: var(--k-nav-dim);
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: var(--k-r);
+  padding: 4px 12px;
+  cursor: pointer;
+  transition: color .14s, border-color .14s;
+}
+.k-nav-logout:hover {
+  color: var(--k-nav-text);
+  border-color: rgba(255,255,255,.28);
+}
+
+/* ---- Page wrapper ---- */
+.k-page {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+/* ---- Cards ---- */
+.k-card {
+  background: var(--k-surface);
+  border: 1.5px solid var(--k-border);
+  border-radius: var(--k-r-xl);
+  box-shadow: var(--k-shadow-sm);
+}
+
+.k-card-body {
+  padding: 28px 32px;
+}
+
+/* Form card chrome (header / footer + width constraints).
+   The wrapper constrains width so the breadcrumb lines up with the card edge. */
+.k-form-wrap { max-width: 680px; margin: 0 auto; }
+.k-form-wrap-wide { max-width: 760px; margin: 0 auto; }
+.k-form-card { overflow: hidden; }
+
+.k-card-hdr {
+  padding: 20px 32px;
+  border-bottom: 1px solid var(--k-border);
+}
+.k-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--k-text);
+}
+.k-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 32px;
+  border-top: 1px solid var(--k-border);
+}
+
+/* ---- List cards ---- */
+.k-list-card {
+  background: var(--k-surface);
+  border: 1.5px solid var(--k-border);
+  border-radius: var(--k-r-xl);
+  overflow: hidden;
+}
+
+.k-list-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--k-border);
+  transition: background .12s;
+}
+.k-list-row:last-child { border-bottom: none; }
+.k-list-row:hover { background: var(--k-surface-2); }
+
+.k-list-row-main { flex: 1; min-width: 0; }
+
+.k-list-row-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--k-text);
+}
+
+.k-list-row-preview {
+  font-size: 12.5px;
+  color: var(--k-text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 480px;
+  margin-top: 2px;
+}
+
+.k-list-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* ---- Empty state ---- */
+.k-empty {
+  border: 1.5px dashed var(--k-border-s);
+  border-radius: var(--k-r-xl);
+  padding: 48px 32px;
+  text-align: center;
+  color: var(--k-text-dim);
+}
+
+/* ---- Badges ---- */
+.k-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 99px;
+  line-height: 1.5;
+}
+
+.k-badge-accent {
+  background: var(--k-accent-bg);
+  color: var(--k-accent-txt);
+}
+
+.k-badge-neutral {
+  background: var(--k-surface-2);
+  border: 1px solid var(--k-border);
+  color: var(--k-text-mid);
+}
+
+/* ---- Buttons ---- */
+.k-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: var(--k-r-xl);
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background .15s, border-color .15s, color .15s;
+  line-height: 1.4;
+}
+
+.k-btn-accent {
+  background: var(--k-accent);
+  color: #fff;
+  border-color: var(--k-accent);
+}
+.k-btn-accent:hover {
+  background: var(--k-accent-h);
+  border-color: var(--k-accent-h);
+  color: #fff;
+}
+
+.k-btn-ghost {
+  background: transparent;
+  color: var(--k-text-mid);
+  border-color: var(--k-border-s);
+  font-weight: 500;
+}
+.k-btn-ghost:hover {
+  background: var(--k-surface-2);
+  color: var(--k-text);
+}
+
+.k-btn-tinted {
+  background: var(--k-accent-bg);
+  color: var(--k-accent-txt);
+  border-color: transparent;
+  font-size: 12.5px;
+  padding: 4px 12px;
+  border-radius: 99px;
+}
+.k-btn-tinted:hover {
+  background: oklch(90% 0.07 40);
+  color: var(--k-accent-txt);
+}
+
+.k-btn-icon {
+  background: transparent;
+  border: none;
+  color: var(--k-text-dim);
+  padding: 4px 8px;
+  border-radius: var(--k-r);
+  font-size: 13px;
+  cursor: pointer;
+  transition: color .12s, background .12s;
+}
+.k-btn-icon:hover {
+  color: var(--k-danger);
+  background: var(--k-danger-bg);
+}
+
+/* ---- List-row action buttons (small pills) ---- */
+.k-row-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 13px;
+  font-size: 12.5px;
+  font-weight: 500;
+  font-family: inherit;
+  border-radius: 99px;
+  border: 1.5px solid var(--k-border-s);
+  background: transparent;
+  color: var(--k-text-mid);
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: border-color .13s, color .13s, background .13s;
+}
+.k-row-btn:hover { border-color: var(--k-text-mid); color: var(--k-text); }
+
+.k-row-btn-danger {
+  border-color: transparent;
+  color: var(--k-text-dim);
+  padding: 5px 10px;
+}
+.k-row-btn-danger:hover {
+  border-color: transparent;
+  background: transparent;
+  color: var(--k-danger);
+}
+
+/* ---- Template/modifier pill buttons ---- */
+.tmpl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 16px;
+  font-size: 13.5px;
+  font-weight: 500;
+  border-radius: 99px;
+  border: 1.5px solid var(--k-border-s);
+  background: var(--k-surface);
+  color: var(--k-text);
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color .12s, background .12s, color .12s;
+}
+
+/* Check mark shown only on the active template pill. */
+.tmpl-check { font-size: 10px; display: none; }
+.tmpl-btn.active .tmpl-check { display: inline; }
+.tmpl-btn:hover {
+  border-color: var(--k-accent);
+  color: var(--k-text);
+}
+.tmpl-btn.active {
+  border-color: var(--k-accent);
+  background: var(--k-accent-bg);
+  color: var(--k-accent-txt);
+}
+.tmpl-btn-dashed {
+  border-style: dashed;
+  color: var(--k-text-dim);
+  font-size: 12.5px;
+  font-weight: 500;
+}
+.tmpl-btn-dashed:hover {
+  border-color: var(--k-accent);
+  color: var(--k-accent-txt);
+  border-style: solid;
+  background: transparent;
+}
+
+/* ---- Modifier option pills (smaller; active = solid accent fill) ---- */
+.opt-btn {
+  padding: 5px 13px;
+  font-size: 12.5px;
+  font-family: inherit;
+  border-radius: 99px;
+  border: 1.5px solid var(--k-border);
+  background: transparent;
+  color: var(--k-text-mid);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color .12s, background .12s, color .12s;
+}
+.opt-btn:hover {
+  border-color: var(--k-accent);
+  color: var(--k-accent-txt);
+}
+.opt-btn.active {
+  border-color: var(--k-accent);
+  background: var(--k-accent);
+  color: #fff;
+  font-weight: 500;
+}
+
+/* ---- CSS-only toggle switch ---- */
+.k-toggle-input { display: none; }
+.k-toggle-track {
+  display: block; width: 40px; height: 22px;
+  background: var(--k-border-s); border-radius: 99px;
+  position: relative; cursor: pointer; transition: background .2s;
+}
+.k-toggle-input:checked + .k-toggle-track { background: var(--k-accent); }
+.k-toggle-track::after {
+  content: ''; position: absolute; top: 3px; left: 3px;
+  width: 16px; height: 16px; background: #fff; border-radius: 50%;
+  transition: transform .2s; box-shadow: 0 1px 3px rgba(0,0,0,.2);
+}
+.k-toggle-input:checked + .k-toggle-track::after { transform: translateX(18px); }
+
+/* ---- Form inputs ---- */
+.k-field { margin-bottom: 20px; }
+
+.k-label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--k-text-mid);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-bottom: 6px;
+}
+
+.k-input {
+  display: block;
+  width: 100%;
+  padding: 9px 13px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--k-text);
+  background: var(--k-surface);
+  border: 1.5px solid var(--k-border-s);
+  border-radius: var(--k-r-lg);
+  transition: border-color .15s, box-shadow .15s;
+  outline: none;
+}
+.k-input:focus {
+  border-color: var(--k-accent);
+  box-shadow: 0 0 0 3px var(--k-accent-bg);
+}
+.k-input::placeholder { color: var(--k-text-dim); }
+
+.k-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.k-field-error {
+  font-size: 12px;
+  color: var(--k-danger);
+  margin-top: 4px;
+}
+
+.k-toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--k-surface-2);
+  border: 1.5px solid var(--k-border);
+  border-radius: var(--k-r-lg);
+}
+.k-toggle-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--k-text);
+  flex: 1;
+}
+.k-toggle-desc {
+  font-size: 12.5px;
+  color: var(--k-text-dim);
+}
+
+/* ---- Formset grid ---- */
+.k-opt-row {
+  display: grid;
+  grid-template-columns: 180px 1fr 32px;
+  gap: 10px;
+  align-items: start;
+  background: var(--k-surface-2);
+  border: 1.5px solid var(--k-border);
+  border-radius: var(--k-r-lg);
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  transition: border-color .14s, opacity .2s;
+}
+.k-opt-row:focus-within { border-color: var(--k-accent); }
+.k-opt-row.deleted { opacity: 0; pointer-events: none; }
+
+/* Each input is its own white box sitting inside the tinted row. */
+.k-opt-name,
+.k-opt-instr {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1.5px solid var(--k-border-s);
+  border-radius: var(--k-r);
+  background: var(--k-surface);
+  color: var(--k-text);
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+  transition: border-color .14s;
+}
+.k-opt-name { font-weight: 500; }
+.k-opt-instr {
+  min-height: 60px;
+  resize: vertical;
+  line-height: 1.55;
+}
+.k-opt-name:focus,
+.k-opt-instr:focus { border-color: var(--k-accent); }
+.k-opt-name::placeholder { color: var(--k-text-dim); font-weight: 400; }
+.k-opt-instr::placeholder { color: var(--k-text-dim); font-style: italic; }
+
+.k-opt-del {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  border-radius: var(--k-r);
+  color: var(--k-text-dim);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: color .13s, background .13s;
+}
+.k-opt-del:hover {
+  color: var(--k-danger);
+  background: var(--k-danger-bg);
+}
+
+.k-col-heads {
+  display: grid;
+  grid-template-columns: 180px 1fr 32px;
+  gap: 10px;
+  margin-bottom: 0;
+  padding: 0 14px 6px;
+}
+.k-col-head {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--k-text-dim);
+}
+
+.k-btn-add-opt {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  border: 1.5px dashed var(--k-border-s);
+  border-radius: var(--k-r-lg);
+  background: transparent;
+  color: var(--k-text-dim);
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: border-color .15s, color .15s, background .15s;
+  margin-top: 4px;
+}
+.k-btn-add-opt:hover {
+  border-color: var(--k-accent);
+  color: var(--k-accent-txt);
+  background: var(--k-accent-bg);
+}
+
+/* ---- Delete dialog ---- */
+.k-del-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  backdrop-filter: blur(2px);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+.k-del-overlay.open { display: flex; }
+
+.k-del-dialog {
+  background: var(--k-surface);
+  border: 1.5px solid var(--k-border);
+  border-radius: var(--k-r-xl);
+  box-shadow: var(--k-shadow-md);
+  padding: 28px 32px;
+  max-width: 400px;
+  width: 90%;
+}
+
+.k-del-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--k-text);
+  margin-bottom: 10px;
+}
+
+.k-del-dialog p {
+  font-size: 14px;
+  color: var(--k-text-mid);
+  margin-bottom: 20px;
+}
+
+.k-del-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.k-btn-danger {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--k-danger);
+  color: #fff;
+  border: none;
+  border-radius: var(--k-r-xl);
+  cursor: pointer;
+  transition: opacity .15s;
+}
+.k-btn-danger:hover { opacity: .88; }
+
+/* ---- Error bar ---- */
+.k-error-bar {
+  display: none;
+  padding: 10px 14px;
+  background: var(--k-danger-bg);
+  border: 1.5px solid var(--k-danger-b);
+  border-radius: var(--k-r-lg);
+  color: var(--k-danger);
+  font-size: 13.5px;
+  margin-bottom: 12px;
+}
+.k-error-bar.visible { display: block; }
+
+/* ---- Breadcrumb ---- */
+.k-breadcrumb {
+  font-size: 13px;
+  color: var(--k-text-dim);
+  margin-bottom: 20px;
+}
+.k-breadcrumb a {
+  color: var(--k-text-dim);
+  text-decoration: none;
+}
+.k-breadcrumb a:hover { color: var(--k-text); }
+.k-breadcrumb-sep { margin: 0 6px; }
+
+/* ---- Page header ---- */
+.k-page-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.k-page-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--k-text);
+  flex: 1;
+}
+.k-page-count {
+  font-size: 13px;
+  color: var(--k-text-dim);
+}
+
+/* ---- Section label row ---- */
+.k-section-label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+/* Matches .k-label (form field labels) so TEMPLATE / MODIFIERS / TEXT TO
+   TRANSFORM all read as one consistent label style across the page. */
+.k-section-label-text {
+  font-size: 12.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--k-text-mid);
+  flex: 1;
+}
+.k-section-label-link {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--k-text-dim);
+  text-decoration: none;
+  transition: color .13s;
+}
+.k-section-label-link:hover { color: var(--k-accent); }
+
+/* ---- Output card ---- */
+.k-output-card {
+  background: var(--k-surface);
+  border: 1.5px solid var(--k-border);
+  border-radius: var(--k-r-xl);
+  box-shadow: var(--k-shadow-sm);
+  overflow: hidden;
+}
+
+.k-output-field {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--k-border);
+}
+.k-output-field:last-child { border-bottom: none; }
+
+.k-output-field-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.k-output-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--k-text-dim);
+}
+
+.k-copy-btn {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--k-text-mid);
+  background: transparent;
+  border: 1px solid var(--k-border-s);
+  border-radius: var(--k-r);
+  padding: 3px 10px;
+  cursor: pointer;
+  transition: color .12s, border-color .12s;
+}
+.k-copy-btn:hover {
+  color: var(--k-text);
+  border-color: var(--k-border-s);
+}
+
+.k-output-text {
+  font-size: 14px;
+  color: var(--k-text);
+  width: 100%;
+  border: none;
+  background: transparent;
+  resize: none;
+  outline: none;
+  padding: 0;
+  font-family: inherit;
+  line-height: 1.6;
+  min-height: 60px;
+}
+
+/* ---- Loading state ---- */
+.k-loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 24px;
+  gap: 16px;
+  text-align: center;
+}
+.k-loading-quip {
+  font-size: 14px;
+  color: var(--k-text-mid);
+  font-style: italic;
+}
+
+/* ---- Divider ---- */
+.k-divider {
+  border: none;
+  border-top: 1px solid var(--k-border-s);
+  margin: 24px 0;
+}
+
+/* ---- Hero badge ---- */
+.k-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 99px;
+  border: 1px solid oklch(61% 0.16 40 / .35);
+  background: oklch(61% 0.16 40 / .1);
+  color: oklch(75% 0.1 40);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  margin-bottom: 28px;
+}
+.k-hero-badge-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--k-accent);
+  border-radius: 50%;
+  animation: k-blink 2s ease-in-out infinite;
+}
+@keyframes k-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .3; }
+}
+
+/* ---- Landing page ---- */
+.k-landing {
+  min-height: 100vh;
+  background: oklch(11% 0.012 270);
+  color: var(--k-nav-text);
+  position: relative;
+  overflow: hidden;
+}
+
+.k-landing-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 100%);
+  pointer-events: none;
+}
+
+.k-landing-glow {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 300px;
+  background: radial-gradient(ellipse, oklch(61% 0.16 40 / .12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.k-landing-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 28px;
+  background: rgba(17,17,24,.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  z-index: 100;
+}
+
+.k-landing-hero {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 100px 24px 72px;
+  text-align: center;
+}
+
+.k-landing-headline {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: clamp(36px, 6vw, 58px);
+  font-weight: 600;
+  color: oklch(93% 0.005 80);
+  letter-spacing: -.01em;
+  margin-bottom: 22px;
+  line-height: 1.1;
+}
+
+.k-landing-sub {
+  font-size: 16px;
+  line-height: 1.75;
+  color: oklch(62% 0.007 270);
+  max-width: 520px;
+  margin-bottom: 40px;
+  text-wrap: pretty;
+}
+
+.k-landing-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 32px;
+  background: var(--k-accent);
+  color: #fff;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: .05em;
+  border-radius: var(--k-r-xl);
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 20px oklch(61% 0.16 40 / .35);
+  transition: background .15s, transform .08s, box-shadow .15s;
+}
+.k-landing-cta:hover {
+  background: var(--k-accent-h);
+  color: #fff;
+  box-shadow: 0 6px 28px oklch(61% 0.16 40 / .5);
+}
+.k-landing-cta:active { transform: translateY(1px); }
+
+.k-feature-strip {
+  display: flex;
+  border: 1px solid oklch(26% 0.012 270);
+  border-radius: var(--k-r-xl);
+  overflow: hidden;
+  max-width: 640px;
+  width: 100%;
+  background: oklch(16% 0.012 270);
+  margin-top: 72px;
+}
+
+.k-feature-tile {
+  flex: 1;
+  padding: 20px 22px;
+  border-right: 1px solid oklch(26% 0.012 270);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.k-feature-tile:last-child { border-right: none; }
+
+.k-feature-cat {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--k-accent);
+  margin-bottom: 4px;
+}
+
+.k-feature-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: oklch(93% 0.005 80);
+}
+
+.k-feature-desc {
+  font-size: 12px;
+  color: oklch(44% 0.007 270);
+  line-height: 1.55;
+}
+
+/* ---- Landing nav brand (flex:1 pushes login button to the right) ---- */
+.k-landing-brand {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  color: oklch(93% 0.005 80);
+  flex: 1;
+}
+.k-landing-brand sup { font-size: 8px; opacity: .4; letter-spacing: 0; vertical-align: super; }
+
+/* ---- Landing login button (nav) ---- */
+.k-landing-login-btn {
+  padding: 6px 18px;
+  border-radius: var(--k-r-xl);
+  border: 1.5px solid rgba(255,255,255,.18);
+  background: transparent;
+  color: oklch(93% 0.005 80);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color .15s, color .15s;
+}
+.k-landing-login-btn:hover {
+  border-color: var(--k-accent);
+  color: oklch(80% 0.08 40);
+}
+
+/* ---- Login modal overlay (landing) ---- */
+.k-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s;
+}
+.k-modal-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ---- Login card (dark — used on landing modal + standalone login) ---- */
+.k-login-card {
+  background: oklch(16% 0.012 270);
+  border: 1.5px solid oklch(26% 0.012 270);
+  border-radius: var(--k-r-xl);
+  box-shadow: 0 4px 24px rgba(0,0,0,.45), 0 2px 8px rgba(0,0,0,.3);
+  width: 100%;
+  max-width: 360px;
+  margin: 20px;
+  transform: translateY(12px);
+  transition: transform .2s;
+}
+.k-modal-overlay.open .k-login-card { transform: none; }
+
+.k-login-card-hdr {
+  padding: 24px 26px 20px;
+  border-bottom: 1px solid oklch(26% 0.012 270);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.k-login-card-hdr--row {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.k-login-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: oklch(93% 0.005 80);
+}
+
+.k-login-sub {
+  font-size: 12.5px;
+  color: oklch(44% 0.007 270);
+}
+
+.k-login-card-body {
+  padding: 22px 26px;
+}
+
+.k-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.k-login-close {
+  background: none;
+  border: none;
+  color: oklch(44% 0.007 270);
+  font-size: 18px;
+  line-height: 1;
+  padding: 2px 6px;
+  border-radius: var(--k-r);
+  cursor: pointer;
+  transition: background .12s, color .12s;
+}
+.k-login-close:hover {
+  background: oklch(26% 0.012 270);
+  color: oklch(93% 0.005 80);
+}
+
+/* ---- Login form fields (dark) ---- */
+.k-login-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.k-login-lbl {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: oklch(93% 0.005 80);
+}
+
+.k-login-input {
+  width: 100%;
+  padding: 10px 13px;
+  border: 1.5px solid oklch(32% 0.012 270);
+  border-radius: var(--k-r-lg);
+  background: oklch(20% 0.01 270);
+  color: oklch(93% 0.005 80);
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: border-color .15s;
+}
+.k-login-input:focus { border-color: var(--k-accent); }
+.k-login-input::placeholder { color: oklch(44% 0.007 270); }
+
+.k-login-submit {
+  width: 100%;
+  padding: 11px;
+  border-radius: var(--k-r-xl);
+  background: var(--k-accent);
+  color: #fff;
+  border: none;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  cursor: pointer;
+  box-shadow: 0 3px 14px oklch(61% 0.16 40 / .3);
+  transition: background .14s, transform .08s;
+}
+.k-login-submit:hover { background: var(--k-accent-h); }
+.k-login-submit:active { transform: translateY(1px); }
+
+/* ---- Login error bar (dark page) ---- */
+.k-login-error {
+  background: oklch(20% 0.04 22);
+  border: 1px solid oklch(40% 0.12 22);
+  color: oklch(75% 0.1 22);
+  padding: 9px 13px;
+  border-radius: var(--k-r);
+  font-size: 12.5px;
+}
+
+/* ---- Standalone login page wrapper ---- */
+.k-login-page {
+  min-height: 100vh;
+  background: oklch(11% 0.012 270);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.k-login-page-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px 48px;
+}
+
+.k-login-back {
+  font-size: 13px;
+  color: oklch(55% 0.005 270);
+  text-decoration: none;
+  margin-top: 18px;
+  display: inline-block;
+}
+.k-login-back:hover { color: oklch(75% 0.005 270); }
+
+/* ---- Generate page workspace ---- */
+.k-generate {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.k-workspace-input { /* default visible */ }
+.k-workspace-loading { display: none; }
+.k-workspace-output { display: none; }
+
+.k-workspace-input.state-loading,
+.k-workspace-input.state-output { display: none; }
+.k-workspace-loading.state-loading { display: block; }
+.k-workspace-output.state-output { display: block; }
+
+.k-generate-btn {
+  display: block;
+  width: 100%;
+  padding: 13px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 15px;
+  font-weight: 600;
+  background: var(--k-accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--k-r-xl);
+  cursor: pointer;
+  transition: background .15s;
+}
+.k-generate-btn:hover:not(:disabled) { background: var(--k-accent-h); }
+.k-generate-btn:disabled { opacity: .6; cursor: not-allowed; }
+
+.k-output-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+/* Plain-text "← Edit text" control (not a pill button). */
+.k-btn-back {
+  background: none;
+  border: none;
+  padding: 4px 0;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--k-text-mid);
+  cursor: pointer;
+  transition: color .13s;
+}
+.k-btn-back:hover { color: var(--k-accent); }
+
+.k-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2.5px solid rgba(255,255,255,.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: k-spin .7s linear infinite;
+}
+@keyframes k-spin { to { transform: rotate(360deg); } }
+
+/* ---- Modifier rows ----
+   A two-column grid so every group label shares one right-aligned column and
+   every option pill set shares one left edge, regardless of label length.
+   `.option-group` uses display:contents so its label + pills become direct
+   grid items (the wrapper still carries data-group-id for the JS). */
+.k-group-grid {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 10px 12px;
+  align-items: baseline;
+}
+.option-group { display: contents; }
+.k-group-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--k-text-mid);
+  min-width: 76px;
+  text-align: right;
+}
+.k-group-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}

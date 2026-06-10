@@ -66,7 +66,7 @@ def _post(client: Client, **body: object) -> HttpResponse:
 def test_anonymous_home_shows_landing_page(client: Client) -> None:
     response = client.get("/")
     assert response.status_code == 200
-    assert b"Get started" in response.content
+    assert b"Log in" in response.content
     assert b'id="generate-btn"' not in response.content
 
 
@@ -107,8 +107,8 @@ def test_generate_page_renders_form_and_options(
 ) -> None:
     _login(client)
     html = client.get("/").content.decode()
-    # template picker + input + generate button
-    assert 'id="template-select"' in html
+    # template picker (pills) + input + generate button
+    assert f'data-template-id="{template.pk}"' in html
     assert template.name in html
     assert 'id="input-text"' in html
     assert 'id="generate-btn"' in html

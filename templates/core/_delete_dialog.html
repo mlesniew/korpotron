@@ -1,0 +1,101 @@
+{% comment %}
+Shared delete dialog. A list row's Delete button opens it via the
+[data-delete-url] attribute; on confirm it fetch()-POSTs to that URL with the
+CSRF header and, on a 2xx (204), fades out and removes the originating row.
+The row to remove is the button's nearest [data-row] ancestor.
+{% endcomment %}
+<div class="k-del-overlay" id="k-del-overlay">
+    <div class="k-del-dialog">
+        <div class="k-del-title" id="k-del-title">Delete?</div>
+        <p>Are you sure you want to delete <strong id="k-del-name"></strong>? This cannot be undone.</p>
+        <div class="k-error-bar" id="k-del-error"></div>
+        <div class="k-del-actions">
+            <button type="button" class="k-btn k-btn-ghost" id="k-del-cancel">Cancel</button>
+            <button type="button" class="k-btn-danger" id="k-del-confirm">Delete</button>
+        </div>
+    </div>
+</div>
+<script>
+(function () {
+  function getCookie(name) {
+    var m = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+    return m ? m.pop() : '';
+  }
+
+  var overlay = document.getElementById('k-del-overlay');
+  var titleEl = document.getElementById('k-del-title');
+  var nameEl = document.getElementById('k-del-name');
+  var errEl = document.getElementById('k-del-error');
+  var cancelBtn = document.getElementById('k-del-cancel');
+  var confirmBtn = document.getElementById('k-del-confirm');
+  var pendingRow = null;
+  var pendingUrl = null;
+
+  function open(row, url, name, title) {
+    pendingRow = row;
+    pendingUrl = url;
+    nameEl.textContent = name || '';
+    titleEl.textContent = title || 'Delete?';
+    errEl.textContent = '';
+    errEl.classList.remove('visible');
+    confirmBtn.disabled = false;
+    overlay.classList.add('open');
+  }
+
+  function close() {
+    overlay.classList.remove('open');
+    pendingRow = null;
+    pendingUrl = null;
+  }
+
+  function showError(msg) {
+    errEl.textContent = msg;
+    errEl.classList.add('visible');
+    confirmBtn.disabled = false;
+  }
+
+  cancelBtn.addEventListener('click', close);
+  overlay.addEventListener('click', function (e) {
+    if (e.target === overlay) close();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && overlay.classList.contains('open')) close();
+  });
+
+  confirmBtn.addEventListener('click', function () {
+    if (!pendingUrl) return;
+    var row = pendingRow;
+    confirmBtn.disabled = true;
+    fetch(pendingUrl, {
+      method: 'POST',
+      headers: { 'X-CSRFToken': getCookie('csrftoken') },
+    })
+      .then(function (resp) {
+        if (resp.ok) {
+          close();
+          if (row) {
+            row.style.transition = 'opacity .2s';
+            row.style.opacity = '0';
+            setTimeout(function () { row.remove(); }, 200);
+          }
+        } else {
+          showError('Could not delete. Please try again.');
+        }
+      })
+      .catch(function () {
+        showError('Network error. Please try again.');
+      });
+  });
+
+  document.querySelectorAll('[data-delete-url]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      open(
+        btn.closest('[data-row]'),
+        btn.getAttribute('data-delete-url'),
+        btn.getAttribute('data-delete-name'),
+        btn.getAttribute('data-delete-title')
+      );
+    });
+  });
+})();
+</script>

@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Korpotron — Templates (Mockup)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ── Variables ─────────────────────────────── */
+    :root {
+      --bg:         oklch(97% 0.008 85);
+      --surface:    #fff;
+      --surface-2:  oklch(98.5% 0.005 85);
+      --border:     oklch(90% 0.007 80);
+      --border-s:   oklch(83% 0.009 80);
+      --text:       oklch(14% 0.01 270);
+      --text-mid:   oklch(50% 0.012 270);
+      --text-dim:   oklch(70% 0.008 270);
+      --accent:     oklch(61% 0.16 40);
+      --accent-h:   oklch(55% 0.16 40);
+      --accent-bg:  oklch(94% 0.055 40);
+      --accent-txt: oklch(32% 0.12 40);
+      --nav:        oklch(14% 0.012 270);
+      --nav-text:   oklch(93% 0.005 80);
+      --nav-dim:    oklch(55% 0.008 270);
+      --danger:     oklch(52% 0.18 22);
+      --danger-bg:  oklch(96.5% 0.04 22);
+      --danger-b:   oklch(87% 0.08 22);
+      --r:          7px;
+      --r-lg:       11px;
+      --r-xl:       15px;
+      --shadow-sm:  0 1px 3px rgba(0,0,0,.05), 0 1px 2px rgba(0,0,0,.04);
+      --shadow-md:  0 4px 20px rgba(0,0,0,.09), 0 2px 6px rgba(0,0,0,.05);
+    }
+    .dark {
+      --bg:         oklch(13% 0.012 270);
+      --surface:    oklch(18% 0.012 270);
+      --surface-2:  oklch(20% 0.012 270);
+      --border:     oklch(28% 0.012 270);
+      --border-s:   oklch(33% 0.012 270);
+      --text:       oklch(93% 0.005 80);
+      --text-mid:   oklch(62% 0.007 270);
+      --text-dim:   oklch(44% 0.007 270);
+      --nav:        oklch(9% 0.01 270);
+      --shadow-sm:  0 1px 3px rgba(0,0,0,.2), 0 1px 2px rgba(0,0,0,.16);
+      --shadow-md:  0 4px 20px rgba(0,0,0,.35), 0 2px 6px rgba(0,0,0,.2);
+    }
+
+    /* ── Reset ──────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; }
+
+    /* ── Nav ────────────────────────────────────── */
+    .nav {
+      background: var(--nav);
+      height: 50px;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      gap: 2px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .nav-brand {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      color: var(--nav-text);
+      margin-right: 14px;
+      white-space: nowrap;
+    }
+    .nav-brand sup { font-size: 8px; opacity: .45; letter-spacing: 0; vertical-align: super; }
+    .nav-links { display: flex; gap: 2px; flex: 1; }
+    .nav-link {
+      color: var(--nav-dim);
+      padding: 5px 12px;
+      border-radius: var(--r);
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: color .14s, background .14s;
+    }
+    .nav-link:hover { color: var(--nav-text); background: rgba(255,255,255,.07); }
+    .nav-link.active { color: var(--nav-text); background: rgba(255,255,255,.11); }
+    .nav-end { display: flex; align-items: center; gap: 10px; }
+    .nav-user { font-size: 12px; color: var(--nav-dim); }
+    .nav-logout {
+      font-size: 12px; padding: 4px 12px;
+      border-radius: var(--r); border: 1px solid rgba(255,255,255,.14);
+      background: transparent; color: var(--nav-dim); transition: all .14s;
+    }
+    .nav-logout:hover { border-color: rgba(255,255,255,.28); color: var(--nav-text); }
+
+    /* ── Page ───────────────────────────────────── */
+    .page { max-width: 1120px; margin: 0 auto; padding: 36px 22px 72px; }
+
+    /* ── Page header ────────────────────────────── */
+    .page-hdr {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      gap: 16px;
+    }
+    .page-title {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -.01em;
+    }
+    .page-count {
+      font-size: 13px;
+      color: var(--text-dim);
+      font-weight: 400;
+      margin-left: 8px;
+    }
+    .btn-new {
+      padding: 8px 18px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--r-xl);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: background .14s, transform .08s;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .btn-new:hover { background: var(--accent-h); }
+    .btn-new:active { transform: translateY(1px); }
+
+    /* ── Template list ──────────────────────────── */
+    .tmpl-list {
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-xl);
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+    .tmpl-row {
+      display: flex;
+      align-items: center;
+      padding: 15px 20px;
+      gap: 16px;
+      border-bottom: 1px solid var(--border);
+      transition: background .12s;
+    }
+    .tmpl-row:last-child { border-bottom: none; }
+    .tmpl-row:hover { background: var(--surface-2); }
+
+    /* Info column */
+    .tmpl-info { flex: 1; min-width: 0; }
+    .tmpl-name {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tmpl-prompt {
+      font-size: 12.5px;
+      color: var(--text-dim);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 680px;
+    }
+
+    /* Badge */
+    .badge-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 99px;
+      border: 1.5px solid var(--accent-bg);
+      background: var(--accent-bg);
+      color: var(--accent-txt);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* Actions column */
+    .tmpl-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .btn-use {
+      padding: 5px 13px;
+      border-radius: 99px;
+      border: 1.5px solid var(--accent-bg);
+      background: var(--accent-bg);
+      color: var(--accent-txt);
+      font-size: 12.5px;
+      font-weight: 600;
+      transition: all .13s;
+      white-space: nowrap;
+    }
+    .btn-use:hover {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-edit {
+      padding: 5px 13px;
+      border-radius: 99px;
+      border: 1.5px solid var(--border-s);
+      background: transparent;
+      color: var(--text-mid);
+      font-size: 12.5px;
+      font-weight: 500;
+      transition: all .13s;
+      white-space: nowrap;
+    }
+    .btn-edit:hover { border-color: var(--text-mid); color: var(--text); }
+    .btn-delete {
+      padding: 5px 10px;
+      border-radius: 99px;
+      border: none;
+      background: transparent;
+      color: var(--text-dim);
+      font-size: 12.5px;
+      transition: color .13s;
+    }
+    .btn-delete:hover { color: var(--danger); }
+
+    /* ── Delete dialog ──────────────────────────── */
+    .del-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.35);
+      z-index: 200;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity .18s;
+    }
+    .del-overlay.open { opacity: 1; pointer-events: all; }
+    .del-dialog {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-xl);
+      box-shadow: var(--shadow-md);
+      padding: 28px 28px 22px;
+      max-width: 380px;
+      width: calc(100vw - 40px);
+      transform: translateY(8px);
+      transition: transform .18s;
+    }
+    .del-overlay.open .del-dialog { transform: none; }
+    .del-dialog-title  { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+    .del-dialog-body   { font-size: 13.5px; color: var(--text-mid); line-height: 1.6; margin-bottom: 22px; }
+    .del-dialog-body strong { color: var(--text); font-weight: 600; }
+    .del-dialog-actions { display: flex; gap: 8px; justify-content: flex-end; }
+    .btn-cancel {
+      padding: 8px 18px; border-radius: var(--r-xl);
+      border: 1.5px solid var(--border-s); background: transparent;
+      color: var(--text-mid); font-size: 13px; font-weight: 500;
+      font-family: inherit; transition: all .13s;
+    }
+    .btn-cancel:hover { border-color: var(--text-mid); color: var(--text); }
+    .btn-confirm-delete {
+      padding: 8px 18px; border-radius: var(--r-xl);
+      border: none; background: var(--danger);
+      color: #fff; font-size: 13px; font-weight: 600;
+      font-family: inherit; transition: background .13s;
+    }
+    .btn-confirm-delete:hover { background: oklch(46% 0.18 22); }
+
+    /* ── Empty state ────────────────────────────── */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 64px 32px;
+      text-align: center;
+      gap: 12px;
+      color: var(--text-dim);
+      border: 1.5px dashed var(--border-s);
+      border-radius: var(--r-xl);
+    }
+    .empty-icon { opacity: .25; }
+    .empty-title { font-size: 15px; font-weight: 600; color: var(--text-mid); }
+    .empty-hint { font-size: 13px; max-width: 320px; line-height: 1.6; }
+    .btn-empty {
+      margin-top: 4px;
+      padding: 9px 20px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--r-xl);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background .14s;
+    }
+    .btn-empty:hover { background: var(--accent-h); }
+
+    /* ── Tweaks ─────────────────────────────────── */
+    .tweaks {
+      position: fixed; bottom: 20px; right: 20px; width: 216px;
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: var(--r-xl); box-shadow: var(--shadow-md);
+      z-index: 999; display: none;
+    }
+    .tweaks.open { display: block; }
+    .tweaks-hdr {
+      padding: 11px 14px 10px; border-bottom: 1px solid var(--border);
+      font-weight: 600; font-size: 12px; letter-spacing: .04em;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .tweaks-x {
+      background: none; border: none; color: var(--text-dim);
+      font-size: 14px; line-height: 1; padding: 2px 3px;
+      border-radius: 3px; transition: background .12s;
+    }
+    .tweaks-x:hover { background: var(--border); }
+    .tweaks-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 14px; }
+    .tweak { display: flex; flex-direction: column; gap: 6px; }
+    .tweak-lbl {
+      font-size: 10.5px; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--text-dim);
+    }
+    .swatches { display: flex; gap: 6px; }
+    .swatch {
+      width: 20px; height: 20px; border-radius: 50%; cursor: pointer;
+      outline: 2px solid transparent; outline-offset: 2px;
+      transition: transform .12s, outline-color .12s;
+    }
+    .swatch:hover { transform: scale(1.15); }
+    .swatch.active { outline-color: var(--text); }
+    .radio-row { display: flex; gap: 4px; }
+    .t-radio {
+      padding: 4px 10px; border-radius: 99px;
+      border: 1.5px solid var(--border);
+      background: transparent; color: var(--text-mid);
+      font-size: 11.5px; transition: all .12s; font-family: inherit;
+    }
+    .t-radio.active {
+      border-color: var(--accent); background: var(--accent-bg);
+      color: var(--accent-txt); font-weight: 600;
+    }
+
+    /* ── State toggle (prototype only) ─────────── */
+    .proto-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .proto-lbl { font-size: 11px; color: var(--text-dim); font-weight: 500; }
+    .proto-btn {
+      padding: 4px 11px; border-radius: 99px;
+      border: 1.5px solid var(--border);
+      background: transparent; color: var(--text-mid);
+      font-size: 11.5px; font-family: inherit; transition: all .12s;
+      white-space: nowrap;
+    }
+    .proto-btn.active {
+      border-color: var(--accent); background: var(--accent-bg);
+      color: var(--accent-txt); font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Nav ────────────────────────────────────────── -->
+<nav class="nav">
+  <span class="nav-brand">KORPOTRON<sup>™</sup></span>
+  <div class="nav-links">
+    <a href="Korpotron Generate.html" class="nav-link">Generate</a>
+    <a href="#" class="nav-link active">Templates</a>
+    <a href="#" class="nav-link">Modifiers</a>
+  </div>
+  <div class="nav-end">
+    <span class="nav-user">j.smith</span>
+    <button class="nav-logout">Logout</button>
+  </div>
+</nav>
+
+<!-- ── Templates Page ─────────────────────────────── -->
+<div class="page">
+
+  <!-- Prototype state toggle -->
+  <div class="proto-toggle">
+    <span class="proto-lbl">Preview state:</span>
+    <button class="proto-btn active" onclick="showState('populated')">With templates</button>
+    <button class="proto-btn" onclick="showState('empty')">Empty</button>
+  </div>
+
+  <!-- Page header -->
+  <div class="page-hdr">
+    <div style="display:flex; align-items:baseline; flex-wrap:wrap; gap:4px;">
+      <span class="page-title">Templates</span>
+      <span class="page-count" id="tmpl-count">5 templates</span>
+    </div>
+    <button class="btn-new">+ New template</button>
+  </div>
+
+  <!-- Populated state -->
+  <div id="state-populated">
+    <div class="tmpl-list">
+
+      <div class="tmpl-row">
+        <div class="tmpl-info">
+          <div class="tmpl-name">
+            Email Blast
+            <span class="badge-title">Generates title</span>
+          </div>
+          <div class="tmpl-prompt">Rewrite the following text as a professional, engaging email suitable for a corporate all-hands or team announcement…</div>
+        </div>
+        <div class="tmpl-actions">
+          <a href="Korpotron Generate.html" class="btn-use">Use →</a>
+          <button class="btn-edit">Edit</button>
+          <button class="btn-delete">Delete</button>
+        </div>
+      </div>
+
+      <div class="tmpl-row">
+        <div class="tmpl-info">
+          <div class="tmpl-name">Quarterly Report</div>
+          <div class="tmpl-prompt">Transform the bullet points and rough notes below into a formal quarterly business report with executive summary tone…</div>
+        </div>
+        <div class="tmpl-actions">
+          <a href="Korpotron Generate.html" class="btn-use">Use →</a>
+          <button class="btn-edit">Edit</button>
+          <button class="btn-delete">Delete</button>
+        </div>
+      </div>
+
+      <div class="tmpl-row">
+        <div class="tmpl-info">
+          <div class="tmpl-name">
+            Performance Review
+            <span class="badge-title">Generates title</span>
+          </div>
+          <div class="tmpl-prompt">Rephrase the following informal notes into polished performance review language suitable for HR records and employee files…</div>
+        </div>
+        <div class="tmpl-actions">
+          <a href="Korpotron Generate.html" class="btn-use">Use →</a>
+          <button class="btn-edit">Edit</button>
+          <button class="btn-delete">Delete</button>
+        </div>
+      </div>
+
+      <div class="tmpl-row">
+        <div class="tmpl-info">
+          <div class="tmpl-name">Meeting Summary</div>
+          <div class="tmpl-prompt">Convert the rough meeting notes below into a concise, structured summary with clear action items and owners…</div>
+        </div>
+        <div class="tmpl-actions">
+          <a href="Korpotron Generate.html" class="btn-use">Use →</a>
+          <button class="btn-edit">Edit</button>
+          <button class="btn-delete">Delete</button>
+        </div>
+      </div>
+
+      <div class="tmpl-row">
+        <div class="tmpl-info">
+          <div class="tmpl-name">Status Update</div>
+          <div class="tmpl-prompt">Rewrite the following progress notes as a clear, professional status update for senior stakeholders and executive audiences…</div>
+        </div>
+        <div class="tmpl-actions">
+          <a href="Korpotron Generate.html" class="btn-use">Use →</a>
+          <button class="btn-edit">Edit</button>
+          <button class="btn-delete">Delete</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Empty state -->
+  <div id="state-empty" style="display:none">
+    <div class="empty-state">
+      <svg class="empty-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="6" y="8"  width="28" height="4" rx="2" fill="currentColor"/>
+        <rect x="6" y="17" width="20" height="4" rx="2" fill="currentColor"/>
+        <rect x="6" y="26" width="24" height="4" rx="2" fill="currentColor"/>
+      </svg>
+      <div class="empty-title">No templates yet</div>
+      <div class="empty-hint">Templates define how your text gets transformed. Create one to get started.</div>
+      <button class="btn-empty">+ New template</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Delete Dialog ─────────────────────────────────── -->
+<div class="del-overlay" id="del-overlay">
+  <div class="del-dialog">
+    <div class="del-dialog-title">Delete template?</div>
+    <div class="del-dialog-body">Are you sure you want to delete <strong id="del-name"></strong>? This cannot be undone.</div>
+    <div class="del-dialog-actions">
+      <button class="btn-cancel" id="del-cancel">Cancel</button>
+      <button class="btn-confirm-delete" id="del-confirm">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Tweaks Panel ────────────────────────────────── -->
+<div class="tweaks" id="tweaks">
+  <div class="tweaks-hdr">
+    Tweaks
+    <button class="tweaks-x" id="tweaks-x">✕</button>
+  </div>
+  <div class="tweaks-body">
+    <div class="tweak">
+      <div class="tweak-lbl">Accent color</div>
+      <div class="swatches">
+        <div class="swatch active" data-accent="amber"  style="background:oklch(61% 0.16 40)"  title="Amber"></div>
+        <div class="swatch"        data-accent="violet" style="background:oklch(58% 0.19 290)" title="Violet"></div>
+        <div class="swatch"        data-accent="teal"   style="background:oklch(56% 0.15 195)" title="Teal"></div>
+        <div class="swatch"        data-accent="rose"   style="background:oklch(58% 0.19 15)"  title="Rose"></div>
+      </div>
+    </div>
+    <div class="tweak">
+      <div class="tweak-lbl">Theme</div>
+      <div class="radio-row">
+        <button class="t-radio active" data-theme="light">Light</button>
+        <button class="t-radio"        data-theme="dark">Dark</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+
+  /* ── Prototype state toggle ────────────────── */
+  window.showState = function (s) {
+    document.getElementById('state-populated').style.display = s === 'populated' ? '' : 'none';
+    document.getElementById('state-empty').style.display     = s === 'empty'     ? '' : 'none';
+    document.getElementById('tmpl-count').style.display      = s === 'populated' ? '' : 'none';
+    document.querySelectorAll('.proto-btn').forEach(function (b) {
+      b.classList.toggle('active', b.getAttribute('onclick').includes(s));
+    });
+  };
+
+  /* ── Tweaks protocol ───────────────────────── */
+  var tweaksEl = document.getElementById('tweaks');
+  window.addEventListener('message', function (e) {
+    if (!e.data) return;
+    if (e.data.type === 'tweaks:show') tweaksEl.classList.add('open');
+    if (e.data.type === 'tweaks:hide') tweaksEl.classList.remove('open');
+  });
+  document.getElementById('tweaks-x').addEventListener('click', function () {
+    tweaksEl.classList.remove('open');
+    try { window.parent.postMessage({ type: 'tweaks:closed' }, '*'); } catch (e) {}
+  });
+
+  /* ── Accent colors ─────────────────────────── */
+  var ACCENTS = {
+    amber:  ['oklch(61% 0.16 40)',  'oklch(55% 0.16 40)',  'oklch(94% 0.055 40)', 'oklch(32% 0.12 40)'],
+    violet: ['oklch(58% 0.19 290)', 'oklch(52% 0.19 290)', 'oklch(94% 0.05 290)', 'oklch(30% 0.14 290)'],
+    teal:   ['oklch(56% 0.15 195)', 'oklch(50% 0.15 195)', 'oklch(94% 0.05 195)', 'oklch(28% 0.10 195)'],
+    rose:   ['oklch(58% 0.19 15)',  'oklch(52% 0.19 15)',  'oklch(95% 0.06 15)',  'oklch(30% 0.14 15)'],
+  };
+  function setAccent(name) {
+    var c = ACCENTS[name], s = document.documentElement.style;
+    s.setProperty('--accent',     c[0]);
+    s.setProperty('--accent-h',   c[1]);
+    s.setProperty('--accent-bg',  c[2]);
+    s.setProperty('--accent-txt', c[3]);
+    document.querySelectorAll('.swatch').forEach(function (sw) {
+      sw.classList.toggle('active', sw.dataset.accent === name);
+    });
+  }
+  document.querySelectorAll('.swatch').forEach(function (sw) {
+    sw.addEventListener('click', function () { setAccent(sw.dataset.accent); });
+  });
+
+  /* ── Theme ─────────────────────────────────── */
+  function setTheme(t) {
+    document.body.classList.toggle('dark', t === 'dark');
+    document.querySelectorAll('.t-radio[data-theme]').forEach(function (b) {
+      b.classList.toggle('active', b.dataset.theme === t);
+    });
+  }
+  document.querySelectorAll('.t-radio[data-theme]').forEach(function (b) {
+    b.addEventListener('click', function () { setTheme(b.dataset.theme); });
+  });
+
+  /* ── Delete dialog ─────────────────────────── */
+  var delOverlay = document.getElementById('del-overlay');
+  var delName    = document.getElementById('del-name');
+  var delCancel  = document.getElementById('del-cancel');
+  var delConfirm = document.getElementById('del-confirm');
+  var pendingRow = null;
+
+  function openDelDialog(row, name) {
+    pendingRow = row;
+    delName.textContent = name;
+    delOverlay.classList.add('open');
+  }
+  function closeDelDialog() {
+    delOverlay.classList.remove('open');
+    pendingRow = null;
+  }
+
+  delCancel.addEventListener('click', closeDelDialog);
+  delOverlay.addEventListener('click', function (e) {
+    if (e.target === delOverlay) closeDelDialog();
+  });
+  delConfirm.addEventListener('click', function () {
+    if (!pendingRow) return;
+    pendingRow.style.opacity    = '0';
+    pendingRow.style.transition = 'opacity .2s';
+    setTimeout(function () { pendingRow.remove(); }, 200);
+    closeDelDialog();
+  });
+
+  document.querySelectorAll('.btn-delete').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var row  = btn.closest('.tmpl-row');
+      var name = row.querySelector('.tmpl-name').childNodes[0].textContent.trim();
+      openDelDialog(row, name);
+    });
+  });
+
+})();
+</script>
+</body>
+</html>

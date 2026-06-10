@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Korpotron</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:         oklch(11% 0.012 270);
+      --surface:    oklch(16% 0.012 270);
+      --border:     oklch(26% 0.012 270);
+      --border-s:   oklch(32% 0.012 270);
+      --text:       oklch(93% 0.005 80);
+      --text-mid:   oklch(62% 0.007 270);
+      --text-dim:   oklch(44% 0.007 270);
+      --accent:     oklch(61% 0.16 40);
+      --accent-h:   oklch(55% 0.16 40);
+      --accent-bg:  oklch(94% 0.055 40);
+      --accent-txt: oklch(32% 0.12 40);
+      --r:          7px;
+      --r-lg:       11px;
+      --r-xl:       15px;
+      --shadow-md:  0 4px 24px rgba(0,0,0,.45), 0 2px 8px rgba(0,0,0,.3);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; }
+
+    /* ── Nav ─────────────────────────────────── */
+    .nav {
+      height: 52px;
+      display: flex;
+      align-items: center;
+      padding: 0 28px;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      background: rgba(17,17,24,.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .nav-brand {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: .14em;
+      color: var(--text);
+      flex: 1;
+    }
+    .nav-brand sup { font-size: 8px; opacity: .4; letter-spacing: 0; vertical-align: super; }
+    .btn-nav-login {
+      padding: 6px 18px;
+      border-radius: var(--r-xl);
+      border: 1.5px solid rgba(255,255,255,.18);
+      background: transparent;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: all .15s;
+    }
+    .btn-nav-login:hover { border-color: var(--accent); color: oklch(80% 0.08 40); }
+
+    /* ── Hero ────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle grid background */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 100%);
+      pointer-events: none;
+    }
+    /* Accent glow */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 10%; left: 50%;
+      transform: translateX(-50%);
+      width: 600px; height: 300px;
+      background: radial-gradient(ellipse, oklch(61% 0.16 40 / .12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner { position: relative; z-index: 1; max-width: 640px; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 99px;
+      border: 1px solid oklch(61% 0.16 40 / .35);
+      background: oklch(61% 0.16 40 / .1);
+      color: oklch(75% 0.1 40);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      margin-bottom: 28px;
+    }
+    .hero-badge-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+      animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+
+    .hero-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: clamp(36px, 6vw, 58px);
+      font-weight: 600;
+      letter-spacing: -.01em;
+      line-height: 1.1;
+      margin-bottom: 22px;
+      color: var(--text);
+    }
+    .hero-title-accent { color: var(--accent); }
+
+    .hero-sub {
+      font-size: 16px;
+      color: var(--text-mid);
+      line-height: 1.75;
+      margin-bottom: 40px;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+      text-wrap: pretty;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 32px;
+      border-radius: var(--r-xl);
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: .05em;
+      transition: background .15s, transform .08s, box-shadow .15s;
+      box-shadow: 0 4px 20px oklch(61% 0.16 40 / .35);
+    }
+    .hero-cta:hover { background: var(--accent-h); box-shadow: 0 6px 28px oklch(61% 0.16 40 / .5); }
+    .hero-cta:active { transform: translateY(1px); }
+
+    /* ── Feature strip ───────────────────────── */
+    .features {
+      display: flex;
+      gap: 0;
+      justify-content: center;
+      margin-top: 72px;
+      border: 1px solid var(--border);
+      border-radius: var(--r-xl);
+      overflow: hidden;
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
+      background: var(--surface);
+    }
+    .feature {
+      flex: 1;
+      padding: 20px 22px;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .feature:last-child { border-right: none; }
+    .feature-icon {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .feature-title  { font-size: 13.5px; font-weight: 600; }
+    .feature-desc   { font-size: 12px; color: var(--text-dim); line-height: 1.55; }
+
+    /* ── Login overlay ───────────────────────── */
+    .login-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.6);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s;
+    }
+    .login-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .login-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-xl);
+      box-shadow: var(--shadow-md);
+      width: 100%;
+      max-width: 360px;
+      margin: 20px;
+      transform: translateY(12px);
+      transition: transform .2s;
+    }
+    .login-overlay.open .login-card { transform: none; }
+
+    .login-card-hdr {
+      padding: 24px 26px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .login-card-title {
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .login-close {
+      background: none; border: none;
+      color: var(--text-dim); font-size: 18px; line-height: 1;
+      padding: 2px 4px; border-radius: var(--r);
+      transition: background .12s, color .12s;
+    }
+    .login-close:hover { background: var(--border); color: var(--text); }
+
+    .login-card-body {
+      padding: 22px 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .login-field { display: flex; flex-direction: column; gap: 5px; }
+    .login-lbl { font-size: 12.5px; font-weight: 600; color: var(--text); }
+    .login-input {
+      width: 100%;
+      padding: 10px 13px;
+      border: 1.5px solid var(--border-s);
+      border-radius: var(--r-lg);
+      background: oklch(20% 0.01 270);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+      transition: border-color .15s;
+    }
+    .login-input:focus { border-color: var(--accent); }
+    .login-input::placeholder { color: var(--text-dim); }
+
+    .btn-login-submit {
+      width: 100%;
+      padding: 11px;
+      border-radius: var(--r-xl);
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13.5px;
+      font-weight: 600;
+      letter-spacing: .04em;
+      transition: background .14s, transform .08s;
+    }
+    .btn-login-submit:hover  { background: var(--accent-h); }
+    .btn-login-submit:active { transform: translateY(1px); }
+
+    /* ── Tweaks ─────────────────────────────── */
+    .tweaks {
+      position: fixed; bottom: 20px; right: 20px; width: 216px;
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: var(--r-xl); box-shadow: var(--shadow-md);
+      z-index: 999; display: none;
+    }
+    .tweaks.open { display: block; }
+    .tweaks-hdr {
+      padding: 11px 14px 10px; border-bottom: 1px solid var(--border);
+      font-weight: 600; font-size: 12px; letter-spacing: .04em;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .tweaks-x {
+      background: none; border: none; color: var(--text-dim);
+      font-size: 14px; line-height: 1; padding: 2px 3px;
+      border-radius: 3px; transition: background .12s;
+    }
+    .tweaks-x:hover { background: var(--border); }
+    .tweaks-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 14px; }
+    .tweak       { display: flex; flex-direction: column; gap: 6px; }
+    .tweak-lbl   {
+      font-size: 10.5px; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--text-dim);
+    }
+    .swatches { display: flex; gap: 6px; }
+    .swatch {
+      width: 20px; height: 20px; border-radius: 50%; cursor: pointer;
+      outline: 2px solid transparent; outline-offset: 2px;
+      transition: transform .12s, outline-color .12s;
+    }
+    .swatch:hover  { transform: scale(1.15); }
+    .swatch.active { outline-color: var(--text); }
+  </style>
+</head>
+<body>
+
+<!-- ── Nav ────────────────────────────────────────── -->
+<nav class="nav">
+  <span class="nav-brand">KORPOTRON<sup>™</sup></span>
+  <button class="btn-nav-login" id="btn-open-login">Log in</button>
+</nav>
+
+<!-- ── Hero ───────────────────────────────────────── -->
+<div class="hero">
+  <div class="hero-inner">
+
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Enterprise text transformation
+    </div>
+
+    <h1 class="hero-title">
+      Your words,<br>
+      <span class="hero-title-accent">professionally optimised.</span>
+    </h1>
+
+    <p class="hero-sub">
+      Korpotron transforms your raw, unsynergised drafts into polished,
+      stakeholder-ready communications — with one click. No consultants required.
+    </p>
+
+    <button class="hero-cta" id="btn-hero-login">
+      Log in to get started →
+    </button>
+
+    <!-- Feature strip -->
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">Templates</div>
+        <div class="feature-title">Reusable instructions</div>
+        <div class="feature-desc">Define how each document type should be transformed.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">Modifiers</div>
+        <div class="feature-title">One-click adjustments</div>
+        <div class="feature-desc">Fine-tune tone, length, and formality per generation.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">Generate</div>
+        <div class="feature-title">Paste, click, copy</div>
+        <div class="feature-desc">No configuration needed at runtime. Just your text.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── Login overlay ───────────────────────────────── -->
+<div class="login-overlay" id="login-overlay">
+  <div class="login-card">
+    <div class="login-card-hdr">
+      <div class="login-card-title">Log in to Korpotron</div>
+      <button class="login-close" id="login-close">✕</button>
+    </div>
+    <div class="login-card-body">
+      <div class="login-field">
+        <label class="login-lbl" for="l-user">Username</label>
+        <input id="l-user" class="login-input" type="text" placeholder="j.smith" autocomplete="username">
+      </div>
+      <div class="login-field">
+        <label class="login-lbl" for="l-pass">Password</label>
+        <input id="l-pass" class="login-input" type="password" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <button class="btn-login-submit" onclick="window.location='Korpotron Generate.html'">Log in</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Tweaks Panel ────────────────────────────────── -->
+<div class="tweaks" id="tweaks">
+  <div class="tweaks-hdr">
+    Tweaks
+    <button class="tweaks-x" id="tweaks-x">✕</button>
+  </div>
+  <div class="tweaks-body">
+    <div class="tweak">
+      <div class="tweak-lbl">Accent color</div>
+      <div class="swatches">
+        <div class="swatch active" data-accent="amber"  style="background:oklch(61% 0.16 40)"  title="Amber"></div>
+        <div class="swatch"        data-accent="violet" style="background:oklch(58% 0.19 290)" title="Violet"></div>
+        <div class="swatch"        data-accent="teal"   style="background:oklch(56% 0.15 195)" title="Teal"></div>
+        <div class="swatch"        data-accent="rose"   style="background:oklch(58% 0.19 15)"  title="Rose"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+
+  /* ── Login overlay ─────────────────────────── */
+  var overlay    = document.getElementById('login-overlay');
+  var btnOpen    = document.getElementById('btn-open-login');
+  var btnHero    = document.getElementById('btn-hero-login');
+  var btnClose   = document.getElementById('login-close');
+
+  function openLogin()  { overlay.classList.add('open'); document.getElementById('l-user').focus(); }
+  function closeLogin() { overlay.classList.remove('open'); }
+
+  btnOpen.addEventListener('click',  openLogin);
+  btnHero.addEventListener('click',  openLogin);
+  btnClose.addEventListener('click', closeLogin);
+  overlay.addEventListener('click',  function (e) { if (e.target === overlay) closeLogin(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeLogin(); });
+
+  /* ── Tweaks protocol ───────────────────────── */
+  var tweaksEl = document.getElementById('tweaks');
+  window.addEventListener('message', function (e) {
+    if (!e.data) return;
+    if (e.data.type === 'tweaks:show') tweaksEl.classList.add('open');
+    if (e.data.type === 'tweaks:hide') tweaksEl.classList.remove('open');
+  });
+  document.getElementById('tweaks-x').addEventListener('click', function () {
+    tweaksEl.classList.remove('open');
+    try { window.parent.postMessage({ type: 'tweaks:closed' }, '*'); } catch (e) {}
+  });
+
+  /* ── Accent colors ─────────────────────────── */
+  var ACCENTS = {
+    amber:  ['oklch(61% 0.16 40)',  'oklch(55% 0.16 40)',  'oklch(94% 0.055 40)', 'oklch(32% 0.12 40)'],
+    violet: ['oklch(58% 0.19 290)', 'oklch(52% 0.19 290)', 'oklch(94% 0.05 290)', 'oklch(30% 0.14 290)'],
+    teal:   ['oklch(56% 0.15 195)', 'oklch(50% 0.15 195)', 'oklch(94% 0.05 195)', 'oklch(28% 0.10 195)'],
+    rose:   ['oklch(58% 0.19 15)',  'oklch(52% 0.19 15)',  'oklch(95% 0.06 15)',  'oklch(30% 0.14 15)'],
+  };
+  function setAccent(name) {
+    var c = ACCENTS[name], s = document.documentElement.style;
+    s.setProperty('--accent',     c[0]);
+    s.setProperty('--accent-h',   c[1]);
+    s.setProperty('--accent-bg',  c[2]);
+    s.setProperty('--accent-txt', c[3]);
+    document.querySelectorAll('.swatch').forEach(function (sw) {
+      sw.classList.toggle('active', sw.dataset.accent === name);
+    });
+  }
+  document.querySelectorAll('.swatch').forEach(function (sw) {
+    sw.addEventListener('click', function () { setAccent(sw.dataset.accent); });
+  });
+
+})();
+</script>
+</body>
+</html>
