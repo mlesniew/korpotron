@@ -3,7 +3,7 @@ project: "Korpotron"
 version: 1
 status: active
 created: 2026-05-26
-updated: 2026-06-08
+updated: 2026-06-10
 prd_version: 1
 main_goal: speed
 top_blocker: decisions
@@ -46,7 +46,7 @@ eliminates the copy-paste chore — is confirmed when this slice ships and the p
 | S-07 | option-group-edit-ux    | option group edit page shows all options with editable name and instructions; each option has a delete button with JS confirmation | F-01, S-02             | —                                             | done    |
 | S-08 | template-list-ux        | ~~template list page shows a name + delete-icon row per template; clicking the name navigates to the edit page~~                   | F-01, S-01             | —                                             | dropped |
 | S-09 | option-group-list-ux    | ~~option group list page shows a name + delete-icon row per group; clicking the name navigates to the edit page~~                  | F-01, S-02             | —                                             | dropped |
-| S-10 | ui-refresh              | all app pages get a modern, non-generic visual style; forms and layout overhauled; framework TBD via research                      | S-04–S-07, S-11        | —                                             | planned |
+| S-10 | ui-refresh              | all app pages get a modern, non-generic visual style; forms and layout overhauled; framework TBD via research                      | S-04–S-07, S-11        | —                                             | done    |
 | S-11 | user-registration       | users can self-register; accounts are inactive until an admin approves them via the Django admin panel                             | F-01                   | —                                             | planned |
 
 ## Streams
@@ -285,7 +285,7 @@ S-10.
 - **Risk:** Medium — touches every template; a poor framework choice or incomplete rollout leaves the UI inconsistent.
   Mitigated by sequencing after all structural slices and making the framework decision explicit before implementation
   begins.
-- **Status:** planned
+- **Status:** done
 
 ## Implementation Summary
 
@@ -362,3 +362,5 @@ See the `## Done` section below for MVP archive locations.
   Archived 2026-06-07 → `context/archive/2026-06-05-onboarding-defaults/`. Lesson: —.
 - **S-07: option group edit page shows all options with editable name and instructions; each option has a delete button
   with JS confirmation** — Archived 2026-06-08 → `context/archive/2026-06-08-option-group-edit-ux/`. Lesson: —.
+- **S-10: all app pages have a modern, cohesive visual style. Forms are no longer rendered with bare Django widgets.** —
+  Archived 2026-06-10 → `context/archive/2026-06-08-ui-refresh/`. Lesson: —.
