@@ -22,6 +22,15 @@
             "command": "find . -name '*.md' -not -path '*/context/archive/*' | xargs npx --yes prettier --write --print-width=120 --prose-wrap=always"
           }
         ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run djlint templates/ --reformat"
+          }
+        ]
       }
     ]
   }

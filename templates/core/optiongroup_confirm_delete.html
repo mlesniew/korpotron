@@ -1,12 +1,11 @@
 {% extends "base.html" %}
-
 {% block content %}
-<h1>Delete option group</h1>
-<p>Delete <strong>{{ object.name }}</strong>? This will also permanently delete its {{ object.options.count }} option{{ object.options.count|pluralize }}.</p>
-
-<form method="post">
-  {% csrf_token %}
-  <button type="submit" class="btn btn-danger">Delete</button>
-  <a href="{% url 'option-group-list' %}" class="btn btn-outline-secondary ms-2">Cancel</a>
-</form>
+    <h1>Delete option group</h1>
+    <p>Delete <strong>{{ object.name }}</strong>? This will also permanently delete its {{ object.options.count }} option{{ object.options.count|pluralize }}.</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a href="{% url 'option-group-list' %}"
+           class="btn btn-outline-secondary ms-2">Cancel</a>
+    </form>
 {% endblock %}

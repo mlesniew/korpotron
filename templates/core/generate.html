@@ -1,67 +1,77 @@
 {% extends "base.html" %}
-
 {% block content %}
-<h1 class="h3 mb-3">Generate</h1>
-
-{% if templates %}
-<div class="row g-4">
-  <div class="col-lg-6">
-    <div class="mb-3">
-      <label for="template-select" class="form-label">Template</label>
-      <select id="template-select" class="form-select">
-        {% for template in templates %}
-          <option value="{{ template.pk }}" data-generate-title="{{ template.generate_title|yesno:'1,0' }}">{{ template.name }}</option>
-        {% endfor %}
-      </select>
-    </div>
-
-    <div class="mb-3">
-      <label for="input-text" class="form-label">Text to transform</label>
-      <textarea id="input-text" class="form-control" rows="8" placeholder="Paste the text you want to rewrite…"></textarea>
-    </div>
-
-    {% for group in option_groups %}
-      {% if group.options.all %}
-      <div class="mb-3 option-group" data-group-id="{{ group.pk }}">
-        <div class="form-label">{{ group.name }}</div>
-        <div class="btn-group flex-wrap" role="group" aria-label="{{ group.name }}">
-          {% for option in group.options.all %}
-            <button type="button" class="btn btn-outline-primary option-btn" data-option-id="{{ option.pk }}" aria-pressed="false">{{ option.name }}</button>
-          {% endfor %}
+    <h1 class="h3 mb-3">Generate</h1>
+    {% if templates %}
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="mb-3">
+                    <label for="template-select" class="form-label">Template</label>
+                    <select id="template-select" class="form-select">
+                        {% for template in templates %}
+                            <option value="{{ template.pk }}"
+                                    data-generate-title="{{ template.generate_title|yesno:'1,0' }}">{{ template.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="input-text" class="form-label">Text to transform</label>
+                    <textarea id="input-text"
+                              class="form-control"
+                              rows="8"
+                              placeholder="Paste the text you want to rewrite…"></textarea>
+                </div>
+                {% for group in option_groups %}
+                    {% if group.options.all %}
+                        <div class="mb-3 option-group" data-group-id="{{ group.pk }}">
+                            <div class="form-label">{{ group.name }}</div>
+                            <div class="btn-group flex-wrap"
+                                 role="group"
+                                 aria-label="{{ group.name }}">
+                                {% for option in group.options.all %}
+                                    <button type="button"
+                                            class="btn btn-outline-primary option-btn"
+                                            data-option-id="{{ option.pk }}"
+                                            aria-pressed="false">{{ option.name }}</button>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <button type="button" id="generate-btn" class="btn btn-primary">
+                    <span id="generate-spinner"
+                          class="spinner-border spinner-border-sm d-none"
+                          role="status"
+                          aria-hidden="true"></span>
+                    <span id="generate-label">Generate</span>
+                </button>
+            </div>
+            <div class="col-lg-6">
+                <div id="error-alert" class="alert alert-danger d-none" role="alert"></div>
+                <div id="result-region" class="d-none">
+                    <div id="title-field-wrap" class="mb-3 d-none">
+                        <label for="result-title"
+                               class="form-label d-flex justify-content-between align-items-center">
+                            <span>Title</span>
+                            <button type="button"
+                                    class="btn btn-outline-secondary btn-sm copy-btn"
+                                    data-copy-target="result-title">Copy</button>
+                        </label>
+                        <input id="result-title" type="text" class="form-control" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="result-body"
+                               class="form-label d-flex justify-content-between align-items-center">
+                            <span>Result</span>
+                            <button type="button"
+                                    class="btn btn-outline-secondary btn-sm copy-btn"
+                                    data-copy-target="result-body">Copy</button>
+                        </label>
+                        <textarea id="result-body" class="form-control" rows="12" readonly></textarea>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      {% endif %}
-    {% endfor %}
-
-    <button type="button" id="generate-btn" class="btn btn-primary">
-      <span id="generate-spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-      <span id="generate-label">Generate</span>
-    </button>
-  </div>
-
-  <div class="col-lg-6">
-    <div id="error-alert" class="alert alert-danger d-none" role="alert"></div>
-
-    <div id="result-region" class="d-none">
-      <div id="title-field-wrap" class="mb-3 d-none">
-        <label for="result-title" class="form-label d-flex justify-content-between align-items-center">
-          <span>Title</span>
-          <button type="button" class="btn btn-outline-secondary btn-sm copy-btn" data-copy-target="result-title">Copy</button>
-        </label>
-        <input id="result-title" type="text" class="form-control" readonly>
-      </div>
-      <div class="mb-3">
-        <label for="result-body" class="form-label d-flex justify-content-between align-items-center">
-          <span>Result</span>
-          <button type="button" class="btn btn-outline-secondary btn-sm copy-btn" data-copy-target="result-body">Copy</button>
-        </label>
-        <textarea id="result-body" class="form-control" rows="12" readonly></textarea>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
+        <script>
   (function () {
     const GENERATE_URL = "{% url 'generate-api' %}";
     // group_id -> option_id; the single source of truth for the payload.
@@ -201,10 +211,9 @@
       });
     });
   })();
-</script>
-{% endif %}
-
-{% if not templates %}
-<p class="text-muted">You have no templates yet. <a href="{% url 'template-create' %}">Create one</a> to get started.</p>
-{% endif %}
+        </script>
+    {% endif %}
+    {% if not templates %}
+        <p class="text-muted">You have no templates yet. <a href="{% url 'template-create' %}">Create one</a> to get started.</p>
+    {% endif %}
 {% endblock %}

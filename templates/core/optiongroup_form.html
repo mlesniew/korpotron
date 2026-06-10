@@ -1,67 +1,71 @@
 {% extends "base.html" %}
-
 {% block content %}
-<h1>{% if object %}Edit option group{% else %}New option group{% endif %}</h1>
-
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-
-  <h2 class="h5 mt-4">Options</h2>
-  {{ formset.management_form }}
-  {% if formset.non_form_errors %}
-    <div class="alert alert-danger">
-      {% for error in formset.non_form_errors %}{{ error }}{% endfor %}
-    </div>
-  {% endif %}
-  <div id="option-rows">
-    {% for option_form in formset %}
-    <div class="option-row border rounded p-3 mb-2">
-      {% for hidden in option_form.hidden_fields %}{{ hidden }}{% endfor %}
-      <div style="display:none">{{ option_form.DELETE }}</div>
-      {% if option_form.non_field_errors %}
-        <div class="alert alert-danger">{{ option_form.non_field_errors }}</div>
-      {% endif %}
-      <div class="mb-2">
-        <label for="{{ option_form.name.id_for_label }}">Name</label>
-        {{ option_form.name }}
-        {% if option_form.name.errors %}<div class="text-danger small">{{ option_form.name.errors }}</div>{% endif %}
-      </div>
-      <div class="mb-2">
-        <label for="{{ option_form.instruction.id_for_label }}">Instructions</label>
-        {{ option_form.instruction }}
-        {% if option_form.instruction.errors %}<div class="text-danger small">{{ option_form.instruction.errors }}</div>{% endif %}
-      </div>
-      <button type="button" class="btn btn-outline-danger btn-sm delete-option">Delete</button>
-    </div>
-    {% endfor %}
-  </div>
-
-  <template id="empty-option-row">
-    <div class="option-row border rounded p-3 mb-2">
-      {% for hidden in formset.empty_form.hidden_fields %}{{ hidden }}{% endfor %}
-      <div style="display:none">{{ formset.empty_form.DELETE }}</div>
-      <div class="mb-2">
-        <label for="{{ formset.empty_form.name.id_for_label }}">Name</label>
-        {{ formset.empty_form.name }}
-      </div>
-      <div class="mb-2">
-        <label for="{{ formset.empty_form.instruction.id_for_label }}">Instructions</label>
-        {{ formset.empty_form.instruction }}
-      </div>
-      <button type="button" class="btn btn-outline-danger btn-sm delete-option">Delete</button>
-    </div>
-  </template>
-
-  <button type="button" class="btn btn-outline-secondary btn-sm mb-3" id="add-option">Add option</button>
-
-  <div>
-    <button type="submit" class="btn btn-primary">Save</button>
-    <a href="{% url 'option-group-list' %}" class="btn btn-outline-secondary ms-2">Cancel</a>
-  </div>
-</form>
-
-<script>
+    <h1>
+        {% if object %}
+            Edit option group
+        {% else %}
+            New option group
+        {% endif %}
+    </h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <h2 class="h5 mt-4">Options</h2>
+        {{ formset.management_form }}
+        {% if formset.non_form_errors %}
+            <div class="alert alert-danger">{% for error in formset.non_form_errors %}{{ error }}{% endfor %}</div>
+        {% endif %}
+        <div id="option-rows">
+            {% for option_form in formset %}
+                <div class="option-row border rounded p-3 mb-2">
+                    {% for hidden in option_form.hidden_fields %}{{ hidden }}{% endfor %}
+                    <div style="display:none">{{ option_form.DELETE }}</div>
+                    {% if option_form.non_field_errors %}
+                        <div class="alert alert-danger">{{ option_form.non_field_errors }}</div>
+                    {% endif %}
+                    <div class="mb-2">
+                        <label for="{{ option_form.name.id_for_label }}">Name</label>
+                        {{ option_form.name }}
+                        {% if option_form.name.errors %}
+                            <div class="text-danger small">{{ option_form.name.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-2">
+                        <label for="{{ option_form.instruction.id_for_label }}">Instructions</label>
+                        {{ option_form.instruction }}
+                        {% if option_form.instruction.errors %}
+                            <div class="text-danger small">{{ option_form.instruction.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <button type="button" class="btn btn-outline-danger btn-sm delete-option">Delete</button>
+                </div>
+            {% endfor %}
+        </div>
+        <template id="empty-option-row">
+            <div class="option-row border rounded p-3 mb-2">
+                {% for hidden in formset.empty_form.hidden_fields %}{{ hidden }}{% endfor %}
+                <div style="display:none">{{ formset.empty_form.DELETE }}</div>
+                <div class="mb-2">
+                    <label for="{{ formset.empty_form.name.id_for_label }}">Name</label>
+                    {{ formset.empty_form.name }}
+                </div>
+                <div class="mb-2">
+                    <label for="{{ formset.empty_form.instruction.id_for_label }}">Instructions</label>
+                    {{ formset.empty_form.instruction }}
+                </div>
+                <button type="button" class="btn btn-outline-danger btn-sm delete-option">Delete</button>
+            </div>
+        </template>
+        <button type="button"
+                class="btn btn-outline-secondary btn-sm mb-3"
+                id="add-option">Add option</button>
+        <div>
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a href="{% url 'option-group-list' %}"
+               class="btn btn-outline-secondary ms-2">Cancel</a>
+        </div>
+    </form>
+    <script>
   function wireDeleteButton(row) {
     row.querySelector('.delete-option').addEventListener('click', function () {
       if (confirm('Delete this option?')) {
@@ -93,5 +97,5 @@
     wireDeleteButton(container.lastElementChild);
     totalForms.value = count + 1;
   });
-</script>
+    </script>
 {% endblock %}
