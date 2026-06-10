@@ -47,7 +47,7 @@ login modal removed per user request and documented in Progress 2.4 (not a scope
   - Tradeoff: None significant.
   - Confidence: HIGH — verified the 500 with a probe test in this repo.
   - Blind spot: None significant.
-- **Decision**: PENDING
+- **Decision**: FIXED — added `http_method_names = ["post"]` to both TemplateDeleteView and OptionGroupDeleteView
 
 ### F2 — "← Edit text" during loading shows a false "timed out" error
 
@@ -69,7 +69,8 @@ login modal removed per user request and documented in Progress 2.4 (not a scope
   - Tradeoff: Minor added state in the closure.
   - Confidence: HIGH — traced the control flow (abort → catch before finally, inFlight still true).
   - Blind spot: None significant.
-- **Decision**: PENDING
+- **Decision**: FIXED — added `cancelled` flag; `backToInput()` sets it before abort; timeout message gated on
+  `!cancelled`
 
 ### F3 — Login "next" read from request.GET, lost on failed POST
 
@@ -83,4 +84,4 @@ login modal removed per user request and documented in Progress 2.4 (not a scope
   case.
 - **Fix**: Render `<input type="hidden" name="next" value="{{ next }}">` from the context var, unconditionally, instead
   of gating on `request.GET.next`.
-- **Decision**: PENDING
+- **Decision**: FIXED — replaced `{% if request.GET.next %}` gate with unconditional `{{ next }}` context var

@@ -147,6 +147,7 @@
     const bodyField = document.getElementById('result-body');
 
     let inFlight = false;
+    let cancelled = false;
     let controller = null;
 
     const QUIPS = [
@@ -238,6 +239,7 @@
     // (c) Generate.
     async function doGenerate() {
       if (inFlight) return;  // only one in-flight request at a time
+      cancelled = false;
       clearError();
       const text = inputText.value;
       if (!text.trim()) {
@@ -292,7 +294,7 @@
         // (e) Error: inline alert above the Generate button, input preserved.
         if (err.name === 'AbortError') {
           // Distinguish a timeout from a user-initiated cancel.
-          if (inFlight) showError('The request timed out. Please try again.');
+          if (inFlight && !cancelled) showError('The request timed out. Please try again.');
         } else {
           showError('Network error. Please try again.');
         }
@@ -309,6 +311,7 @@
 
     // (f) Edit text: return to the input state with the prior text intact.
     function backToInput() {
+      cancelled = true;
       if (controller) controller.abort();  // cancel an in-flight request
       setState('input');
     }

@@ -53,6 +53,7 @@ class TemplateUpdateView(LoginRequiredMixin, UpdateView):
 
 class TemplateDeleteView(LoginRequiredMixin, DeleteView):
     model = Template
+    http_method_names = ["post"]
 
     def get_queryset(self) -> QuerySet[Template]:
         return Template.objects.filter(user=self.request.user)
@@ -128,6 +129,7 @@ class OptionGroupUpdateView(LoginRequiredMixin, UpdateView):
 
 class OptionGroupDeleteView(LoginRequiredMixin, DeleteView):
     model = OptionGroup
+    http_method_names = ["post"]
 
     def get_queryset(self) -> QuerySet[OptionGroup]:
         return OptionGroup.objects.filter(user=self.request.user)

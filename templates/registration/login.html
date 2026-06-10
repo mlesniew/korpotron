@@ -47,7 +47,7 @@
                     <div class="k-login-card-body">
                         <form method="post" action="{% url 'login' %}" class="k-login-form">
                             {% csrf_token %}
-                            {% if request.GET.next %}<input type="hidden" name="next" value="{{ request.GET.next }}">{% endif %}
+                            <input type="hidden" name="next" value="{{ next }}">
                             {% if form.errors %}
                                 <div class="k-login-error">
                                     {% for error in form.non_field_errors %}
