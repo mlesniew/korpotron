@@ -1,6 +1,7 @@
 # Deployment Steps
 
-All code changes (Dockerfile, settings, fly.toml, GitHub Actions workflow) are already in the repo. These are the manual steps needed to wire up a fresh deployment.
+All code changes (Dockerfile, settings, fly.toml, GitHub Actions workflow) are already in the repo. These are the manual
+steps needed to wire up a fresh deployment.
 
 ---
 
@@ -18,7 +19,8 @@ If `korpotron` is taken, pick a variant and update `app =` in `fly.toml`.
 
 ### Supabase
 
-Create a project at supabase.com — use the **Frankfurt (eu-central-1)** region for lowest latency from the Amsterdam Fly.io machine.
+Create a project at supabase.com — use the **Frankfurt (eu-central-1)** region for lowest latency from the Amsterdam
+Fly.io machine.
 
 Grab the connection string: Settings → Database → Connection string → URI tab → **Transaction pooler** (port 6543):
 
@@ -40,11 +42,14 @@ fly secrets set DATABASE_URL="postgresql://..."   # from Supabase above
 fly secrets set OPENROUTER_API_KEY="sk-or-v1-..."  # from openrouter.ai → Keys
 ```
 
-`DJANGO_SETTINGS_MODULE` and `ALLOWED_HOSTS` are not needed — they're handled in the Dockerfile and derived from `FLY_APP_NAME` respectively.
+`DJANGO_SETTINGS_MODULE` and `ALLOWED_HOSTS` are not needed — they're handled in the Dockerfile and derived from
+`FLY_APP_NAME` respectively.
 
-`OPENROUTER_MODEL` and `OPENROUTER_BASE_URL` are optional (defaults: `openai/gpt-4o-mini` and `https://openrouter.ai/api/v1`). Set them only to override.
+`OPENROUTER_MODEL` and `OPENROUTER_BASE_URL` are optional (defaults: `openai/gpt-4o-mini` and
+`https://openrouter.ai/api/v1`). Set them only to override.
 
-> **Note:** Setting a secret on an already-running app does not take effect until a redeploy or machine restart (`fly deploy` or `fly machine restart <id>`). Verify propagation with `fly secrets list`.
+> **Note:** Setting a secret on an already-running app does not take effect until a redeploy or machine restart
+> (`fly deploy` or `fly machine restart <id>`). Verify propagation with `fly secrets list`.
 
 ---
 
@@ -54,7 +59,8 @@ fly secrets set OPENROUTER_API_KEY="sk-or-v1-..."  # from openrouter.ai → Keys
 fly deploy
 ```
 
-The release command (`python manage.py migrate`) runs first; the deploy aborts if migrations fail. Watch with `fly logs`.
+The release command (`python manage.py migrate`) runs first; the deploy aborts if migrations fail. Watch with
+`fly logs`.
 
 ---
 
@@ -81,8 +87,8 @@ python manage.py createsuperuser
 fly tokens create deploy -a korpotron
 ```
 
-Add the token as a secret named `FLY_API_TOKEN` in the GitHub repo:
-Settings → Secrets and variables → Actions → New repository secret.
+Add the token as a secret named `FLY_API_TOKEN` in the GitHub repo: Settings → Secrets and variables → Actions → New
+repository secret.
 
 After this, every push to `master` triggers an automatic deploy.
 

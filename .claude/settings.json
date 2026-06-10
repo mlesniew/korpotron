@@ -13,6 +13,15 @@
             "command": "uv run ruff check --fix . >&2 || exit 2"
           }
         ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "find . -name '*.md' -not -path '*/context/archive/*' | xargs npx --yes prettier --write --print-width=120 --prose-wrap=always"
+          }
+        ]
       }
     ]
   }
