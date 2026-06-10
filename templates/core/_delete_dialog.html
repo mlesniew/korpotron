@@ -5,17 +5,16 @@ CSRF header and, on a 2xx (204), fades out and removes the originating row.
 The row to remove is the button's nearest [data-row] ancestor.
 {% endcomment %}
 <div class="k-del-overlay" id="k-del-overlay">
-  <div class="k-del-dialog">
-    <div class="k-del-title" id="k-del-title">Delete?</div>
-    <p>Are you sure you want to delete <strong id="k-del-name"></strong>? This cannot be undone.</p>
-    <div class="k-error-bar" id="k-del-error"></div>
-    <div class="k-del-actions">
-      <button type="button" class="k-btn k-btn-ghost" id="k-del-cancel">Cancel</button>
-      <button type="button" class="k-btn-danger" id="k-del-confirm">Delete</button>
+    <div class="k-del-dialog">
+        <div class="k-del-title" id="k-del-title">Delete?</div>
+        <p>Are you sure you want to delete <strong id="k-del-name"></strong>? This cannot be undone.</p>
+        <div class="k-error-bar" id="k-del-error"></div>
+        <div class="k-del-actions">
+            <button type="button" class="k-btn k-btn-ghost" id="k-del-cancel">Cancel</button>
+            <button type="button" class="k-btn-danger" id="k-del-confirm">Delete</button>
+        </div>
     </div>
-  </div>
 </div>
-
 <script>
 (function () {
   function getCookie(name) {

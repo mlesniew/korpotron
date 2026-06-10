@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  {% include "_head.html" %}
-</head>
-<body>
-  <nav class="k-nav">
-    <a href="{% url 'home' %}" class="k-nav-brand">KORPOTRON<sup>™</sup></a>
-    {% if user.is_authenticated %}
-      <div class="k-nav-links">
-        <a href="{% url 'home' %}" class="k-nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">Generate</a>
-        <a href="{% url 'template-list' %}" class="k-nav-link {% if 'template' in request.resolver_match.url_name %}active{% endif %}">Templates</a>
-        <a href="{% url 'option-group-list' %}" class="k-nav-link {% if 'option-group' in request.resolver_match.url_name %}active{% endif %}">Modifiers</a>
-      </div>
-      <div class="k-nav-end">
-        <span class="k-nav-user">{{ user.username }}</span>
-        <form method="post" action="{% url 'logout' %}" style="margin:0">
-          {% csrf_token %}
-          <button type="submit" class="k-nav-logout">Log out</button>
-        </form>
-      </div>
-    {% endif %}
-  </nav>
-  <div class="k-page">
-    {% block content %}{% endblock %}
-  </div>
-</body>
+    <head>{% include "_head.html" %}</head>
+    <body>
+        <nav class="k-nav">
+            <a href="{% url 'home' %}" class="k-nav-brand">KORPOTRON<sup>™</sup></a>
+            {% if user.is_authenticated %}
+                <div class="k-nav-links">
+                    <a href="{% url 'home' %}"
+                       class="k-nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">Generate</a>
+                    <a href="{% url 'template-list' %}"
+                       class="k-nav-link {% if 'template' in request.resolver_match.url_name %}active{% endif %}">Templates</a>
+                    <a href="{% url 'option-group-list' %}"
+                       class="k-nav-link {% if 'option-group' in request.resolver_match.url_name %}active{% endif %}">Modifiers</a>
+                </div>
+                <div class="k-nav-end">
+                    <span class="k-nav-user">{{ user.username }}</span>
+                    <form method="post" action="{% url 'logout' %}" style="margin:0">
+                        {% csrf_token %}
+                        <button type="submit" class="k-nav-logout">Log out</button>
+                    </form>
+                </div>
+            {% endif %}
+        </nav>
+        <div class="k-page">
+            {% block content %}{% endblock %}
+        </div>
+    </body>
 </html>

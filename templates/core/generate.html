@@ -1,93 +1,126 @@
 {% extends "base.html" %}
-
 {% block content %}
-{% if templates %}
-<!-- 1 · Template selector -->
-<div class="k-section-label">
-  <span class="k-section-label-text">Template</span>
-  <a href="{% url 'template-list' %}" class="k-section-label-link">Manage →</a>
-</div>
-<div class="k-group-pills" id="template-row" style="margin-bottom:28px;">
-  {% for template in templates %}
-  <button type="button" class="tmpl-btn" data-template-id="{{ template.pk }}" data-generate-title="{{ template.generate_title|yesno:'1,0' }}"><span class="tmpl-check">✓</span>{{ template.name }}</button>
-  {% endfor %}
-  <a href="{% url 'template-create' %}" class="tmpl-btn tmpl-btn-dashed">+ New template</a>
-</div>
-
-<!-- 2 · Modifiers -->
-{% if option_groups %}
-<div class="k-section-label">
-  <span class="k-section-label-text">Modifiers</span>
-  <a href="{% url 'option-group-list' %}" class="k-section-label-link">Manage →</a>
-</div>
-<div class="k-group-grid" style="margin-bottom:26px;">
-  {% for group in option_groups %}
-    {% if group.options.all %}
-    <div class="option-group" data-group-id="{{ group.pk }}">
-      <span class="k-group-name">{{ group.name }}</span>
-      <div class="k-group-pills">
-        {% for option in group.options.all %}
-        <button type="button" class="opt-btn" data-option-id="{{ option.pk }}" aria-pressed="false">{{ option.name }}</button>
-        {% endfor %}
-      </div>
-    </div>
-    {% endif %}
-  {% endfor %}
-</div>
-{% endif %}
-
-<hr class="k-divider">
-
-<!-- 3 · Input / Output workspace -->
-<div class="k-workspace-input" id="workspace-input">
-  <label for="input-text" class="k-label">Text to transform</label>
-  <textarea id="input-text" class="k-input k-textarea" rows="8" style="min-height:180px; border-radius:var(--k-r-xl);"
-    placeholder="Paste the raw, unsynergized content here…"></textarea>
-  <div id="error-bar" class="k-error-bar" style="margin-top:12px; margin-bottom:0;"></div>
-  <button type="button" id="generate-btn" class="k-generate-btn" style="margin-top:12px;">
-    <span id="generate-label">Generate</span>
-    <span id="generate-spinner" class="k-spinner" style="display:none; vertical-align:middle; margin-left:9px; width:15px; height:15px; border-width:2px;"></span>
-  </button>
-</div>
-
-<div class="k-workspace-loading" id="workspace-loading">
-  <div class="k-output-controls">
-    <button type="button" class="k-btn-back" id="loading-cancel">← Edit text</button>
-  </div>
-  <div class="k-output-card">
-    <div class="k-loading-state">
-      <div class="k-spinner" style="border-color:var(--k-border); border-top-color:var(--k-accent); width:28px; height:28px;"></div>
-      <div class="k-loading-quip" id="loading-quip"></div>
-    </div>
-  </div>
-</div>
-
-<div class="k-workspace-output" id="workspace-output">
-  <div class="k-output-controls">
-    <button type="button" class="k-btn-back" id="edit-btn">← Edit text</button>
-    <button type="button" class="k-row-btn" id="regen-btn">↻ Regenerate</button>
-  </div>
-  <div class="k-output-card">
-    <div class="k-output-field" id="title-field-wrap" style="display:none;">
-      <div class="k-output-field-header">
-        <span class="k-output-label">Title</span>
-        <button type="button" class="k-copy-btn copy-btn" data-copy-target="result-title">Copy</button>
-      </div>
-      <input id="result-title" type="text" class="k-output-text" readonly
-        style="min-height:auto; font-weight:600; font-size:15px;">
-    </div>
-    <div class="k-output-field">
-      <div class="k-output-field-header">
-        <span class="k-output-label">Result</span>
-        <button type="button" class="k-copy-btn copy-btn" data-copy-target="result-body">Copy</button>
-      </div>
-      <textarea id="result-body" class="k-output-text" rows="10" readonly></textarea>
-    </div>
-  </div>
-  <button type="button" class="k-btn k-btn-ghost" id="copy-all-btn" style="width:100%; margin-top:12px;">Copy to clipboard</button>
-</div>
-
-<script>
+    {% if templates %}
+        <!-- 1 · Template selector -->
+        <div class="k-section-label">
+            <span class="k-section-label-text">Template</span>
+            <a href="{% url 'template-list' %}" class="k-section-label-link">Manage →</a>
+        </div>
+        <div class="k-group-pills" id="template-row" style="margin-bottom:28px;">
+            {% for template in templates %}
+                <button type="button"
+                        class="tmpl-btn"
+                        data-template-id="{{ template.pk }}"
+                        data-generate-title="{{ template.generate_title|yesno:'1,0' }}"><span class="tmpl-check">✓</span>{{ template.name }}</button>
+            {% endfor %}
+            <a href="{% url 'template-create' %}" class="tmpl-btn tmpl-btn-dashed">+ New template</a>
+        </div>
+        <!-- 2 · Modifiers -->
+        {% if option_groups %}
+            <div class="k-section-label">
+                <span class="k-section-label-text">Modifiers</span>
+                <a href="{% url 'option-group-list' %}" class="k-section-label-link">Manage →</a>
+            </div>
+            <div class="k-group-grid" style="margin-bottom:26px;">
+                {% for group in option_groups %}
+                    {% if group.options.all %}
+                        <div class="option-group" data-group-id="{{ group.pk }}">
+                            <span class="k-group-name">{{ group.name }}</span>
+                            <div class="k-group-pills">
+                                {% for option in group.options.all %}
+                                    <button type="button"
+                                            class="opt-btn"
+                                            data-option-id="{{ option.pk }}"
+                                            aria-pressed="false">{{ option.name }}</button>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+        <hr class="k-divider">
+        <!-- 3 · Input / Output workspace -->
+        <div class="k-workspace-input" id="workspace-input">
+            <label for="input-text" class="k-label">Text to transform</label>
+            <textarea id="input-text"
+                      class="k-input k-textarea"
+                      rows="8"
+                      style="min-height:180px;
+                             border-radius:var(--k-r-xl)"
+                      placeholder="Paste the raw, unsynergized content here…"></textarea>
+            <div id="error-bar"
+                 class="k-error-bar"
+                 style="margin-top:12px;
+                        margin-bottom:0"></div>
+            <button type="button"
+                    id="generate-btn"
+                    class="k-generate-btn"
+                    style="margin-top:12px">
+                <span id="generate-label">Generate</span>
+                <span id="generate-spinner"
+                      class="k-spinner"
+                      style="display:none;
+                             vertical-align:middle;
+                             margin-left:9px;
+                             width:15px;
+                             height:15px;
+                             border-width:2px"></span>
+            </button>
+        </div>
+        <div class="k-workspace-loading" id="workspace-loading">
+            <div class="k-output-controls">
+                <button type="button" class="k-btn-back" id="loading-cancel">← Edit text</button>
+            </div>
+            <div class="k-output-card">
+                <div class="k-loading-state">
+                    <div class="k-spinner"
+                         style="border-color:var(--k-border);
+                                border-top-color:var(--k-accent);
+                                width:28px;
+                                height:28px"></div>
+                    <div class="k-loading-quip" id="loading-quip"></div>
+                </div>
+            </div>
+        </div>
+        <div class="k-workspace-output" id="workspace-output">
+            <div class="k-output-controls">
+                <button type="button" class="k-btn-back" id="edit-btn">← Edit text</button>
+                <button type="button" class="k-row-btn" id="regen-btn">↻ Regenerate</button>
+            </div>
+            <div class="k-output-card">
+                <div class="k-output-field" id="title-field-wrap" style="display:none;">
+                    <div class="k-output-field-header">
+                        <span class="k-output-label">Title</span>
+                        <button type="button"
+                                class="k-copy-btn copy-btn"
+                                data-copy-target="result-title">Copy</button>
+                    </div>
+                    <input id="result-title"
+                           type="text"
+                           class="k-output-text"
+                           readonly
+                           style="min-height:auto;
+                                  font-weight:600;
+                                  font-size:15px">
+                </div>
+                <div class="k-output-field">
+                    <div class="k-output-field-header">
+                        <span class="k-output-label">Result</span>
+                        <button type="button"
+                                class="k-copy-btn copy-btn"
+                                data-copy-target="result-body">Copy</button>
+                    </div>
+                    <textarea id="result-body" class="k-output-text" rows="10" readonly></textarea>
+                </div>
+            </div>
+            <button type="button"
+                    class="k-btn k-btn-ghost"
+                    id="copy-all-btn"
+                    style="width:100%;
+                           margin-top:12px">Copy to clipboard</button>
+        </div>
+        <script>
   (function () {
     const GENERATE_URL = "{% url 'generate-api' %}";
 
@@ -321,12 +354,15 @@
       copyText(this, full);
     });
   })();
-</script>
-{% else %}
-<div class="k-empty">
-  <div style="font-size:16px; font-weight:600; color:var(--k-text-mid); margin-bottom:6px;">No templates yet</div>
-  <div style="margin-bottom:18px;">Templates define how your text gets transformed. Create one to get started.</div>
-  <a href="{% url 'template-create' %}" class="k-btn k-btn-accent">+ New template</a>
-</div>
-{% endif %}
+        </script>
+    {% else %}
+        <div class="k-empty">
+            <div style="font-size:16px;
+                        font-weight:600;
+                        color:var(--k-text-mid);
+                        margin-bottom:6px">No templates yet</div>
+            <div style="margin-bottom:18px;">Templates define how your text gets transformed. Create one to get started.</div>
+            <a href="{% url 'template-create' %}" class="k-btn k-btn-accent">+ New template</a>
+        </div>
+    {% endif %}
 {% endblock %}

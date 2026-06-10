@@ -1,9 +1,9 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  {% include "_head.html" %}
-  <style>
+    <head>
+        {% include "_head.html" %}
+        <style>
     /* Dark grid overlay for login page */
     body::before {
       content: '';
@@ -15,68 +15,73 @@
       mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 20%, transparent 100%);
       -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 20%, transparent 100%);
     }
-  </style>
-</head>
-<body>
-<div class="k-login-page">
-
-  <!-- Nav: brand only -->
-  <nav style="height:52px;display:flex;align-items:center;padding:0 28px;border-bottom:1px solid rgba(255,255,255,.06);position:relative;z-index:1;">
-    <a href="{% url 'home' %}" class="k-mono" style="font-size:12.5px;font-weight:600;letter-spacing:.14em;color:oklch(93% 0.005 80);text-decoration:none;">KORPOTRON<sup style="font-size:8px;opacity:.4;letter-spacing:0;vertical-align:super;">™</sup></a>
-  </nav>
-
-  <div class="k-login-page-inner" style="position:relative;z-index:1;">
-    <div class="k-login-card" style="transform:none;margin:0;">
-
-      <div class="k-login-card-hdr">
-        <div class="k-login-title">Log in</div>
-        <div class="k-login-sub">Enter your credentials to access Korpotron.</div>
-      </div>
-
-      <div class="k-login-card-body">
-        <form method="post" action="{% url 'login' %}" class="k-login-form">
-          {% csrf_token %}
-          {% if request.GET.next %}<input type="hidden" name="next" value="{{ request.GET.next }}">{% endif %}
-
-          {% if form.errors %}
-          <div class="k-login-error">
-            {% for error in form.non_field_errors %}
-              {{ error }}
-            {% empty %}
-              Invalid username or password. Please try again.
-            {% endfor %}
-          </div>
-          {% endif %}
-
-          <div class="k-login-field">
-            <label class="k-login-lbl" for="{{ form.username.id_for_label }}">Username</label>
-            <input id="{{ form.username.id_for_label }}"
-              class="k-login-input"
-              type="text"
-              name="{{ form.username.html_name }}"
-              autocomplete="username"
-              placeholder="j.smith"
-              value="{{ form.username.value|default:'' }}">
-          </div>
-
-          <div class="k-login-field">
-            <label class="k-login-lbl" for="{{ form.password.id_for_label }}">Password</label>
-            <input id="{{ form.password.id_for_label }}"
-              class="k-login-input"
-              type="password"
-              name="{{ form.password.html_name }}"
-              autocomplete="current-password"
-              placeholder="••••••••">
-          </div>
-
-          <button type="submit" class="k-login-submit">Log in</button>
-        </form>
-      </div>
-    </div>
-
-    <a href="{% url 'home' %}" class="k-login-back">← Back to home</a>
-  </div>
-
-</div>
-</body>
+        </style>
+    </head>
+    <body>
+        <div class="k-login-page">
+            <!-- Nav: brand only -->
+            <nav style="height:52px;
+                        display:flex;
+                        align-items:center;
+                        padding:0 28px;
+                        border-bottom:1px solid rgba(255,255,255,.06);
+                        position:relative;
+                        z-index:1">
+                <a href="{% url 'home' %}"
+                   class="k-mono"
+                   style="font-size:12.5px;
+                          font-weight:600;
+                          letter-spacing:.14em;
+                          color:oklch(93% 0.005 80);
+                          text-decoration:none">KORPOTRON<sup style="font-size:8px;
+            opacity:.4;
+            letter-spacing:0;
+            vertical-align:super">™</sup></a>
+            </nav>
+            <div class="k-login-page-inner" style="position:relative;z-index:1;">
+                <div class="k-login-card" style="transform:none;margin:0;">
+                    <div class="k-login-card-hdr">
+                        <div class="k-login-title">Log in</div>
+                        <div class="k-login-sub">Enter your credentials to access Korpotron.</div>
+                    </div>
+                    <div class="k-login-card-body">
+                        <form method="post" action="{% url 'login' %}" class="k-login-form">
+                            {% csrf_token %}
+                            {% if request.GET.next %}<input type="hidden" name="next" value="{{ request.GET.next }}">{% endif %}
+                            {% if form.errors %}
+                                <div class="k-login-error">
+                                    {% for error in form.non_field_errors %}
+                                        {{ error }}
+                                    {% empty %}
+                                        Invalid username or password. Please try again.
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="k-login-field">
+                                <label class="k-login-lbl" for="{{ form.username.id_for_label }}">Username</label>
+                                <input id="{{ form.username.id_for_label }}"
+                                       class="k-login-input"
+                                       type="text"
+                                       name="{{ form.username.html_name }}"
+                                       autocomplete="username"
+                                       placeholder="j.smith"
+                                       value="{{ form.username.value|default:'' }}">
+                            </div>
+                            <div class="k-login-field">
+                                <label class="k-login-lbl" for="{{ form.password.id_for_label }}">Password</label>
+                                <input id="{{ form.password.id_for_label }}"
+                                       class="k-login-input"
+                                       type="password"
+                                       name="{{ form.password.html_name }}"
+                                       autocomplete="current-password"
+                                       placeholder="••••••••">
+                            </div>
+                            <button type="submit" class="k-login-submit">Log in</button>
+                        </form>
+                    </div>
+                </div>
+                <a href="{% url 'home' %}" class="k-login-back">← Back to home</a>
+            </div>
+        </div>
+    </body>
 </html>

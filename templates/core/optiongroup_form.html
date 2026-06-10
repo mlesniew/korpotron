@@ -1,105 +1,125 @@
 {% extends "base.html" %}
-
 {% block content %}
-<div class="k-form-wrap-wide">
-<div class="k-breadcrumb">
-  <a href="{% url 'option-group-list' %}">Modifiers</a>
-  <span class="k-breadcrumb-sep">›</span>
-  <span>{% if object %}Edit modifier{% else %}New modifier{% endif %}</span>
-</div>
-
-<div class="k-card k-form-card">
-  <div class="k-card-hdr">
-    <div class="k-card-title">{% if object %}Edit modifier{% else %}New modifier{% endif %}</div>
-  </div>
-
-  <form method="post">
-    {% csrf_token %}
-    <div class="k-card-body">
-      {% if form.non_field_errors %}
-      <div class="k-error-bar visible">{{ form.non_field_errors|striptags }}</div>
-      {% endif %}
-
-      <div class="k-field">
-        <label class="k-label" for="{{ form.name.id_for_label }}">Name</label>
-        <input type="text" class="k-input" id="{{ form.name.id_for_label }}"
-          name="{{ form.name.html_name }}" value="{{ form.name.value|default:'' }}"
-          placeholder="e.g. Length, Formality…" style="max-width:320px;">
-        {% if form.name.errors %}<div class="k-field-error">{{ form.name.errors|striptags }}</div>{% endif %}
-      </div>
-
-      <div class="k-field" style="margin-bottom:0;">
-        <label class="k-label">Options</label>
-
-        {{ formset.management_form }}
-        {% if formset.non_form_errors %}
-        <div class="k-error-bar visible">
-          {% for error in formset.non_form_errors %}{{ error }}{% endfor %}
+    <div class="k-form-wrap-wide">
+        <div class="k-breadcrumb">
+            <a href="{% url 'option-group-list' %}">Modifiers</a>
+            <span class="k-breadcrumb-sep">›</span>
+            <span>
+                {% if object %}
+                    Edit modifier
+                {% else %}
+                    New modifier
+                {% endif %}
+            </span>
         </div>
-        {% endif %}
-
-        <div class="k-col-heads">
-          <div class="k-col-head">Label</div>
-          <div class="k-col-head">Instruction injected into prompt</div>
-          <div></div>
+        <div class="k-card k-form-card">
+            <div class="k-card-hdr">
+                <div class="k-card-title">
+                    {% if object %}
+                        Edit modifier
+                    {% else %}
+                        New modifier
+                    {% endif %}
+                </div>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <div class="k-card-body">
+                    {% if form.non_field_errors %}
+                        <div class="k-error-bar visible">{{ form.non_field_errors|striptags }}</div>
+                    {% endif %}
+                    <div class="k-field">
+                        <label class="k-label" for="{{ form.name.id_for_label }}">Name</label>
+                        <input type="text"
+                               class="k-input"
+                               id="{{ form.name.id_for_label }}"
+                               name="{{ form.name.html_name }}"
+                               value="{{ form.name.value|default:'' }}"
+                               placeholder="e.g. Length, Formality…"
+                               style="max-width:320px">
+                        {% if form.name.errors %}<div class="k-field-error">{{ form.name.errors|striptags }}</div>{% endif %}
+                    </div>
+                    <div class="k-field" style="margin-bottom:0;">
+                        <label class="k-label">Options</label>
+                        {{ formset.management_form }}
+                        {% if formset.non_form_errors %}
+                            <div class="k-error-bar visible">{% for error in formset.non_form_errors %}{{ error }}{% endfor %}</div>
+                        {% endif %}
+                        <div class="k-col-heads">
+                            <div class="k-col-head">Label</div>
+                            <div class="k-col-head">Instruction injected into prompt</div>
+                            <div></div>
+                        </div>
+                        <div id="option-rows">
+                            {% for option_form in formset %}
+                                <div class="k-opt-row" data-opt-row>
+                                    {% for hidden in option_form.hidden_fields %}{{ hidden }}{% endfor %}
+                                    <div style="display:none">{{ option_form.DELETE }}</div>
+                                    <div>
+                                        <input type="text"
+                                               class="k-opt-name"
+                                               name="{{ option_form.name.html_name }}"
+                                               id="{{ option_form.name.id_for_label }}"
+                                               value="{{ option_form.name.value|default:'' }}"
+                                               placeholder="e.g. Professional">
+                                        {% if option_form.name.errors %}<div class="k-field-error">{{ option_form.name.errors|striptags }}</div>{% endif %}
+                                    </div>
+                                    <div>
+                                        <textarea class="k-opt-instr"
+                                                  name="{{ option_form.instruction.html_name }}"
+                                                  id="{{ option_form.instruction.id_for_label }}"
+                                                  rows="2"
+                                                  placeholder="Describe how this option changes the output…">{{ option_form.instruction.value|default:'' }}</textarea>
+                                        {% if option_form.instruction.errors %}
+                                            <div class="k-field-error">{{ option_form.instruction.errors|striptags }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div>
+                                        <button type="button"
+                                                class="k-opt-del delete-option"
+                                                title="Remove option"
+                                                aria-label="Remove option">&times;</button>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <template id="empty-option-row">
+                            <div class="k-opt-row" data-opt-row>
+                                {% for hidden in formset.empty_form.hidden_fields %}{{ hidden }}{% endfor %}
+                                <div style="display:none">{{ formset.empty_form.DELETE }}</div>
+                                <div>
+                                    <input type="text"
+                                           class="k-opt-name"
+                                           name="{{ formset.empty_form.name.html_name }}"
+                                           id="{{ formset.empty_form.name.id_for_label }}"
+                                           placeholder="e.g. Professional">
+                                </div>
+                                <div>
+                                    <textarea class="k-opt-instr"
+                                              name="{{ formset.empty_form.instruction.html_name }}"
+                                              id="{{ formset.empty_form.instruction.id_for_label }}"
+                                              rows="2"
+                                              placeholder="Describe how this option changes the output…"></textarea>
+                                </div>
+                                <div>
+                                    <button type="button"
+                                            class="k-opt-del delete-option"
+                                            title="Remove option"
+                                            aria-label="Remove option">&times;</button>
+                                </div>
+                            </div>
+                        </template>
+                        <button type="button" class="k-btn-add-opt" id="add-option">+ Add option</button>
+                    </div>
+                </div>
+                <div class="k-card-footer">
+                    <button type="submit" class="k-btn k-btn-accent">Save modifier</button>
+                    <a href="{% url 'option-group-list' %}" class="k-btn k-btn-ghost">Cancel</a>
+                </div>
+            </form>
         </div>
-
-        <div id="option-rows">
-          {% for option_form in formset %}
-          <div class="k-opt-row" data-opt-row>
-            {% for hidden in option_form.hidden_fields %}{{ hidden }}{% endfor %}
-            <div style="display:none">{{ option_form.DELETE }}</div>
-            <div>
-              <input type="text" class="k-opt-name" name="{{ option_form.name.html_name }}"
-                id="{{ option_form.name.id_for_label }}" value="{{ option_form.name.value|default:'' }}"
-                placeholder="e.g. Professional">
-              {% if option_form.name.errors %}<div class="k-field-error">{{ option_form.name.errors|striptags }}</div>{% endif %}
-            </div>
-            <div>
-              <textarea class="k-opt-instr" name="{{ option_form.instruction.html_name }}"
-                id="{{ option_form.instruction.id_for_label }}" rows="2"
-                placeholder="Describe how this option changes the output…">{{ option_form.instruction.value|default:'' }}</textarea>
-              {% if option_form.instruction.errors %}<div class="k-field-error">{{ option_form.instruction.errors|striptags }}</div>{% endif %}
-            </div>
-            <div>
-              <button type="button" class="k-opt-del delete-option" title="Remove option" aria-label="Remove option">&times;</button>
-            </div>
-          </div>
-          {% endfor %}
-        </div>
-
-        <template id="empty-option-row">
-          <div class="k-opt-row" data-opt-row>
-            {% for hidden in formset.empty_form.hidden_fields %}{{ hidden }}{% endfor %}
-            <div style="display:none">{{ formset.empty_form.DELETE }}</div>
-            <div>
-              <input type="text" class="k-opt-name" name="{{ formset.empty_form.name.html_name }}"
-                id="{{ formset.empty_form.name.id_for_label }}" placeholder="e.g. Professional">
-            </div>
-            <div>
-              <textarea class="k-opt-instr" name="{{ formset.empty_form.instruction.html_name }}"
-                id="{{ formset.empty_form.instruction.id_for_label }}" rows="2"
-                placeholder="Describe how this option changes the output…"></textarea>
-            </div>
-            <div>
-              <button type="button" class="k-opt-del delete-option" title="Remove option" aria-label="Remove option">&times;</button>
-            </div>
-          </div>
-        </template>
-
-        <button type="button" class="k-btn-add-opt" id="add-option">+ Add option</button>
-      </div>
     </div>
-
-    <div class="k-card-footer">
-      <button type="submit" class="k-btn k-btn-accent">Save modifier</button>
-      <a href="{% url 'option-group-list' %}" class="k-btn k-btn-ghost">Cancel</a>
-    </div>
-  </form>
-</div>
-</div>
-
-<script>
+    <script>
   // Formset add/delete — mechanics preserved from the original: clone the
   // __prefix__ empty row, bump id_options-TOTAL_FORMS, check DELETE + hide on remove.
   function wireDeleteButton(row) {
@@ -134,5 +154,5 @@
     added.querySelector('.k-opt-name').focus();
     totalForms.value = count + 1;
   });
-</script>
+    </script>
 {% endblock %}
