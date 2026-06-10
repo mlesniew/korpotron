@@ -512,18 +512,18 @@ No data migration. Deployment note: the new `static/css/korpotron.css` is picked
 
 #### Automated
 
-- [x] 3.1 Existing + new tests pass: `uv run pytest` (incl. delete → 204 test)
-- [x] 3.2 Django check passes: `uv run manage.py check`
-- [x] 3.3 Lint passes: `uv run ruff check .`
-- [x] 3.4 Format check passes: `uv run ruff format --check .`
+- [x] 3.1 Existing + new tests pass: `uv run pytest` (incl. delete → 204 test) — a12cd47
+- [x] 3.2 Django check passes: `uv run manage.py check` — a12cd47
+- [x] 3.3 Lint passes: `uv run ruff check .` — a12cd47
+- [x] 3.4 Format check passes: `uv run ruff format --check .` — a12cd47
 
 #### Manual
 
-- [x] 3.5 Template create/edit works; `generate_title` toggle reflects and saves state
-- [x] 3.6 Modifier create/edit works; option rows add/delete; zero-option + duplicate-name errors show
+- [x] 3.5 Template create/edit works; `generate_title` toggle reflects and saves state — a12cd47
+- [x] 3.6 Modifier create/edit works; option rows add/delete; zero-option + duplicate-name errors show — a12cd47
 - [x] 3.7 Delete dialog opens with right name, deletes on confirm (row fades, no reload), cancels/backdrop-closes — both
-      lists
-- [x] 3.8 Empty states render for both lists
+      lists — a12cd47
+- [x] 3.8 Empty states render for both lists — a12cd47
 
 ### Phase 4: Generate workspace
 
