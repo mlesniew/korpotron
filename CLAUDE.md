@@ -25,7 +25,7 @@ Copy `.env.example` to `.env` to get started. Required variables:
 | --------------------- | --------------- | ----------------------------------------------------- |
 | `SECRET_KEY`          | App to boot     | Any non-empty string locally                          |
 | `OPENROUTER_API_KEY`  | Text generation | App boots without it; Generate fails until set        |
-| `OPENROUTER_MODEL`    | Text generation | Optional — defaults to `openai/gpt-4o-mini`           |
+| `OPENROUTER_MODEL`    | Text generation | Optional — defaults to `openrouter/auto:free`         |
 | `OPENROUTER_BASE_URL` | Text generation | Optional — defaults to `https://openrouter.ai/api/v1` |
 
 In production (Fly.io) all variables are set as Fly secrets, not via `.env`.
