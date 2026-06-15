@@ -243,9 +243,9 @@ confirmation from the human.
 
 #### Manual
 
-- [x] 1.4 PR shows `CI / Docker Smoke` check passing
-- [x] 1.5 Broken startup makes smoke steps fail with `docker logs` visible
-- [x] 1.6 Deploy does not start until `docker-smoke` passes
+- [x] 1.4 PR shows `CI / Docker Smoke` check passing — e915ceb
+- [x] 1.5 Broken startup makes smoke steps fail with `docker logs` visible — e915ceb
+- [x] 1.6 Deploy does not start until `docker-smoke` passes — e915ceb
 
 ### Phase 2: Enforce as required check + close out test plan
 
