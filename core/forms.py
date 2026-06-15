@@ -1,3 +1,4 @@
+from django import forms
 from django.forms import (
     BaseInlineFormSet,
     ValidationError,
@@ -5,6 +6,21 @@ from django.forms import (
 )
 
 from core.models import Option, OptionGroup
+
+
+class OptionForm(forms.ModelForm):
+    class Meta:
+        model = Option
+        fields = ["name", "instruction"]
+
+    def clean_name(self) -> str:
+        return self.cleaned_data["name"].strip()
+
+    def clean_instruction(self) -> str:
+        value = self.cleaned_data["instruction"].strip()
+        if "\n" in value:
+            raise ValidationError("Modifier instructions must be a single line.")
+        return value
 
 
 class RequiredOptionInlineFormSet(BaseInlineFormSet):
@@ -30,6 +46,7 @@ class RequiredOptionInlineFormSet(BaseInlineFormSet):
 OptionFormSet = inlineformset_factory(
     OptionGroup,
     Option,
+    form=OptionForm,
     formset=RequiredOptionInlineFormSet,
     fields=["name", "instruction"],
     extra=0,

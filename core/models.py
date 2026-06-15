@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -17,6 +18,9 @@ class Template(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+    def clean(self) -> None:
+        self.base_prompt = self.base_prompt.strip()
 
 
 class OptionGroup(models.Model):
@@ -49,6 +53,13 @@ class Option(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+    def clean(self) -> None:
+        self.instruction = self.instruction.strip()
+        if "\n" in self.instruction:
+            raise ValidationError(
+                {"instruction": "Modifier instructions must be a single line."}
+            )
 
 
 class DailyGenerationCount(models.Model):

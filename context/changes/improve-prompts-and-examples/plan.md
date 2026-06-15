@@ -313,27 +313,27 @@ No migrations needed. `clean()` methods on models affect only validation, not th
 
 #### Automated
 
-- [x] 1.1 `uv run pytest tests/test_llm.py` — all tests pass
-- [x] 1.2 `uv run ruff check core/llm.py tests/test_llm.py`
+- [x] 1.1 `uv run pytest tests/test_llm.py` — all tests pass — 6d38310
+- [x] 1.2 `uv run ruff check core/llm.py tests/test_llm.py` — 6d38310
 
 #### Manual
 
-- [x] 1.3 Generated `<instructions>` block shows blank line + bullets with modifiers selected
-- [x] 1.4 No blank line or bullet prefix when no modifiers selected
+- [x] 1.3 Generated `<instructions>` block shows blank line + bullets with modifiers selected — 6d38310
+- [x] 1.4 No blank line or bullet prefix when no modifiers selected — 6d38310
 
 ### Phase 2: Validation and UI
 
 #### Automated
 
-- [ ] 2.1 `uv run pytest tests/test_core_models.py tests/test_option_group_views.py`
-- [ ] 2.2 `uv run ruff check core/models.py core/forms.py`
+- [x] 2.1 `uv run pytest tests/test_core_models.py tests/test_option_group_views.py`
+- [x] 2.2 `uv run ruff check core/models.py core/forms.py`
 
 #### Manual
 
-- [ ] 2.3 Modifier form shows single-line text input for instruction
-- [ ] 2.4 Multi-line instruction submission returns a field-level validation error
-- [ ] 2.5 Trailing-whitespace instruction saves as stripped value
-- [ ] 2.6 Dynamically added option row also shows text input
+- [x] 2.3 Modifier form shows single-line text input for instruction
+- [x] 2.4 Multi-line instruction submission returns a field-level validation error
+- [x] 2.5 Trailing-whitespace instruction saves as stripped value
+- [x] 2.6 Dynamically added option row also shows text input
 
 ### Phase 3: Fixture polish
 
