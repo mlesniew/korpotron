@@ -250,9 +250,9 @@ confirmation from the human.
 
 #### Automated
 
-- [x] 2.1 Protection lists `CI / Docker Smoke` in required contexts
+- [x] 2.1 Protection lists `CI / Docker Smoke` in required contexts — 65f48dd
 
 #### Manual
 
-- [x] 2.2 Failing container blocks merge on `CI / Docker Smoke`
-- [x] 2.3 `test-plan.md` §3/§5/§6 updated and consistent
+- [x] 2.2 Failing container blocks merge on `CI / Docker Smoke` — 65f48dd
+- [x] 2.3 `test-plan.md` §3/§5/§6 updated and consistent — 65f48dd
