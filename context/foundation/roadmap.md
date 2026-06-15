@@ -47,7 +47,7 @@ eliminates the copy-paste chore — is confirmed when this slice ships and the p
 | S-08 | template-list-ux        | ~~template list page shows a name + delete-icon row per template; clicking the name navigates to the edit page~~                   | F-01, S-01             | —                                             | dropped |
 | S-09 | option-group-list-ux    | ~~option group list page shows a name + delete-icon row per group; clicking the name navigates to the edit page~~                  | F-01, S-02             | —                                             | dropped |
 | S-10 | ui-refresh              | all app pages get a modern, non-generic visual style; forms and layout overhauled; framework TBD via research                      | S-04–S-07, S-11        | —                                             | done    |
-| S-11 | user-registration       | users can self-register; accounts are inactive until an admin approves them via the Django admin panel                             | F-01                   | —                                             | planned |
+| S-11 | user-registration       | users can self-register using a passphrase; accounts are immediately active                                                        | F-01                   | —                                             | planned |
 
 ## Streams
 
@@ -245,10 +245,9 @@ S-10.
 
 ### S-11: User registration
 
-- **Outcome:** users can register themselves via a registration form (username, email, password). Newly created accounts
-  are set to `is_active=False` and cannot log in until an admin approves them. After submitting the form, the user sees
-  a "pending approval" message. Approval is done by the admin in the existing Django admin panel — no new admin UI
-  required. A "Register" link appears on the login page.
+- **Outcome:** users can register themselves via a registration form (username, email, password) by providing a shared
+  passphrase. Accounts are immediately active — no admin approval step. A "Register" link appears on the login page and
+  the landing page.
 - **Change ID:** user-registration
 - **PRD refs:** —
 - **Prerequisites:** F-01 (auth scaffold — login/logout foundation)
@@ -256,10 +255,17 @@ S-10.
 - **Blockers:** —
 - **Unknowns:** —
 - **Notes:**
-  - Uses Django's built-in `is_active` flag — no new model fields needed.
-  - S-04 (landing page) should also carry a "Register" link once it ships; coordinate during S-04 implementation.
-  - No email notifications — admin must check the Django admin panel to discover pending registrations.
-- **Risk:** Low — thin view + form on top of Django's existing User model; approval leverages built-in admin.
+  - Access gate: a `REGISTRATION_PASSPHRASE` env var (Fly secret in production). Registration form validates the
+    submitted passphrase against it; mismatch → `ValidationError`, no account created.
+  - No `is_active=False`, no admin UI, no email notifications needed.
+  - Passphrase rotation: `fly secrets set REGISTRATION_PASSPHRASE=…` — invalidates the old value immediately.
+  - S-04 (landing page) already shipped; "Register" link must be added to both `templates/core/landing.html` and
+    `templates/registration/login.html` as part of this slice.
+  - Research: `context/changes/user-registration/research.md` — surveyed admin approval, email verification, CAPTCHA, IP
+    rate limiting, and open registration; passphrase chosen as lowest-dependency, lowest-overhead option given the daily
+    generation limit already bounds per-user cost.
+- **Risk:** Low — thin view + form subclass on top of Django's existing `UserCreationForm`; no new models or migrations.
+  Primary residual risk is passphrase leak, mitigated by easy rotation.
 - **Status:** planned
 
 ### S-10: UI refresh
