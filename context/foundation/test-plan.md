@@ -61,7 +61,7 @@ answers, hot-spot directories). It does not assert a specific file as "where the
 | 1   | CI quality gate         | Wire pytest into GitHub Actions; configure as a required check so broken tests block merges to master                                                                   | R1            | GitHub Actions YAML, branch protection   | done        | context/changes/ci-quality-gate/    |
 | 2   | Authorization hardening | Prove ownership isolation for existing endpoint patterns and establish the contract for S-07/S-11 before they ship                                                      | R2, R3        | Django test client integration tests     | not started | —                                   |
 | 3   | LLM & abuse surface     | Prove rate-limit edges are tamper-resistant; verify message construction puts user content in the user-message slot; extend input non-retention checks to new endpoints | R4, R5, R6    | Django integration tests, LLM unit tests | done        | context/changes/rate-limit-testing/ |
-| 4   | Docker deployment smoke | CI step that builds the image, starts the container, and verifies the app serves HTTP                                                                                   | R7            | CI shell step                            | not started | —                                   |
+| 4   | Docker deployment smoke | CI step that builds the image, starts the container, and verifies the app serves HTTP                                                                                   | R7            | CI shell step                            | done        | context/changes/docker-smoke-test/  |
 
 ---
 
@@ -113,7 +113,7 @@ generation view, LLM message construction, option group views, template views. A
 | Rate-limit midnight boundary + atomic check-and-increment                                  | `tests/test_generate.py` (concurrent boundary tests) | **Covered** — Phase 3 done         |
 | LLM message slot structure (prompt injection structural)                                   | `tests/test_llm.py` (system_message test)            | **Covered** — Phase 3 done         |
 | Input non-retention for future endpoints                                                   | `tests/test_generate.py` (field-value scan)          | **Covered pattern** — Phase 3 done |
-| Docker build + container startup                                                           | —                                                    | **Not covered** → Phase 4          |
+| Docker build + container startup                                                           | `.github/workflows/ci.yml` (`docker-smoke` job)      | **Covered** — Phase 4 done         |
 
 ---
 
@@ -128,7 +128,8 @@ Pattern — GitHub Actions workflow (`.github/workflows/ci.yml`):
 - `test` job: `uv run pytest` with `SECRET_KEY` env var set; triggers on every PR to master and push to master.
 - `lint` job: `uv run ruff check .`; parallel to `test`.
 - `deploy` job: `needs: [test, lint]`; only runs on push to master.
-- Branch protection: `CI / Test` and `CI / Lint` are required status checks on master (`strict: true`).
+- Branch protection: `Test` and `Lint` are required status checks on master (`strict: true`). Note: a GitHub Actions
+  check context is the job name, not the `CI / <job>` form shown in the PR UI.
 
 Result: a PR with a broken test gets `mergeStateStatus = BLOCKED` — the merge button is disabled until both checks pass.
 
@@ -166,7 +167,20 @@ Pattern — Input non-retention (R6):
 
 ### Phase 4 — Docker deployment smoke
 
-TBD — see §3 Phase 4. Pattern: CI shell step for Docker build + startup + HTTP health check (R7).
+**Shipped.** See `context/changes/docker-smoke-test/`.
+
+Pattern — Docker smoke CI job (R7):
+
+- `docker-smoke` job: parallel to `test`/`lint`; runs on every PR and push to master.
+- Steps: `docker build -t korpotron-smoke:ci .` →
+  `docker run -d -p 8080:8080 -e SECRET_KEY=... -e ALLOWED_HOSTS=localhost,127.0.0.1 --name korpotron-smoke` →
+  `docker exec korpotron-smoke python manage.py migrate --noinput` → poll `curl http://localhost:8080/` until HTTP 200
+  or 30s timeout → teardown with `docker rm -f` (always runs).
+- On timeout: prints `docker logs korpotron-smoke` before failing.
+- `deploy` job: `needs: [test, lint, docker-smoke]` — deploy is blocked until the smoke check passes.
+- Branch protection: `Docker Smoke` added as a required status check on master.
+
+Result: a PR whose container fails to start or serve HTTP gets `mergeStateStatus = BLOCKED`.
 
 ---
 
