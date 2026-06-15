@@ -18,13 +18,13 @@ class OptionForm(forms.ModelForm):
 
     def clean_instruction(self) -> str:
         value = self.cleaned_data["instruction"].strip()
-        if "\n" in value:
+        if any(c in value for c in "\r\n"):
             raise ValidationError("Modifier instructions must be a single line.")
         return value
 
 
 class RequiredOptionInlineFormSet(BaseInlineFormSet):
-    def _construct_form(self, i: int, **kwargs: object) -> object:
+    def _construct_form(self, i: int, **kwargs: object) -> forms.BaseForm:
         form = super()._construct_form(i, **kwargs)
         form.empty_permitted = False
         return form

@@ -74,6 +74,16 @@ def test_option_clean_raises_on_newline(user: User) -> None:
 
 
 @pytest.mark.django_db
+def test_option_clean_raises_on_carriage_return(user: User) -> None:
+    og = OptionGroup.objects.create(user=user, name="G")
+    for bad in ("Line one.\rLine two.", "Line one.\r\nLine two."):
+        o = Option(group=og, name="O", instruction=bad)
+        with pytest.raises(ValidationError) as exc_info:
+            o.clean()
+        assert "instruction" in exc_info.value.message_dict
+
+
+@pytest.mark.django_db
 def test_template_clean_strips_base_prompt(user: User) -> None:
     t = Template(user=user, name="T", base_prompt="  Hello.  ")
     t.clean()

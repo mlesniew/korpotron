@@ -76,7 +76,8 @@ def test_build_messages_no_options_produces_plain_base_prompt(
     messages = llm.build_messages(template, [], "Hello there")
     content = messages[1]["content"]
     assert "Rewrite politely." in content
-    assert "- " not in content.split("<instructions>")[1].split("</instructions>")[0]
+    block = content.split("<instructions>")[1].split("</instructions>")[0]
+    assert not any(line.startswith("- ") for line in block.splitlines())
 
 
 @pytest.mark.django_db
@@ -92,7 +93,7 @@ def test_build_messages_with_options_has_blank_line_before_bullets(
 
 @pytest.mark.django_db
 def test_build_messages_strips_whitespace_from_base_prompt_and_instructions(
-    user: "User",
+    user: User,
 ) -> None:
     from core.models import OptionGroup
 

@@ -43,7 +43,7 @@
                         <label class="k-label">Options</label>
                         {{ formset.management_form }}
                         {% if formset.non_form_errors %}
-                            <div class="k-error-bar visible">{% for error in formset.non_form_errors %}{{ error }}{% endfor %}</div>
+                            <div class="k-error-bar visible">{% for error in formset.non_form_errors %}{{ error|striptags }}{% endfor %}</div>
                         {% endif %}
                         <div class="k-col-heads">
                             <div class="k-col-head">Label</div>

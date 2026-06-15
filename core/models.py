@@ -21,6 +21,8 @@ class Template(models.Model):
 
     def clean(self) -> None:
         self.base_prompt = self.base_prompt.strip()
+        if not self.base_prompt:
+            raise ValidationError({"base_prompt": "Base prompt cannot be blank."})
 
 
 class OptionGroup(models.Model):
@@ -56,7 +58,11 @@ class Option(models.Model):
 
     def clean(self) -> None:
         self.instruction = self.instruction.strip()
-        if "\n" in self.instruction:
+        if not self.instruction:
+            raise ValidationError(
+                {"instruction": "Modifier instruction cannot be blank."}
+            )
+        if any(c in self.instruction for c in "\r\n"):
             raise ValidationError(
                 {"instruction": "Modifier instructions must be a single line."}
             )
