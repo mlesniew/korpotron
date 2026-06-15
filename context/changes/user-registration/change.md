@@ -1,7 +1,7 @@
 ---
 change_id: user-registration
 title: User registration
-status: preparing
+status: plan_reviewed
 created: 2026-06-15
 updated: 2026-06-15
 archived_at: null
