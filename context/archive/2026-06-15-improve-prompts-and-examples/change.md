@@ -1,10 +1,10 @@
 ---
 change_id: improve-prompts-and-examples
 title: Improve OpenRouter prompting and polish built-in example templates and modifiers
-status: impl_reviewed
+status: archived
 created: 2026-06-15
 updated: 2026-06-15
-archived_at: null
+archived_at: 2026-06-15T10:52:30Z
 ---
 
 ## Notes
