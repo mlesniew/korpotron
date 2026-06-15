@@ -7,12 +7,12 @@
     },
     {
       "name": "Jira Ticket",
-      "base_prompt": "You are a senior software engineer writing high-quality Jira tickets.  Convert the input into a well-structured Jira issue.\n\nStructure should start with a short (1-2 sentence) section with a high level description of what needs done.  \n\nThe second section should describe the issue more in depth, in narrative style, explaining things like current state, reason for the change, impact, priority and dependencies.  \n\nThis should be followed by two more sections with bullet point lists: \n* a TODO section (acceptance criteria) \n* an out of scope section",
+      "base_prompt": "You are a senior software engineer writing high-quality Jira tickets. Convert the input into a well-structured Jira issue.\n\nStructure should start with a short (1-2 sentence) section with a high level description of what needs done.\n\nThe second section should describe the issue more in depth, in narrative style, explaining things like current state, reason for the change, impact, priority and dependencies.\n\nThis should be followed by two more sections with bullet point lists:\n* a TODO section (acceptance criteria)\n* an out of scope section",
       "generate_title": false
     },
     {
       "name": "Meeting notes",
-      "base_prompt": "You are an experienced facilitator and manager.  Prepare structured meeting notes based on the input.  Use bullet points.  Organize information logically.  Clearly identify owners and deadlines when available.",
+      "base_prompt": "You are an experienced facilitator and manager. Prepare structured meeting notes based on the input. Use bullet points. Organize information logically. Clearly identify owners and deadlines when available.",
       "generate_title": false
     }
   ],
@@ -39,23 +39,23 @@
       "options": [
         {
           "name": "Casual",
-          "instruction": "Use natural and conversational language.  Sound like a competent colleague."
+          "instruction": "Use natural and conversational language. Sound like a competent colleague."
         },
         {
           "name": "Professional",
-          "instruction": "User professional business language.  Be clear, concise and respectful."
+          "instruction": "Use professional business language. Be clear, concise and respectful."
         },
         {
           "name": "Direct",
-          "instruction": "Be direct and straightforward.  Minimize fluff.  Focus on decisions, actions, and outcomes."
+          "instruction": "Be direct and straightforward. Minimize fluff. Focus on decisions, actions, and outcomes."
         },
         {
           "name": "Diplomatic",
-          "instruction": "Use tactful language.  Reduce potential friction.  Present criticism or bad news carefully."
+          "instruction": "Use tactful language. Reduce potential friction. Present criticism or bad news carefully."
         },
         {
           "name": "Passive-Aggressive",
-          "instruction": "Remain polite and professional, but act passive aggressive.  Imply dissatisfaction through careful phrasing, use indirect wording, but avoid direct confrontation."
+          "instruction": "Remain polite and professional, but act passive aggressive. Imply dissatisfaction through careful phrasing, use indirect wording, but avoid direct confrontation."
         }
       ]
     },
@@ -64,19 +64,19 @@
       "options": [
         {
           "name": "Human",
-          "instruction": "Prefer plain English.  Avoid corporate jargon."
+          "instruction": "Prefer plain English. Avoid corporate jargon."
         },
         {
           "name": "Corporate",
-          "instruction": "Use moderate corporate language.  Include common business terminology where appropriate."
+          "instruction": "Use moderate corporate language. Include common business terminology where appropriate."
         },
         {
           "name": "Enterprise",
-          "instruction": "Use language commonly found in large organizations.  Example vocabulary to include: alignment, stakeholders, roadmap, delivery, ownership, visibility, cross-functional, prioritization."
+          "instruction": "Use language commonly found in large organizations. Example vocabulary to include: alignment, stakeholders, roadmap, delivery, ownership, visibility, cross-functional, prioritization."
         },
         {
           "name": "Korpotron Ultra",
-          "instruction": "Maximize corporate jargon.  Frequently use concepts such as: strategic alignment, synergies, streamlining, value streams, cross-functional collaboration, operational excellence, leveraging capabilities, organizational scalability, stakeholder engagement."
+          "instruction": "Maximize corporate jargon. Frequently use concepts such as: strategic alignment, synergies, streamlining, value streams, cross-functional collaboration, operational excellence, leveraging capabilities, organizational scalability, stakeholder engagement."
         }
       ]
     },
@@ -85,15 +85,15 @@
       "options": [
         {
           "name": "Engineer",
-          "instruction": "Assume the audience is technical.  Be precise and concise."
+          "instruction": "Assume the audience is technical. Be precise and concise."
         },
         {
           "name": "Manager",
-          "instruction": "Assume the audience are managers.  Focus on outcomes, risks, timelines and ownership."
+          "instruction": "Assume the audience are managers. Focus on outcomes, risks, timelines and ownership."
         },
         {
           "name": "Customer",
-          "instruction": "Assume the audience are external customers.  Focus on clarity and reassurence.  Avoid internal or technical jargon."
+          "instruction": "Assume the audience are external customers. Focus on clarity and reassurance. Avoid internal or technical jargon."
         }
       ]
     },
@@ -102,19 +102,19 @@
       "options": [
         {
           "name": "Simple",
-          "instruction": "Use simple vocabulary.  Write short sentences.  Assume the reader is not a native speaker."
+          "instruction": "Use short sentences and short paragraphs. Prefer bullet points over prose where possible. Avoid complex sentence structures."
         },
         {
           "name": "Advanced",
-          "instruction": "Use sophisticated vocabulary and varied sentence structure."
+          "instruction": "Use varied sentence structure. Include subordinate clauses and parallel constructions where appropriate."
         },
         {
           "name": "Executive",
-          "instruction": "Use polished executive-level language.  Prefer nuanced phrasing and precise terminology."
+          "instruction": "Write with economy of language. Lead with the conclusion. Avoid repetition and padding."
         },
         {
           "name": "Shakespeare",
-          "instruction": "Rewrite the text in elevated, Shakespeare-inspired English.  Use archaic and dramatic language.  Remain understandable but delightfully theatrical."
+          "instruction": "Rewrite the text in elevated, Shakespearean style. Use archaic vocabulary and dramatic phrasing. Remain comprehensible but delightfully theatrical."
         }
       ]
     },
@@ -127,11 +127,11 @@
         },
         {
           "name": "Social Energy",
-          "instruction": "Use emojis regularly.  Keep the message positive and approachable."
+          "instruction": "Use emojis regularly. Keep the message positive and approachable."
         },
         {
           "name": "Kawaii",
-          "instruction": "Use a cheerful kawaii communication style.  Add appropriate emojis and kamoji."
+          "instruction": "Use a cheerful kawaii communication style. Add appropriate emojis and kamoji."
         }
       ]
     }

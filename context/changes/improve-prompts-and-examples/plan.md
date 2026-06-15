@@ -325,24 +325,24 @@ No migrations needed. `clean()` methods on models affect only validation, not th
 
 #### Automated
 
-- [x] 2.1 `uv run pytest tests/test_core_models.py tests/test_option_group_views.py`
-- [x] 2.2 `uv run ruff check core/models.py core/forms.py`
+- [x] 2.1 `uv run pytest tests/test_core_models.py tests/test_option_group_views.py` — e6cdf90
+- [x] 2.2 `uv run ruff check core/models.py core/forms.py` — e6cdf90
 
 #### Manual
 
-- [x] 2.3 Modifier form shows single-line text input for instruction
-- [x] 2.4 Multi-line instruction submission returns a field-level validation error
-- [x] 2.5 Trailing-whitespace instruction saves as stripped value
-- [x] 2.6 Dynamically added option row also shows text input
+- [x] 2.3 Modifier form shows single-line text input for instruction — e6cdf90
+- [x] 2.4 Multi-line instruction submission returns a field-level validation error — e6cdf90
+- [x] 2.5 Trailing-whitespace instruction saves as stripped value — e6cdf90
+- [x] 2.6 Dynamically added option row also shows text input — e6cdf90
 
 ### Phase 3: Fixture polish
 
 #### Automated
 
-- [ ] 3.1 `python -m json.tool core/fixtures/onboarding_defaults.json > /dev/null` — valid JSON
-- [ ] 3.2 `uv run pytest tests/test_onboarding.py`
+- [x] 3.1 `python -m json.tool core/fixtures/onboarding_defaults.json > /dev/null` — valid JSON
+- [x] 3.2 `uv run pytest tests/test_onboarding.py`
 
 #### Manual
 
-- [ ] 3.3 Fresh user sees updated fixture content after onboarding
-- [ ] 3.4 "Simple" + "Enterprise" modifiers no longer produce contradictory instructions
+- [x] 3.3 Fresh user sees updated fixture content after onboarding
+- [x] 3.4 "Simple" + "Enterprise" modifiers no longer produce contradictory instructions
