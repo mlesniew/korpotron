@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - fix/flyctl-github-action
   pull_request:
     branches:
       - master
@@ -65,7 +64,7 @@ jobs:
   deploy:
     name: Deploy
     needs: [test, lint, docker-smoke]
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/fix/flyctl-github-action')
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     concurrency:
       group: fly-deploy
