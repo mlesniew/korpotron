@@ -313,13 +313,13 @@ No migrations needed. `clean()` methods on models affect only validation, not th
 
 #### Automated
 
-- [ ] 1.1 `uv run pytest tests/test_llm.py` — all tests pass
-- [ ] 1.2 `uv run ruff check core/llm.py tests/test_llm.py`
+- [x] 1.1 `uv run pytest tests/test_llm.py` — all tests pass
+- [x] 1.2 `uv run ruff check core/llm.py tests/test_llm.py`
 
 #### Manual
 
-- [ ] 1.3 Generated `<instructions>` block shows blank line + bullets with modifiers selected
-- [ ] 1.4 No blank line or bullet prefix when no modifiers selected
+- [x] 1.3 Generated `<instructions>` block shows blank line + bullets with modifiers selected
+- [x] 1.4 No blank line or bullet prefix when no modifiers selected
 
 ### Phase 2: Validation and UI
 

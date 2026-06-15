@@ -60,13 +60,65 @@ def test_build_messages_user_block_delimits_instructions_and_content(
     content = user["content"]
     assert "<instructions>" in content and "</instructions>" in content
     assert "<content>" in content and "</content>" in content
-    # base_prompt + each option instruction present, in order
+    # base_prompt + each option instruction present as bullets, in order
     assert "Rewrite politely." in content
-    assert "Be formal." in content
-    assert "Be brief." in content
-    assert content.index("Be formal.") < content.index("Be brief.")
+    assert "- Be formal." in content
+    assert "- Be brief." in content
+    assert content.index("- Be formal.") < content.index("- Be brief.")
     # the user text lands inside the content block
     assert "Hello there" in content
+
+
+@pytest.mark.django_db
+def test_build_messages_no_options_produces_plain_base_prompt(
+    template: Template,
+) -> None:
+    messages = llm.build_messages(template, [], "Hello there")
+    content = messages[1]["content"]
+    assert "Rewrite politely." in content
+    assert "- " not in content.split("<instructions>")[1].split("</instructions>")[0]
+
+
+@pytest.mark.django_db
+def test_build_messages_with_options_has_blank_line_before_bullets(
+    template: Template, options: list[Option]
+) -> None:
+    messages = llm.build_messages(template, options, "Hello there")
+    instructions_block = (
+        messages[1]["content"].split("<instructions>")[1].split("</instructions>")[0]
+    )
+    assert "\n\n- " in instructions_block
+
+
+@pytest.mark.django_db
+def test_build_messages_strips_whitespace_from_base_prompt_and_instructions(
+    user: "User",
+) -> None:
+    from core.models import OptionGroup
+
+    t = Template.objects.create(
+        user=user, name="T", base_prompt="  Rewrite.  ", generate_title=False
+    )
+    group = OptionGroup.objects.create(user=user, name="G")
+    opt = Option.objects.create(group=group, name="O", instruction="  Be brief.  ")
+    messages = llm.build_messages(t, [opt], "text")
+    instructions_block = (
+        messages[1]["content"]
+        .split("<instructions>")[1]
+        .split("</instructions>")[0]
+        .strip()
+    )
+    assert instructions_block.startswith("Rewrite.")
+    assert "- Be brief." in instructions_block
+    assert "  Be brief." not in instructions_block
+
+
+@pytest.mark.django_db
+def test_build_messages_system_prompt_contains_markdown_directive(
+    template: Template,
+) -> None:
+    messages = llm.build_messages(template, [], "hi")
+    assert "markdown" in messages[0]["content"].lower()
 
 
 @pytest.mark.django_db
