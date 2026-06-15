@@ -158,6 +158,49 @@ def test_option_group_create_rejects_duplicate_option_names(
 
 
 @pytest.mark.django_db
+def test_option_group_create_rejects_multiline_instruction(
+    client: Client, user: User
+) -> None:
+    client.login(username="tester", password="pass1234")
+    data = formset_data(
+        "Style", [{"name": "Bad", "instruction": "Line one.\nLine two."}]
+    )
+    response = client.post("/option-groups/new/", data)
+    assert response.status_code == 200
+    assert not OptionGroup.objects.filter(user=user, name="Style").exists()
+
+
+@pytest.mark.django_db
+def test_option_group_create_rejects_crlf_instruction(
+    client: Client, user: User
+) -> None:
+    client.login(username="tester", password="pass1234")
+    data = formset_data(
+        "Style", [{"name": "Bad", "instruction": "Line one.\r\nLine two."}]
+    )
+    response = client.post("/option-groups/new/", data)
+    assert response.status_code == 200
+    assert not OptionGroup.objects.filter(user=user, name="Style").exists()
+
+
+@pytest.mark.django_db
+def test_option_group_create_strips_trailing_whitespace(
+    client: Client, user: User
+) -> None:
+    client.login(username="tester", password="pass1234")
+    data = formset_data(
+        "Style", [{"name": "  Clean  ", "instruction": "  Be clean.  "}]
+    )
+    response = client.post("/option-groups/new/", data)
+    assert response.status_code == 302
+    group = OptionGroup.objects.get(user=user, name="Style")
+    opt = group.options.first()
+    assert opt is not None
+    assert opt.name == "Clean"
+    assert opt.instruction == "Be clean."
+
+
+@pytest.mark.django_db
 def test_option_group_update_delete_option(
     client: Client, user: User, option_group: OptionGroup
 ) -> None:

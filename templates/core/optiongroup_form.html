@@ -43,7 +43,7 @@
                         <label class="k-label">Options</label>
                         {{ formset.management_form }}
                         {% if formset.non_form_errors %}
-                            <div class="k-error-bar visible">{% for error in formset.non_form_errors %}{{ error }}{% endfor %}</div>
+                            <div class="k-error-bar visible">{% for error in formset.non_form_errors %}{{ error|striptags }}{% endfor %}</div>
                         {% endif %}
                         <div class="k-col-heads">
                             <div class="k-col-head">Label</div>
@@ -65,11 +65,12 @@
                                         {% if option_form.name.errors %}<div class="k-field-error">{{ option_form.name.errors|striptags }}</div>{% endif %}
                                     </div>
                                     <div>
-                                        <textarea class="k-opt-instr"
-                                                  name="{{ option_form.instruction.html_name }}"
-                                                  id="{{ option_form.instruction.id_for_label }}"
-                                                  rows="2"
-                                                  placeholder="Describe how this option changes the output…">{{ option_form.instruction.value|default:'' }}</textarea>
+                                        <input type="text"
+                                               class="k-opt-instr"
+                                               name="{{ option_form.instruction.html_name }}"
+                                               id="{{ option_form.instruction.id_for_label }}"
+                                               value="{{ option_form.instruction.value|default:'' }}"
+                                               placeholder="Describe how this option changes the output…">
                                         {% if option_form.instruction.errors %}
                                             <div class="k-field-error">{{ option_form.instruction.errors|striptags }}</div>
                                         {% endif %}
@@ -95,11 +96,11 @@
                                            placeholder="e.g. Professional">
                                 </div>
                                 <div>
-                                    <textarea class="k-opt-instr"
-                                              name="{{ formset.empty_form.instruction.html_name }}"
-                                              id="{{ formset.empty_form.instruction.id_for_label }}"
-                                              rows="2"
-                                              placeholder="Describe how this option changes the output…"></textarea>
+                                    <input type="text"
+                                           class="k-opt-instr"
+                                           name="{{ formset.empty_form.instruction.html_name }}"
+                                           id="{{ formset.empty_form.instruction.id_for_label }}"
+                                           placeholder="Describe how this option changes the output…">
                                 </div>
                                 <div>
                                     <button type="button"

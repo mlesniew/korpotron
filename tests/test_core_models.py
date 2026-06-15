@@ -1,5 +1,6 @@
 import pytest
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 from core.models import Option, OptionGroup, Template
 
@@ -53,3 +54,37 @@ def test_option_group_delete_cascades_options(user: User) -> None:
     Option.objects.create(group=og, name="O", instruction="x")
     og.delete()
     assert Option.objects.count() == 0
+
+
+@pytest.mark.django_db
+def test_option_clean_strips_instruction(user: User) -> None:
+    og = OptionGroup.objects.create(user=user, name="G")
+    o = Option(group=og, name="O", instruction="  Be brief.  ")
+    o.clean()
+    assert o.instruction == "Be brief."
+
+
+@pytest.mark.django_db
+def test_option_clean_raises_on_newline(user: User) -> None:
+    og = OptionGroup.objects.create(user=user, name="G")
+    o = Option(group=og, name="O", instruction="Line one.\nLine two.")
+    with pytest.raises(ValidationError) as exc_info:
+        o.clean()
+    assert "instruction" in exc_info.value.message_dict
+
+
+@pytest.mark.django_db
+def test_option_clean_raises_on_carriage_return(user: User) -> None:
+    og = OptionGroup.objects.create(user=user, name="G")
+    for bad in ("Line one.\rLine two.", "Line one.\r\nLine two."):
+        o = Option(group=og, name="O", instruction=bad)
+        with pytest.raises(ValidationError) as exc_info:
+            o.clean()
+        assert "instruction" in exc_info.value.message_dict
+
+
+@pytest.mark.django_db
+def test_template_clean_strips_base_prompt(user: User) -> None:
+    t = Template(user=user, name="T", base_prompt="  Hello.  ")
+    t.clean()
+    assert t.base_prompt == "Hello."
