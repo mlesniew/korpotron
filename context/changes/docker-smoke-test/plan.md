@@ -242,17 +242,17 @@ confirmation from the human.
 
 #### Manual
 
-- [ ] 1.4 PR shows `CI / Docker Smoke` check passing
-- [ ] 1.5 Broken startup makes smoke steps fail with `docker logs` visible
-- [ ] 1.6 Deploy does not start until `docker-smoke` passes
+- [x] 1.4 PR shows `CI / Docker Smoke` check passing
+- [x] 1.5 Broken startup makes smoke steps fail with `docker logs` visible
+- [x] 1.6 Deploy does not start until `docker-smoke` passes
 
 ### Phase 2: Enforce as required check + close out test plan
 
 #### Automated
 
-- [ ] 2.1 Protection lists `CI / Docker Smoke` in required contexts
+- [x] 2.1 Protection lists `CI / Docker Smoke` in required contexts
 
 #### Manual
 
-- [ ] 2.2 Failing container blocks merge on `CI / Docker Smoke`
-- [ ] 2.3 `test-plan.md` §3/§5/§6 updated and consistent
+- [x] 2.2 Failing container blocks merge on `CI / Docker Smoke`
+- [x] 2.3 `test-plan.md` §3/§5/§6 updated and consistent
