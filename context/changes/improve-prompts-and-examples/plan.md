@@ -339,10 +339,10 @@ No migrations needed. `clean()` methods on models affect only validation, not th
 
 #### Automated
 
-- [x] 3.1 `python -m json.tool core/fixtures/onboarding_defaults.json > /dev/null` — valid JSON
-- [x] 3.2 `uv run pytest tests/test_onboarding.py`
+- [x] 3.1 `python -m json.tool core/fixtures/onboarding_defaults.json > /dev/null` — valid JSON — a4961c3
+- [x] 3.2 `uv run pytest tests/test_onboarding.py` — a4961c3
 
 #### Manual
 
-- [x] 3.3 Fresh user sees updated fixture content after onboarding
-- [x] 3.4 "Simple" + "Enterprise" modifiers no longer produce contradictory instructions
+- [x] 3.3 Fresh user sees updated fixture content after onboarding — a4961c3
+- [x] 3.4 "Simple" + "Enterprise" modifiers no longer produce contradictory instructions — a4961c3
