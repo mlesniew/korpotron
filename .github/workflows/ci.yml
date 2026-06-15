@@ -33,9 +33,37 @@ jobs:
           python-version: "3.12"
       - run: uv run ruff check .
 
+  docker-smoke:
+    name: Docker Smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Build image
+        run: docker build -t korpotron-smoke:ci .
+      - name: Start container
+        run: |
+          docker run -d \
+            -p 8080:8080 \
+            -e SECRET_KEY=ci-placeholder-not-used-in-production \
+            -e ALLOWED_HOSTS=localhost,127.0.0.1 \
+            --name korpotron-smoke \
+            korpotron-smoke:ci
+      - name: Run migrations
+        run: docker exec korpotron-smoke python manage.py migrate --noinput
+      - name: Poll HTTP 200
+        run: |
+          for i in $(seq 1 30); do
+            if curl -fsS http://localhost:8080/ >/dev/null; then echo "up after ${i}s"; exit 0; fi
+            sleep 1
+          done
+          echo "container did not serve HTTP 200 within 30s"; docker logs korpotron-smoke; exit 1
+      - name: Teardown
+        if: always()
+        run: docker rm -f korpotron-smoke
+
   deploy:
     name: Deploy
-    needs: [test, lint]
+    needs: [test, lint, docker-smoke]
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     concurrency:

@@ -236,9 +236,9 @@ confirmation from the human.
 
 #### Automated
 
-- [ ] 1.1 Image builds locally: `docker build -t korpotron-smoke:ci .`
-- [ ] 1.2 Container serves probe locally (run → exec migrate → curl 200 → rm)
-- [ ] 1.3 Workflow file is valid YAML
+- [x] 1.1 Image builds locally: `docker build -t korpotron-smoke:ci .`
+- [x] 1.2 Container serves probe locally (run → exec migrate → curl 200 → rm)
+- [x] 1.3 Workflow file is valid YAML
 
 #### Manual
 
