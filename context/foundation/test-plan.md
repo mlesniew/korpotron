@@ -128,7 +128,8 @@ Pattern — GitHub Actions workflow (`.github/workflows/ci.yml`):
 - `test` job: `uv run pytest` with `SECRET_KEY` env var set; triggers on every PR to master and push to master.
 - `lint` job: `uv run ruff check .`; parallel to `test`.
 - `deploy` job: `needs: [test, lint]`; only runs on push to master.
-- Branch protection: `CI / Test` and `CI / Lint` are required status checks on master (`strict: true`).
+- Branch protection: `Test` and `Lint` are required status checks on master (`strict: true`). Note: a GitHub Actions
+  check context is the job name, not the `CI / <job>` form shown in the PR UI.
 
 Result: a PR with a broken test gets `mergeStateStatus = BLOCKED` — the merge button is disabled until both checks pass.
 

@@ -158,12 +158,13 @@ Make the smoke check mandatory on `master` and record Phase 4 as complete in the
 
 **File**: GitHub branch protection on `master` (no repo file — `gh api`)
 
-**Intent**: Make a red smoke check block merges, mirroring how Phase 1 made `CI / Test` and `CI / Lint` required.
+**Intent**: Make a red smoke check block merges, mirroring how Phase 1 made `Test` and `Lint` required.
 
 **Contract**: `PUT repos/<repo>/branches/master/protection` preserving the existing `required_status_checks`
 (`strict: true`, `enforce_admins: false`, `required_pull_request_reviews: null`, `restrictions: null`) and adding
-`CI / Docker Smoke` to the `contexts` array so it becomes `["CI / Test", "CI / Lint", "CI / Docker Smoke"]`. Read
-current protection first to avoid dropping existing settings.
+`Docker Smoke` to the `contexts` array so it becomes `["Test", "Lint", "Docker Smoke"]`. Note: a GitHub Actions check
+context is the **job name** (`Docker Smoke`), not the `CI / Docker Smoke` form shown in the PR UI. Read current
+protection first to avoid dropping existing settings.
 
 #### 2. Mark Phase 4 done in the test plan
 
@@ -181,7 +182,7 @@ deploy gated via `needs: [test, lint, docker-smoke]`).
 #### Automated Verification:
 
 - Protection lists the new context:
-  `gh api repos/<repo>/branches/master/protection -q '.required_status_checks.contexts'` includes `CI / Docker Smoke`
+  `gh api repos/<repo>/branches/master/protection -q '.required_status_checks.contexts'` includes `Docker Smoke`
 
 #### Manual Verification:
 
