@@ -57,6 +57,11 @@
                                     {% endfor %}
                                 </div>
                             {% endif %}
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <div class="k-login-success">{{ message }}</div>
+                                {% endfor %}
+                            {% endif %}
                             <div class="k-login-field">
                                 <label class="k-login-lbl" for="{{ form.username.id_for_label }}">Username</label>
                                 <input id="{{ form.username.id_for_label }}"
@@ -77,6 +82,11 @@
                                        placeholder="••••••••">
                             </div>
                             <button type="submit" class="k-login-submit">Log in</button>
+                            {% if registration_enabled %}
+                                <div class="k-login-form-footer">
+                                    <a href="{% url 'register' %}" class="k-login-back">Don't have an account? Register →</a>
+                                </div>
+                            {% endif %}
                         </form>
                     </div>
                 </div>

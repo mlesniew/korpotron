@@ -1,12 +1,19 @@
 import json
 
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.db.models import Count, F, QuerySet
 from django.forms import BaseModelForm, Form
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import (
+    HttpRequest,
+    HttpResponse,
+    HttpResponseForbidden,
+    HttpResponseRedirect,
+    JsonResponse,
+)
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -15,14 +22,33 @@ from django.views.decorators.http import require_POST
 from django.views.generic import (
     CreateView,
     DeleteView,
+    FormView,
     ListView,
     UpdateView,
 )
 from openai import OpenAIError
 
 from core import llm
-from core.forms import OptionFormSet
+from core.forms import OptionFormSet, UserRegistrationForm
 from core.models import DailyGenerationCount, Option, OptionGroup, Template
+
+
+class RegisterView(FormView):
+    template_name = "registration/register.html"
+    form_class = UserRegistrationForm
+    success_url = reverse_lazy("login")
+
+    def dispatch(
+        self, request: HttpRequest, *args: object, **kwargs: object
+    ) -> HttpResponse:
+        if not settings.REGISTRATION_PASSPHRASE:
+            return HttpResponseForbidden()
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form: UserRegistrationForm) -> HttpResponse:
+        form.save()
+        messages.success(self.request, "Account created. You can now log in.")
+        return super().form_valid(form)
 
 
 class TemplateListView(LoginRequiredMixin, ListView):

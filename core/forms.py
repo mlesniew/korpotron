@@ -1,6 +1,10 @@
 from django import forms
+from django.conf import settings
+from django.contrib.auth.forms import UserCreationForm
 from django.forms import (
     BaseInlineFormSet,
+    CharField,
+    PasswordInput,
     ValidationError,
     inlineformset_factory,
 )
@@ -52,3 +56,13 @@ OptionFormSet = inlineformset_factory(
     extra=0,
     can_delete=True,
 )
+
+
+class UserRegistrationForm(UserCreationForm):
+    passphrase = CharField(widget=PasswordInput, label="Passphrase")
+
+    def clean_passphrase(self) -> str:
+        value = self.cleaned_data["passphrase"]
+        if value != settings.REGISTRATION_PASSPHRASE:
+            raise ValidationError("Incorrect passphrase.")
+        return value

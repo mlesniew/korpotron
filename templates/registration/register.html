@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% include "_head.html" %}
+        <style>
+    /* Dark grid overlay for registration page */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 20%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 20%, transparent 100%);
+    }
+        </style>
+    </head>
+    <body>
+        <div class="k-login-page">
+            <!-- Nav: brand only -->
+            <nav style="height:52px;
+                        display:flex;
+                        align-items:center;
+                        padding:0 28px;
+                        border-bottom:1px solid rgba(255,255,255,.06);
+                        position:relative;
+                        z-index:1">
+                <a href="{% url 'home' %}"
+                   class="k-mono"
+                   style="font-size:12.5px;
+                          font-weight:600;
+                          letter-spacing:.14em;
+                          color:oklch(93% 0.005 80);
+                          text-decoration:none">KORPOTRON<sup style="font-size:8px;
+            opacity:.4;
+            letter-spacing:0;
+            vertical-align:super">™</sup></a>
+            </nav>
+            <div class="k-login-page-inner" style="position:relative;z-index:1;">
+                <div class="k-login-card" style="transform:none;margin:0;">
+                    <div class="k-login-card-hdr">
+                        <div class="k-login-title">Register</div>
+                        <div class="k-login-sub">Create an account to access Korpotron.</div>
+                    </div>
+                    <div class="k-login-card-body">
+                        <form method="post" class="k-login-form">
+                            {% csrf_token %}
+                            {% if form.non_field_errors %}
+                                <div class="k-login-error">{% for error in form.non_field_errors %}{{ error }}{% endfor %}</div>
+                            {% endif %}
+                            <div class="k-login-field">
+                                <label class="k-login-lbl" for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+                                <input id="{{ form.username.id_for_label }}"
+                                       class="k-login-input"
+                                       type="text"
+                                       name="{{ form.username.html_name }}"
+                                       autocomplete="username"
+                                       value="{{ form.username.value|default:'' }}">
+                                {% if form.username.errors %}
+                                    <div class="k-login-field-error">{% for error in form.username.errors %}{{ error }}{% endfor %}</div>
+                                {% endif %}
+                            </div>
+                            <div class="k-login-field">
+                                <label class="k-login-lbl" for="{{ form.password1.id_for_label }}">{{ form.password1.label }}</label>
+                                <input id="{{ form.password1.id_for_label }}"
+                                       class="k-login-input"
+                                       type="password"
+                                       name="{{ form.password1.html_name }}"
+                                       autocomplete="new-password">
+                                {% if form.password1.errors %}
+                                    <div class="k-login-field-error">{% for error in form.password1.errors %}{{ error }}{% endfor %}</div>
+                                {% endif %}
+                            </div>
+                            <div class="k-login-field">
+                                <label class="k-login-lbl" for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
+                                <input id="{{ form.password2.id_for_label }}"
+                                       class="k-login-input"
+                                       type="password"
+                                       name="{{ form.password2.html_name }}"
+                                       autocomplete="new-password">
+                                {% if form.password2.errors %}
+                                    <div class="k-login-field-error">{% for error in form.password2.errors %}{{ error }}{% endfor %}</div>
+                                {% endif %}
+                            </div>
+                            <div class="k-login-field">
+                                <label class="k-login-lbl" for="{{ form.passphrase.id_for_label }}">{{ form.passphrase.label }}</label>
+                                <input id="{{ form.passphrase.id_for_label }}"
+                                       class="k-login-input"
+                                       type="password"
+                                       name="{{ form.passphrase.html_name }}">
+                                {% if form.passphrase.errors %}
+                                    <div class="k-login-field-error">{% for error in form.passphrase.errors %}{{ error }}{% endfor %}</div>
+                                {% endif %}
+                            </div>
+                            <button type="submit" class="k-login-submit">Create account</button>
+                            <div class="k-login-form-footer">
+                                <a href="{% url 'login' %}" class="k-login-back">Already have an account? Log in →</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <a href="{% url 'home' %}" class="k-login-back">← Back to home</a>
+            </div>
+        </div>
+    </body>
+</html>

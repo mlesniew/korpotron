@@ -17,9 +17,9 @@ page must match.
 
 ## Desired End State
 
-A `/register/` form (username, email, password, confirm password, passphrase) that creates an immediately-active account
-and redirects to the login page. "Register" links appear on the landing page nav and on the login page. The endpoint
-returns 403 when `REGISTRATION_PASSPHRASE` is not configured.
+A `/register/` form (username, password, confirm password, passphrase) that creates an immediately-active account and
+redirects to the login page. "Register" links appear on the landing page nav and on the login page. The endpoint returns
+403 when `REGISTRATION_PASSPHRASE` is not configured.
 
 ## Key Decisions Made
 
@@ -28,7 +28,7 @@ returns 403 when `REGISTRATION_PASSPHRASE` is not configured.
 | Abuse-prevention mechanism | Passphrase gate            | Zero deps, zero migrations, easy rotation — fits a personal tool better than admin approval or email verification | Research |
 | Unset passphrase behavior  | Block (403)                | Missing env var is a deployment gap, not an invitation to open access                                             | Plan     |
 | Post-registration flow     | Redirect to login          | Keeps auth concerns separated; no auto-login complexity                                                           | Plan     |
-| Email field                | Optional                   | No email verification, no SMTP — field is informational only                                                      | Plan     |
+| Email field                | Dropped                    | Not needed for a personal tool; no SMTP, no verification — username-only is simpler                               | Review   |
 | Template approach          | Mirror login.html manually | Standalone pages (not extending base.html) is the established pattern                                             | Plan     |
 
 ## Scope
@@ -42,7 +42,7 @@ returns 403 when `REGISTRATION_PASSPHRASE` is not configured.
 - "Register" links on landing page and login page
 - Post-registration success notice on login page (Django messages)
 - `REGISTRATION_PASSPHRASE` setting + `.env.example` entry
-- Test suite (4 scenarios)
+- Test suite (5 scenarios)
 
 **Out of scope:**
 

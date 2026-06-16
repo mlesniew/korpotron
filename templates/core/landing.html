@@ -1,7 +1,13 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>{% include "_head.html" %}</head>
+    <head>
+        {% include "_head.html" %}
+        <style>
+    .k-landing-register-link { font-size: 16px; color: oklch(62% 0.007 270); }
+    .k-landing-register-link:hover { color: oklch(75% 0.005 270); }
+        </style>
+    </head>
     <body>
         <div class="k-landing">
             <div class="k-landing-grid"></div>
@@ -9,7 +15,10 @@
             <!-- Nav -->
             <nav class="k-landing-nav">
                 <span class="k-landing-brand">KORPOTRON<sup>™</sup></span>
-                <a href="{% url 'login' %}" class="k-landing-login-btn">Log in</a>
+                <div style="display:flex;gap:8px;align-items:center;">
+                    {% if registration_enabled %}<a href="{% url 'register' %}" class="k-landing-login-btn">Register</a>{% endif %}
+                    <a href="{% url 'login' %}" class="k-landing-login-btn">Log in</a>
+                </div>
             </nav>
             <!-- Hero -->
             <div class="k-landing-hero">
@@ -27,6 +36,10 @@
                     stakeholder-ready communications — with one click. No consultants required.
                 </p>
                 <a href="{% url 'login' %}" class="k-landing-cta">Log in to get started →</a>
+                {% if registration_enabled %}
+                    <div style="margin-top:7px;"><a href="{% url 'register' %}"
+   class="k-login-back k-landing-register-link">No account yet? Register →</a></div>
+                {% endif %}
                 <!-- Feature strip -->
                 <div class="k-feature-strip">
                     <div class="k-feature-tile">

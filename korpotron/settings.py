@@ -66,6 +66,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "core.context_processors.registration",
             ],
         },
     },
@@ -131,3 +132,5 @@ OPENROUTER_BASE_URL = os.environ.get(
 )
 
 DAILY_GENERATION_LIMIT = int(os.environ.get("DAILY_GENERATION_LIMIT", "100"))
+
+REGISTRATION_PASSPHRASE = os.environ.get("REGISTRATION_PASSPHRASE", "")

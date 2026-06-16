@@ -1171,6 +1171,23 @@ a { text-decoration: none; }
 }
 .k-login-back:hover { color: oklch(75% 0.005 270); }
 
+.k-login-field-error {
+  color: oklch(70% 0.2 25);
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.k-login-success {
+  color: oklch(75% 0.18 145);
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.k-login-form-footer {
+  display: flex;
+  justify-content: center;
+}
+
 /* ---- Generate page workspace ---- */
 .k-generate {
   max-width: 1120px;

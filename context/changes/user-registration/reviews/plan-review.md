@@ -43,7 +43,8 @@
 - **Fix B**: Drop the email field entirely — remove `email = EmailField(...)` from the form. Strength: zero risk of data
   confusion; zero code to maintain; consistent with "informational only" brief decision. Tradeoff: diverges from roadmap
   S-11 spec ("username, email, password"). Confidence: HIGH. Blind spot: None.
-- **Decision**: PENDING
+- **Decision**: FIXED via Fix B — email field dropped from form entirely; plan/brief updated to reflect username-only
+  registration
 
 ### F2 — Test count says "Four functions" but five are specified
 
@@ -56,7 +57,7 @@
   scenarios)". An implementer may write four tests and miss one.
 - **Fix**: Change "Four" to "Five" in `plan.md` Phase 3 contract and "4 scenarios" to "5 scenarios" in `plan-brief.md`
   scope section.
-- **Decision**: PENDING
+- **Decision**: FIXED — counts updated in both files
 
 ### F3 — Phase 1 Progress section missing the type-checking criterion
 
@@ -71,4 +72,4 @@
 - **Fix**: Either add `- [ ] 1.2 Type checking passes (mypy, if wired)` to Progress §Phase 1 Automated (renumbering
   1.2→1.3, 1.3→1.4), or remove the criterion from Phase 1 Automated Verification entirely since mypy isn't CI-wired yet
   (CLAUDE.md: "mypy — to be wired into CI").
-- **Decision**: PENDING
+- **Decision**: FIXED — mypy criterion removed from Phase 1 Automated Verification (not CI-wired yet)

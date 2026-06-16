@@ -45,6 +45,8 @@ the only remaining access control needed.
 
 ## What We're NOT Doing
 
+- No email field on the registration form — username-only registration (deliberate; email not needed for a personal
+  tool)
 - No email verification (SMTP not configured; S-11 explicitly excludes it)
 - No `is_active=False` / admin approval flow
 - No rate limiting on registration (the daily generation limit is the cost guard)
@@ -91,16 +93,15 @@ at the view layer.
 
 **File**: `core/forms.py`
 
-**Intent**: Subclass `UserCreationForm` to add `email` (optional) and `passphrase` (validated against the env var, never
-stored). The form is the only place passphrase validation logic lives.
+**Intent**: Subclass `UserCreationForm` to add `passphrase` (validated against the env var, never stored). No email
+field — username-only registration. The form is the only place passphrase validation logic lives.
 
 **Contract**: New class `UserRegistrationForm(UserCreationForm)` with:
 
-- `email = EmailField(required=False)` declared on the class
 - `passphrase = CharField(widget=PasswordInput, label="Passphrase")` declared on the class
 - `clean_passphrase(self) -> str` raises `ValidationError("Incorrect passphrase.")` when the submitted value does not
   equal `settings.REGISTRATION_PASSPHRASE`
-- Import additions: `EmailField`, `PasswordInput`, `CharField` from `django.forms`; `settings` from `django.conf`
+- Import additions: `PasswordInput`, `CharField` from `django.forms`; `settings` from `django.conf`
 
 #### 4. Registration view
 
@@ -132,7 +133,6 @@ a success message, and redirects to the login page.
 #### Automated Verification:
 
 - Linting passes: `uv run ruff check .`
-- Type checking passes (mypy, if wired): no new errors on `core/forms.py` and `core/views.py`
 
 #### Manual Verification:
 
@@ -148,7 +148,7 @@ render. Complete Phase 1 code, then create the template in Phase 2, then verify 
 
 ### Overview
 
-Create `templates/registration/register.html` mirroring the structure and styling of `login.html`. Renders all five form
+Create `templates/registration/register.html` mirroring the structure and styling of `login.html`. Renders all four form
 fields manually (matching the hand-crafted HTML pattern), shows non-field errors at the top and field-level errors below
 each input.
 
@@ -169,9 +169,8 @@ email, password, confirm password, passphrase — each using `k-login-field` / `
 - Non-field errors rendered in a `k-login-error` div above the field list (same pattern as login error block)
 - Each field: `k-login-field` wrapper > `k-login-lbl` label > `k-login-input` input. After each input, if the field has
   errors, render them in a small `<div style="color:oklch(70% 0.2 25);font-size:12px;margin-top:4px">`.
-- Field order: username (`type="text"`), email (`type="email"`), password (`type="password"`,
-  `autocomplete="new-password"`), confirm password (`type="password"`, `autocomplete="new-password"`), passphrase
-  (`type="password"`)
+- Field order: username (`type="text"`), password (`type="password"`, `autocomplete="new-password"`), confirm password
+  (`type="password"`, `autocomplete="new-password"`), passphrase (`type="password"`)
 - Submit button `k-login-submit` with label "Create account"
 - Footer link to `{% url 'login' %}`: "Already have an account? Log in →" using `k-login-back` class (same as the
   back-to-home link in login.html)
@@ -236,7 +235,7 @@ notice is visible after redirect.
 **Intent**: Cover the four critical behaviors: unset passphrase blocks, wrong passphrase rejects without creating a
 user, valid submission creates an active user and redirects to login, and GET returns 200 when configured.
 
-**Contract**: Four `@pytest.mark.django_db` test functions using the `client: Client` fixture and `settings`
+**Contract**: Five `@pytest.mark.django_db` test functions using the `client: Client` fixture and `settings`
 pytest-django fixture:
 
 - `test_register_get_blocked_when_passphrase_unset` — set `settings.REGISTRATION_PASSPHRASE = ""`; `GET /register/` →
@@ -310,39 +309,39 @@ No migrations required.
 
 #### Automated
 
-- [ ] 1.1 Linting passes: `uv run ruff check .`
+- [x] 1.1 Linting passes: `uv run ruff check .`
 
 #### Manual
 
-- [ ] 1.2 `GET /register/` with `REGISTRATION_PASSPHRASE` unset → 403
-- [ ] 1.3 `GET /register/` with `REGISTRATION_PASSPHRASE=test` → 200 (after Phase 2 template)
+- [x] 1.2 `GET /register/` with `REGISTRATION_PASSPHRASE` unset → 403
+- [x] 1.3 `GET /register/` with `REGISTRATION_PASSPHRASE=test` → 200 (after Phase 2 template)
 
 ### Phase 2: Registration template
 
 #### Automated
 
-- [ ] 2.1 Linting passes: `uv run ruff check .`
-- [ ] 2.2 Tests pass: `uv run pytest tests/test_registration.py`
+- [x] 2.1 Linting passes: `uv run ruff check .`
+- [x] 2.2 Tests pass: `uv run pytest tests/test_registration.py`
 
 #### Manual
 
-- [ ] 2.3 Form renders, matches login page visual style
-- [ ] 2.4 Wrong passphrase → field error displayed
-- [ ] 2.5 Mismatched passwords → field error displayed
-- [ ] 2.6 Valid form → redirected to login page
+- [x] 2.3 Form renders, matches login page visual style
+- [x] 2.4 Wrong passphrase → field error displayed
+- [x] 2.5 Mismatched passwords → field error displayed
+- [x] 2.6 Valid form → redirected to login page
 
 ### Phase 3: Nav links + tests
 
 #### Automated
 
-- [ ] 3.1 Tests pass: `uv run pytest tests/test_registration.py -v`
-- [ ] 3.2 All existing tests pass: `uv run pytest`
-- [ ] 3.3 Linting passes: `uv run ruff check .`
-- [ ] 3.4 Format check: `uv run ruff format --check .`
-- [ ] 3.5 Docker build succeeds: `docker build .`
+- [x] 3.1 Tests pass: `uv run pytest tests/test_registration.py -v`
+- [x] 3.2 All existing tests pass: `uv run pytest`
+- [x] 3.3 Linting passes: `uv run ruff check .`
+- [x] 3.4 Format check: `uv run ruff format --check .`
+- [x] 3.5 Docker build succeeds: `docker build .`
 
 #### Manual
 
-- [ ] 3.6 Landing page shows "Register" link in nav
-- [ ] 3.7 Login page shows "Register" link and success notice renders after registration
-- [ ] 3.8 Full end-to-end flow verified (register → login → app access)
+- [x] 3.6 Landing page shows "Register" link in nav
+- [x] 3.7 Login page shows "Register" link and success notice renders after registration
+- [x] 3.8 Full end-to-end flow verified (register → login → app access)

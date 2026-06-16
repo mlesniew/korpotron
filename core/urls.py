@@ -6,6 +6,7 @@ from core.views import (
     OptionGroupDeleteView,
     OptionGroupListView,
     OptionGroupUpdateView,
+    RegisterView,
     TemplateCreateView,
     TemplateDeleteView,
     TemplateListView,
@@ -15,6 +16,7 @@ from core.views import (
 
 urlpatterns = [
     path("", HomeView.as_view(), name="home"),
+    path("register/", RegisterView.as_view(), name="register"),
     path("generate/", generate_api, name="generate-api"),
     path("templates/", TemplateListView.as_view(), name="template-list"),
     path("templates/new/", TemplateCreateView.as_view(), name="template-create"),
