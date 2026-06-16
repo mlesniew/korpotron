@@ -1,10 +1,10 @@
 ---
 change_id: rate-limit-testing
 title: Rate-limit boundary and concurrency tests for daily generation cap (R4)
-status: impl_reviewed
+status: archived
 created: 2026-06-05
-updated: 2026-06-05
-archived_at: null
+updated: 2026-06-16
+archived_at: 2026-06-16T17:57:52Z
 ---
 
 ## Notes
