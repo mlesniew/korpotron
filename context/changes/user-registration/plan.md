@@ -309,39 +309,39 @@ No migrations required.
 
 #### Automated
 
-- [x] 1.1 Linting passes: `uv run ruff check .`
+- [x] 1.1 Linting passes: `uv run ruff check .` — e95bec7
 
 #### Manual
 
-- [x] 1.2 `GET /register/` with `REGISTRATION_PASSPHRASE` unset → 403
-- [x] 1.3 `GET /register/` with `REGISTRATION_PASSPHRASE=test` → 200 (after Phase 2 template)
+- [x] 1.2 `GET /register/` with `REGISTRATION_PASSPHRASE` unset → 403 — e95bec7
+- [x] 1.3 `GET /register/` with `REGISTRATION_PASSPHRASE=test` → 200 (after Phase 2 template) — e95bec7
 
 ### Phase 2: Registration template
 
 #### Automated
 
-- [x] 2.1 Linting passes: `uv run ruff check .`
-- [x] 2.2 Tests pass: `uv run pytest tests/test_registration.py`
+- [x] 2.1 Linting passes: `uv run ruff check .` — e95bec7
+- [x] 2.2 Tests pass: `uv run pytest tests/test_registration.py` — e95bec7
 
 #### Manual
 
-- [x] 2.3 Form renders, matches login page visual style
-- [x] 2.4 Wrong passphrase → field error displayed
-- [x] 2.5 Mismatched passwords → field error displayed
-- [x] 2.6 Valid form → redirected to login page
+- [x] 2.3 Form renders, matches login page visual style — e95bec7
+- [x] 2.4 Wrong passphrase → field error displayed — e95bec7
+- [x] 2.5 Mismatched passwords → field error displayed — e95bec7
+- [x] 2.6 Valid form → redirected to login page — e95bec7
 
 ### Phase 3: Nav links + tests
 
 #### Automated
 
-- [x] 3.1 Tests pass: `uv run pytest tests/test_registration.py -v`
-- [x] 3.2 All existing tests pass: `uv run pytest`
-- [x] 3.3 Linting passes: `uv run ruff check .`
-- [x] 3.4 Format check: `uv run ruff format --check .`
-- [x] 3.5 Docker build succeeds: `docker build .`
+- [x] 3.1 Tests pass: `uv run pytest tests/test_registration.py -v` — e95bec7
+- [x] 3.2 All existing tests pass: `uv run pytest` — e95bec7
+- [x] 3.3 Linting passes: `uv run ruff check .` — e95bec7
+- [x] 3.4 Format check: `uv run ruff format --check .` — e95bec7
+- [x] 3.5 Docker build succeeds: `docker build .` — e95bec7
 
 #### Manual
 
-- [x] 3.6 Landing page shows "Register" link in nav
-- [x] 3.7 Login page shows "Register" link and success notice renders after registration
-- [x] 3.8 Full end-to-end flow verified (register → login → app access)
+- [x] 3.6 Landing page shows "Register" link in nav — e95bec7
+- [x] 3.7 Login page shows "Register" link and success notice renders after registration — e95bec7
+- [x] 3.8 Full end-to-end flow verified (register → login → app access) — e95bec7
