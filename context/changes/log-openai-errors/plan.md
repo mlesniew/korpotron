@@ -130,10 +130,10 @@ after the response assertions.
 
 #### Automated
 
-- [x] 1.1 Linting passes: `uv run ruff check .`
-- [x] 1.2 Tests pass (extended 502 test): `uv run pytest tests/test_generate.py -v`
-- [x] 1.3 Full test suite green: `uv run pytest`
+- [x] 1.1 Linting passes: `uv run ruff check .` — 87744c5
+- [x] 1.2 Tests pass (extended 502 test): `uv run pytest tests/test_generate.py -v` — 87744c5
+- [x] 1.3 Full test suite green: `uv run pytest` — 87744c5
 
 #### Manual
 
-- [x] 1.4 ERROR entry with traceback visible on console when generation fails
+- [x] 1.4 ERROR entry with traceback visible on console when generation fails — 87744c5
