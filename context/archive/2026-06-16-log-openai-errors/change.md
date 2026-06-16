@@ -1,10 +1,10 @@
 ---
 change_id: log-openai-errors
 title: Log OpenAI errors server-side for production visibility
-status: impl_reviewed
+status: archived
 created: 2026-06-16
 updated: 2026-06-16
-archived_at: null
+archived_at: 2026-06-16T17:24:13Z
 ---
 
 ## Notes
