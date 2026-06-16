@@ -3,7 +3,7 @@ project: "Korpotron"
 version: 1
 status: active
 created: 2026-05-26
-updated: 2026-06-10
+updated: 2026-06-16
 prd_version: 1
 main_goal: speed
 top_blocker: decisions
@@ -47,7 +47,7 @@ eliminates the copy-paste chore — is confirmed when this slice ships and the p
 | S-08 | template-list-ux        | ~~template list page shows a name + delete-icon row per template; clicking the name navigates to the edit page~~                   | F-01, S-01             | —                                             | dropped |
 | S-09 | option-group-list-ux    | ~~option group list page shows a name + delete-icon row per group; clicking the name navigates to the edit page~~                  | F-01, S-02             | —                                             | dropped |
 | S-10 | ui-refresh              | all app pages get a modern, non-generic visual style; forms and layout overhauled; framework TBD via research                      | S-04–S-07, S-11        | —                                             | done    |
-| S-11 | user-registration       | users can self-register using a passphrase; accounts are immediately active                                                        | F-01                   | —                                             | planned |
+| S-11 | user-registration       | users can self-register using a passphrase; accounts are immediately active                                                        | F-01                   | —                                             | done    |
 
 ## Streams
 
@@ -266,7 +266,7 @@ S-10.
     generation limit already bounds per-user cost.
 - **Risk:** Low — thin view + form subclass on top of Django's existing `UserCreationForm`; no new models or migrations.
   Primary residual risk is passphrase leak, mitigated by easy rotation.
-- **Status:** planned
+- **Status:** done
 
 ### S-10: UI refresh
 
@@ -314,7 +314,7 @@ MVP (F-01, F-02, S-01–S-03) shipped and archived as of 2026-06-01. Three post-
 | S-08       | template-list-ux        | dropped | 2026-06-07 |
 | S-09       | option-group-list-ux    | dropped | 2026-06-07 |
 | S-10       | ui-refresh              | done    | 2026-06-10 |
-| S-11       | user-registration       | planned | —          |
+| S-11       | user-registration       | done    | 2026-06-16 |
 
 See the `## Done` section below for MVP archive locations.
 
@@ -370,3 +370,5 @@ See the `## Done` section below for MVP archive locations.
   with JS confirmation** — Archived 2026-06-08 → `context/archive/2026-06-08-option-group-edit-ux/`. Lesson: —.
 - **S-10: all app pages have a modern, cohesive visual style. Forms are no longer rendered with bare Django widgets.** —
   Archived 2026-06-10 → `context/archive/2026-06-08-ui-refresh/`. Lesson: —.
+- **S-11: users can self-register using a passphrase; accounts are immediately active** — Archived 2026-06-16 →
+  `context/archive/2026-06-15-user-registration/`. Lesson: —.
