@@ -228,6 +228,7 @@ def test_generate_llm_error_maps_to_502_not_500(
     # the user's input is never echoed back
     assert "secret input" not in json.dumps(body)
     assert any(r.levelno == logging.ERROR for r in caplog.records)
+    assert all("secret input" not in r.getMessage() for r in caplog.records)
 
 
 @pytest.mark.django_db

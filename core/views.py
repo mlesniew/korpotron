@@ -189,7 +189,8 @@ class HomeView(View):
 def generate_api(request: HttpRequest) -> JsonResponse:
     """Validate ownership + the one-per-group invariant, call the LLM, return JSON.
 
-    Never persists or logs the input/output (hard non-retention NFR). On LLM /
+    Never persists or logs user input or model output (non-retention NFR);
+    infrastructure failures are logged at ERROR level for observability. On LLM /
     transport failure, returns a friendly error with a non-500 status so the
     frontend can show an inline alert — no stack trace or input is echoed.
     """
@@ -264,6 +265,8 @@ def generate_api(request: HttpRequest) -> JsonResponse:
         try:
             result = llm.generate(template, options, text)
         except OpenAIError:
+            # APIStatusError subclasses may include the raw provider response body in str(e);
+            # accepted risk: provider error bodies could appear in logs in edge cases.
             logger.exception("LLM generation failed")
             return JsonResponse(
                 {"error": "Text generation failed. Please try again."}, status=502

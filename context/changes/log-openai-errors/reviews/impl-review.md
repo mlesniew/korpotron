@@ -47,7 +47,8 @@
   - Tradeoff: Non-retention NFR conditionally violated depending on provider behavior.
   - Confidence: MED — relies on provider behavior, not code.
   - Blind spot: Actual OpenRouter error body formats not audited for all error types.
-- **Decision**: PENDING
+- **Decision**: FIXED via Fix B — kept logger.exception(); added comment documenting accepted risk of provider body in
+  logs.
 
 ### F2 — Test doesn't assert log records are clean of user data
 
@@ -60,7 +61,8 @@
   themselves. The non-retention guarantee is half-tested.
 - **Fix**: Add `assert all("secret input" not in r.getMessage() for r in caplog.records)` after the existing log
   assertion.
-- **Decision**: PENDING
+- **Decision**: FIXED — added assert all("secret input" not in r.getMessage() for r in caplog.records) after existing
+  log assertion.
 
 ### F3 — generate_api docstring now contradicts the logging behavior
 
@@ -73,4 +75,4 @@
   comment removed from the `except` block (correctly) left behind a now-misleading docstring.
 - **Fix**: Update the docstring to distinguish: "never persists or logs user input or model output (non-retention NFR);
   infrastructure failures are logged at ERROR level for observability."
-- **Decision**: PENDING
+- **Decision**: FIXED — updated docstring to distinguish user data non-retention from infrastructure failure logging.
