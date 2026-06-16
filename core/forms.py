@@ -60,10 +60,10 @@ OptionFormSet = inlineformset_factory(
 
 
 class UserRegistrationForm(UserCreationForm):
-    passphrase = CharField(widget=PasswordInput, label="Passphrase")
+    passphrase = CharField(widget=PasswordInput, label="Invite code")
 
     def clean_passphrase(self) -> str:
         value = self.cleaned_data["passphrase"]
         if not constant_time_compare(value, settings.REGISTRATION_PASSPHRASE):
-            raise ValidationError("Incorrect passphrase.")
+            raise ValidationError("Incorrect invite code.")
         return value
