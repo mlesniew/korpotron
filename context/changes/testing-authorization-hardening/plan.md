@@ -214,12 +214,12 @@ folder.
 
 #### Automated
 
-- [x] 2.1 `uv run pytest` — suite still passes
-- [x] 2.2 `uv run ruff check .` — still passes
+- [x] 2.1 `uv run pytest` — suite still passes — 2434c52
+- [x] 2.2 `uv run ruff check .` — still passes — 2434c52
 
 #### Manual
 
-- [x] 2.3 §5 R2 row references three test files and shows Covered
-- [x] 2.4 §5 R3 row references `tests/test_auth.py` and shows Covered — Phase 2 done
-- [x] 2.5 §6 Phase 2 cookbook section is filled in (no TBD remaining)
-- [x] 2.6 §3 Phase 2 row shows done
+- [x] 2.3 §5 R2 row references three test files and shows Covered — 2434c52
+- [x] 2.4 §5 R3 row references `tests/test_auth.py` and shows Covered — Phase 2 done — 2434c52
+- [x] 2.5 §6 Phase 2 cookbook section is filled in (no TBD remaining) — 2434c52
+- [x] 2.6 §3 Phase 2 row shows done — 2434c52

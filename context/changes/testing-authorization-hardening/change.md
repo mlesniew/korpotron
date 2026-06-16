@@ -1,7 +1,7 @@
 ---
 change_id: testing-authorization-hardening
 title: Authorization hardening — ownership isolation tests for JSON endpoints and inactive-user login block
-status: implementing
+status: implemented
 created: 2026-06-16
 updated: 2026-06-16
 archived_at: null
