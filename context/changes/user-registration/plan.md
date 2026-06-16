@@ -345,3 +345,18 @@ No migrations required.
 - [x] 3.6 Landing page shows "Register" link in nav — e95bec7
 - [x] 3.7 Login page shows "Register" link and success notice renders after registration — e95bec7
 - [x] 3.8 Full end-to-end flow verified (register → login → app access) — e95bec7
+
+## Implementation Addendum
+
+Discovered during impl-review. None of these change the planned behaviour; all are improvements or cosmetic additions.
+
+**Context processor gating** (`core/context_processors.py`, `korpotron/settings.py`): A `registration` context processor
+was added to expose `registration_enabled` to templates. Register nav links are now conditionally rendered only when
+`REGISTRATION_PASSPHRASE` is set, which is better than the plan's always-visible link to a 403 route.
+
+**CSS classes instead of inline styles** (`static/css/korpotron.css`): Registration-form styles were extracted into
+named classes (`.k-login-success`, `.k-login-field-error`, `.k-login-form-footer`) rather than using the plan's
+suggested inline styles. Cleaner and consistent with the existing CSS approach.
+
+**Hero link** (`templates/core/landing.html`): A "No account yet? Register →" link was added in the landing page hero
+section alongside a `.k-landing-register-link` style block. Cosmetic addition not in the original plan.

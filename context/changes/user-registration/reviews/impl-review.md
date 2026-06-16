@@ -36,7 +36,7 @@ passed, full `pytest` 75 passed. Docker build (criterion 3.5) trusted as recorde
   defense-in-depth.
 - **Fix**: Use `from django.utils.crypto import constant_time_compare` and
   `if not constant_time_compare(value, settings.REGISTRATION_PASSPHRASE):`.
-- **Decision**: PENDING
+- **Decision**: FIXED — swapped `!=` for `constant_time_compare` in core/forms.py
 
 ### F2 — Unplanned context processor, CSS classes, and extra hero link
 
@@ -52,7 +52,7 @@ passed, full `pytest` 75 passed. Docker build (criterion 3.5) trusted as recorde
   landing.html, pure cosmetic creep. All benign and coherent, but none are documented in the plan.
 - **Fix**: Add a short addendum to plan.md noting the context-processor gating, the CSS-class decision, and the hero
   link, so the plan stays the source of truth.
-- **Decision**: PENDING
+- **Decision**: FIXED — addendum appended to context/changes/user-registration/plan.md
 
 ### F3 — Test `settings` fixture annotated `object`, not repo convention
 
@@ -64,7 +64,7 @@ passed, full `pytest` 75 passed. Docker build (criterion 3.5) trusted as recorde
   conftest.py:6 uses `settings: pytest.FixtureRequest` for the same fixture. Neither is the truly-correct type, but the
   new file diverges from the established in-repo convention. Markers/fixtures otherwise match.
 - **Fix**: Change `settings: object` → `settings: pytest.FixtureRequest` to match conftest.py.
-- **Decision**: PENDING
+- **Decision**: FIXED — replaced all occurrences in tests/test_registration.py
 
 ### F4 — `/register/` has no rate limiting (passphrase is the only barrier)
 
@@ -76,4 +76,4 @@ passed, full `pytest` 75 passed. Docker build (criterion 3.5) trusted as recorde
   unbounded automated signups. This is explicitly the documented S-11 design ("What We're NOT Doing": no rate limiting;
   daily generation limit is the cost guard). Flagging only so the tradeoff is conscious — the whole posture rests on
   passphrase secrecy. No action needed.
-- **Decision**: PENDING
+- **Decision**: SKIPPED — acknowledged as intentional S-11 design tradeoff

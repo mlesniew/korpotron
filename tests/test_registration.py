@@ -5,7 +5,7 @@ from django.test import Client
 
 @pytest.mark.django_db
 def test_register_get_blocked_when_passphrase_unset(
-    client: Client, settings: object
+    client: Client, settings: pytest.FixtureRequest
 ) -> None:
     settings.REGISTRATION_PASSPHRASE = ""
     response = client.get("/register/")
@@ -14,7 +14,7 @@ def test_register_get_blocked_when_passphrase_unset(
 
 @pytest.mark.django_db
 def test_register_post_blocked_when_passphrase_unset(
-    client: Client, settings: object
+    client: Client, settings: pytest.FixtureRequest
 ) -> None:
     settings.REGISTRATION_PASSPHRASE = ""
     response = client.post(
@@ -30,14 +30,18 @@ def test_register_post_blocked_when_passphrase_unset(
 
 
 @pytest.mark.django_db
-def test_register_get_returns_200(client: Client, settings: object) -> None:
+def test_register_get_returns_200(
+    client: Client, settings: pytest.FixtureRequest
+) -> None:
     settings.REGISTRATION_PASSPHRASE = "secret"
     response = client.get("/register/")
     assert response.status_code == 200
 
 
 @pytest.mark.django_db
-def test_register_wrong_passphrase_rejected(client: Client, settings: object) -> None:
+def test_register_wrong_passphrase_rejected(
+    client: Client, settings: pytest.FixtureRequest
+) -> None:
     settings.REGISTRATION_PASSPHRASE = "secret"
     response = client.post(
         "/register/",
@@ -54,7 +58,7 @@ def test_register_wrong_passphrase_rejected(client: Client, settings: object) ->
 
 @pytest.mark.django_db
 def test_register_valid_creates_user_and_redirects(
-    client: Client, settings: object
+    client: Client, settings: pytest.FixtureRequest
 ) -> None:
     settings.REGISTRATION_PASSPHRASE = "secret"
     response = client.post(

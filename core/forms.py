@@ -8,6 +8,7 @@ from django.forms import (
     ValidationError,
     inlineformset_factory,
 )
+from django.utils.crypto import constant_time_compare
 
 from core.models import Option, OptionGroup
 
@@ -63,6 +64,6 @@ class UserRegistrationForm(UserCreationForm):
 
     def clean_passphrase(self) -> str:
         value = self.cleaned_data["passphrase"]
-        if value != settings.REGISTRATION_PASSPHRASE:
+        if not constant_time_compare(value, settings.REGISTRATION_PASSPHRASE):
             raise ValidationError("Incorrect passphrase.")
         return value
