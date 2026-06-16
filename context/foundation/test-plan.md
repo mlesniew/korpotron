@@ -56,12 +56,12 @@ answers, hot-spot directories). It does not assert a specific file as "where the
 
 ## §3 Phased rollout
 
-| #   | Phase name              | Goal                                                                                                                                                                    | Risks covered | Test types                               | Status        | Change folder                                    |
-| --- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ---------------------------------------- | ------------- | ------------------------------------------------ |
-| 1   | CI quality gate         | Wire pytest into GitHub Actions; configure as a required check so broken tests block merges to master                                                                   | R1            | GitHub Actions YAML, branch protection   | done          | context/changes/ci-quality-gate/                 |
-| 2   | Authorization hardening | Prove ownership isolation for existing endpoint patterns and establish the contract for S-07/S-11 before they ship                                                      | R2, R3        | Django test client integration tests     | change opened | context/changes/testing-authorization-hardening/ |
-| 3   | LLM & abuse surface     | Prove rate-limit edges are tamper-resistant; verify message construction puts user content in the user-message slot; extend input non-retention checks to new endpoints | R4, R5, R6    | Django integration tests, LLM unit tests | done          | context/changes/rate-limit-testing/              |
-| 4   | Docker deployment smoke | CI step that builds the image, starts the container, and verifies the app serves HTTP                                                                                   | R7            | CI shell step                            | done          | context/changes/docker-smoke-test/               |
+| #   | Phase name              | Goal                                                                                                                                                                    | Risks covered | Test types                               | Status | Change folder                                    |
+| --- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ---------------------------------------- | ------ | ------------------------------------------------ |
+| 1   | CI quality gate         | Wire pytest into GitHub Actions; configure as a required check so broken tests block merges to master                                                                   | R1            | GitHub Actions YAML, branch protection   | done   | context/changes/ci-quality-gate/                 |
+| 2   | Authorization hardening | Prove ownership isolation for existing endpoint patterns and establish the contract for S-07/S-11 before they ship                                                      | R2, R3        | Django test client integration tests     | done   | context/changes/testing-authorization-hardening/ |
+| 3   | LLM & abuse surface     | Prove rate-limit edges are tamper-resistant; verify message construction puts user content in the user-message slot; extend input non-retention checks to new endpoints | R4, R5, R6    | Django integration tests, LLM unit tests | done   | context/changes/rate-limit-testing/              |
+| 4   | Docker deployment smoke | CI step that builds the image, starts the container, and verifies the app serves HTTP                                                                                   | R7            | CI shell step                            | done   | context/changes/docker-smoke-test/               |
 
 ---
 
@@ -99,21 +99,21 @@ generation view, LLM message construction, option group views, template views. A
 
 ## §5 Existing coverage summary
 
-| Area                                                                                       | Test file                                            | Status                             |
-| ------------------------------------------------------------------------------------------ | ---------------------------------------------------- | ---------------------------------- |
-| Auth (login/logout redirect)                                                               | `tests/test_auth.py`                                 | Covered (3 tests)                  |
-| Core models (cascade, creation)                                                            | `tests/test_core_models.py`                          | Covered (6 tests)                  |
-| Generation view (happy path, cross-user, daily limit, error handling, input non-retention) | `tests/test_generate.py`                             | Covered (18 tests)                 |
-| LLM message construction and parsing                                                       | `tests/test_llm.py`                                  | Covered (7 tests)                  |
-| Option group views (CRUD, ownership, validation)                                           | `tests/test_option_group_views.py`                   | Covered (9 tests)                  |
-| Template views (CRUD, ownership)                                                           | `tests/test_template_views.py`                       | Covered (7 tests)                  |
-| CI gate (pytest runs in GitHub Actions, required check on master)                          | `.github/workflows/ci.yml`                           | **Covered** — Phase 1 done         |
-| S-07 JSON endpoint ownership checks                                                        | —                                                    | **Not covered** → Phase 2          |
-| S-11 registration + inactive-user login block                                              | —                                                    | **Not covered** → Phase 2          |
-| Rate-limit midnight boundary + atomic check-and-increment                                  | `tests/test_generate.py` (concurrent boundary tests) | **Covered** — Phase 3 done         |
-| LLM message slot structure (prompt injection structural)                                   | `tests/test_llm.py` (system_message test)            | **Covered** — Phase 3 done         |
-| Input non-retention for future endpoints                                                   | `tests/test_generate.py` (field-value scan)          | **Covered pattern** — Phase 3 done |
-| Docker build + container startup                                                           | `.github/workflows/ci.yml` (`docker-smoke` job)      | **Covered** — Phase 4 done         |
+| Area                                                                                       | Test file                                                                                    | Status                                                                                                 |
+| ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Auth (login/logout redirect)                                                               | `tests/test_auth.py`                                                                         | Covered (3 tests)                                                                                      |
+| Core models (cascade, creation)                                                            | `tests/test_core_models.py`                                                                  | Covered (6 tests)                                                                                      |
+| Generation view (happy path, cross-user, daily limit, error handling, input non-retention) | `tests/test_generate.py`                                                                     | Covered (18 tests)                                                                                     |
+| LLM message construction and parsing                                                       | `tests/test_llm.py`                                                                          | Covered (7 tests)                                                                                      |
+| Option group views (CRUD, ownership, validation)                                           | `tests/test_option_group_views.py`                                                           | Covered (9 tests)                                                                                      |
+| Template views (CRUD, ownership)                                                           | `tests/test_template_views.py`                                                               | Covered (7 tests)                                                                                      |
+| CI gate (pytest runs in GitHub Actions, required check on master)                          | `.github/workflows/ci.yml`                                                                   | **Covered** — Phase 1 done                                                                             |
+| S-07 JSON endpoint ownership checks                                                        | `tests/test_template_views.py`, `tests/test_option_group_views.py`, `tests/test_generate.py` | Covered — `tests/test_template_views.py`, `tests/test_option_group_views.py`, `tests/test_generate.py` |
+| S-11 registration + inactive-user login block                                              | `tests/test_auth.py`                                                                         | **Covered** — Phase 2 done                                                                             |
+| Rate-limit midnight boundary + atomic check-and-increment                                  | `tests/test_generate.py` (concurrent boundary tests)                                         | **Covered** — Phase 3 done                                                                             |
+| LLM message slot structure (prompt injection structural)                                   | `tests/test_llm.py` (system_message test)                                                    | **Covered** — Phase 3 done                                                                             |
+| Input non-retention for future endpoints                                                   | `tests/test_generate.py` (field-value scan)                                                  | **Covered pattern** — Phase 3 done                                                                     |
+| Docker build + container startup                                                           | `.github/workflows/ci.yml` (`docker-smoke` job)                                              | **Covered** — Phase 4 done                                                                             |
 
 ---
 
@@ -135,8 +135,28 @@ Result: a PR with a broken test gets `mergeStateStatus = BLOCKED` — the merge 
 
 ### Phase 2 — Authorization hardening
 
-TBD — see §3 Phase 2. Patterns: cross-user ownership assertion for JSON endpoints (R2 — IDOR denial/regression pattern);
-inactive-user login rejection for registration flow (R3).
+**Shipped.** See `context/changes/testing-authorization-hardening/`.
+
+**R2 finding — S-07 IDOR surface (cross-user ownership):**
+
+S-07 produced no REST JSON endpoints; the anticipated IDOR surface was designed away (all data access goes through
+template/option-group views, not a REST API — see `context/foundation/roadmap.md:228`). Six cross-user rejection tests
+already existed across template, option-group, and generate views before Phase 2 opened — no new tests were needed.
+Note: the `generate` view returns HTTP 400 (not 404/403) for cross-user violations. This is intentional — the endpoint
+accepts JSON and returns an error-key response. The behavior is tested and correct; normalizing to 403/404 would change
+existing tests with no security benefit.
+
+**R3 pattern — inactive-user login block:**
+
+- `@pytest.mark.django_db` function (no `transaction=True` needed).
+- Inactive user created inline: `User.objects.create_user(username="inactive", password="pass1234", is_active=False)`.
+  Do not use a shared fixture — test-specific state keeps the test self-contained.
+- POST valid credentials to `/accounts/login/`.
+- Two assertions required: `response.status_code == 200` (form re-rendered, not redirected) **and**
+  `not response.wsgi_request.user.is_authenticated` (HTTP 200 alone could be a successful login to a redirect-free
+  page).
+- No custom auth backend override exists in this project; the test pins the Django-default `ModelBackend` +
+  `AuthenticationForm.confirm_login_allowed()` chain.
 
 ### Phase 3 — LLM & abuse surface
 

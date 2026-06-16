@@ -206,20 +206,20 @@ folder.
 
 #### Automated
 
-- [x] 1.1 `uv run pytest tests/test_auth.py -v` — all 4 tests pass
-- [x] 1.2 `uv run pytest` — full suite passes with no regressions
-- [x] 1.3 `uv run ruff check .` — no lint errors
+- [x] 1.1 `uv run pytest tests/test_auth.py -v` — all 4 tests pass — 627cb6d
+- [x] 1.2 `uv run pytest` — full suite passes with no regressions — 627cb6d
+- [x] 1.3 `uv run ruff check .` — no lint errors — 627cb6d
 
 ### Phase 2: Test-Plan Documentation
 
 #### Automated
 
-- [ ] 2.1 `uv run pytest` — suite still passes
-- [ ] 2.2 `uv run ruff check .` — still passes
+- [x] 2.1 `uv run pytest` — suite still passes
+- [x] 2.2 `uv run ruff check .` — still passes
 
 #### Manual
 
-- [ ] 2.3 §5 R2 row references three test files and shows Covered
-- [ ] 2.4 §5 R3 row references `tests/test_auth.py` and shows Covered — Phase 2 done
-- [ ] 2.5 §6 Phase 2 cookbook section is filled in (no TBD remaining)
-- [ ] 2.6 §3 Phase 2 row shows done
+- [x] 2.3 §5 R2 row references three test files and shows Covered
+- [x] 2.4 §5 R3 row references `tests/test_auth.py` and shows Covered — Phase 2 done
+- [x] 2.5 §6 Phase 2 cookbook section is filled in (no TBD remaining)
+- [x] 2.6 §3 Phase 2 row shows done
