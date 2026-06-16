@@ -1,4 +1,5 @@
 import json
+import logging
 import threading
 from datetime import date, timedelta
 from unittest.mock import patch
@@ -215,16 +216,18 @@ def test_generate_two_options_same_group_rejected(
 
 @pytest.mark.django_db
 def test_generate_llm_error_maps_to_502_not_500(
-    client: Client, user: User, template: Template
+    client: Client, user: User, template: Template, caplog: pytest.LogCaptureFixture
 ) -> None:
     _login(client)
-    with patch("core.views.llm.generate", side_effect=OpenAIError("boom")):
-        response = _post(client, template_id=template.pk, text="secret input")
+    with caplog.at_level(logging.ERROR, logger="core.views"):
+        with patch("core.views.llm.generate", side_effect=OpenAIError("boom")):
+            response = _post(client, template_id=template.pk, text="secret input")
     assert response.status_code == 502
     body = response.json()
     assert "error" in body
     # the user's input is never echoed back
     assert "secret input" not in json.dumps(body)
+    assert any(r.levelno == logging.ERROR for r in caplog.records)
 
 
 @pytest.mark.django_db

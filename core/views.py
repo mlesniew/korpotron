@@ -1,4 +1,5 @@
 import json
+import logging
 
 from django.conf import settings
 from django.contrib import messages
@@ -31,6 +32,8 @@ from openai import OpenAIError
 from core import llm
 from core.forms import OptionFormSet, UserRegistrationForm
 from core.models import DailyGenerationCount, Option, OptionGroup, Template
+
+logger = logging.getLogger(__name__)
 
 
 class RegisterView(FormView):
@@ -261,7 +264,7 @@ def generate_api(request: HttpRequest) -> JsonResponse:
         try:
             result = llm.generate(template, options, text)
         except OpenAIError:
-            # Do not log or echo the input/prompt/output (non-retention NFR).
+            logger.exception("LLM generation failed")
             return JsonResponse(
                 {"error": "Text generation failed. Please try again."}, status=502
             )
