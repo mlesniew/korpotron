@@ -298,7 +298,7 @@ S-10.
 MVP (F-01, F-02, S-01–S-03) shipped and archived as of 2026-06-01. Three post-MVP slices — S-04 (landing-page), S-05
 (daily-generation-limit), and S-06 (onboarding-defaults) — have since shipped and been archived. S-07
 (option-group-edit-ux) shipped 2026-06-08. S-08 and S-09 were dropped 2026-06-07 (minor list UX deferred to S-10). S-10
-(ui-refresh) shipped 2026-06-10. S-11 remains planned.
+(ui-refresh) shipped 2026-06-10. S-11 (user-registration) shipped 2026-06-15.
 
 | Roadmap ID | Change ID               | Status  | Archived   |
 | ---------- | ----------------------- | ------- | ---------- |

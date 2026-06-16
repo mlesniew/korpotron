@@ -71,8 +71,9 @@ answers, hot-spot directories). It does not assert a specific file as "where the
 
 **Test runner command:** `uv run pytest`
 
-**Test-base profile:** Meaningful — pytest configured; 6 test files, 35+ test functions covering auth, core models,
-generation view, LLM message construction, option group views, template views. All tests concentrated in `tests/`.
+**Test-base profile:** Meaningful — pytest configured; 9 test files, 76 test functions covering auth, core models,
+generation view, LLM message construction, option group views, template views, onboarding, and registration. All tests
+concentrated in `tests/`.
 
 **Hot-spot scope (last 30 days, 29 commits):**
 
@@ -101,12 +102,14 @@ generation view, LLM message construction, option group views, template views. A
 
 | Area                                                                                       | Test file                                                                                    | Status                                                                                                 |
 | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| Auth (login/logout redirect)                                                               | `tests/test_auth.py`                                                                         | Covered (3 tests)                                                                                      |
-| Core models (cascade, creation)                                                            | `tests/test_core_models.py`                                                                  | Covered (6 tests)                                                                                      |
-| Generation view (happy path, cross-user, daily limit, error handling, input non-retention) | `tests/test_generate.py`                                                                     | Covered (18 tests)                                                                                     |
-| LLM message construction and parsing                                                       | `tests/test_llm.py`                                                                          | Covered (7 tests)                                                                                      |
-| Option group views (CRUD, ownership, validation)                                           | `tests/test_option_group_views.py`                                                           | Covered (9 tests)                                                                                      |
+| Auth (login/logout redirect)                                                               | `tests/test_auth.py`                                                                         | Covered (4 tests)                                                                                      |
+| Core models (cascade, creation)                                                            | `tests/test_core_models.py`                                                                  | Covered (10 tests)                                                                                     |
+| Generation view (happy path, cross-user, daily limit, error handling, input non-retention) | `tests/test_generate.py`                                                                     | Covered (21 tests)                                                                                     |
+| LLM message construction and parsing                                                       | `tests/test_llm.py`                                                                          | Covered (12 tests)                                                                                     |
+| Option group views (CRUD, ownership, validation)                                           | `tests/test_option_group_views.py`                                                           | Covered (13 tests)                                                                                     |
 | Template views (CRUD, ownership)                                                           | `tests/test_template_views.py`                                                               | Covered (7 tests)                                                                                      |
+| Onboarding defaults (seeding on first login)                                               | `tests/test_onboarding.py`                                                                   | Covered (4 tests)                                                                                      |
+| User registration (form, passphrase gate)                                                  | `tests/test_registration.py`                                                                 | Covered (5 tests)                                                                                      |
 | CI gate (pytest runs in GitHub Actions, required check on master)                          | `.github/workflows/ci.yml`                                                                   | **Covered** — Phase 1 done                                                                             |
 | S-07 JSON endpoint ownership checks                                                        | `tests/test_template_views.py`, `tests/test_option_group_views.py`, `tests/test_generate.py` | Covered — `tests/test_template_views.py`, `tests/test_option_group_views.py`, `tests/test_generate.py` |
 | S-11 registration + inactive-user login block                                              | `tests/test_auth.py`                                                                         | **Covered** — Phase 2 done                                                                             |
