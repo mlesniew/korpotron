@@ -31,3 +31,14 @@ def test_logout_redirects_to_landing(client: Client, user: User) -> None:
     response = client.post("/accounts/logout/")
     assert response.status_code == 302
     assert response["Location"] == "/"
+
+
+@pytest.mark.django_db
+def test_inactive_user_cannot_login(client: Client) -> None:
+    User.objects.create_user(username="inactive", password="pass1234", is_active=False)
+    response = client.post(
+        "/accounts/login/",
+        {"username": "inactive", "password": "pass1234"},
+    )
+    assert response.status_code == 200
+    assert not response.wsgi_request.user.is_authenticated
