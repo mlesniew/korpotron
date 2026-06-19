@@ -309,14 +309,14 @@ Django app runs (manage.py / gunicorn) or how Docker builds (both stages use `--
 
 #### Automated
 
-- [x] 2.1 Dependencies/install resolve: `uv sync`
-- [x] 2.2 Console script wired: `uv run korpo-review < /dev/null` runs the tool
-- [x] 2.3 Linting passes: `uv run ruff check .`
-- [x] 2.4 Type checking passes: `uv run mypy tools`
-- [x] 2.5 Docker image builds: `docker build -t korpotron-test .`
+- [x] 2.1 Dependencies/install resolve: `uv sync` — 2ed41fe
+- [x] 2.2 Console script wired: `uv run korpo-review < /dev/null` runs the tool — 2ed41fe
+- [x] 2.3 Linting passes: `uv run ruff check .` — 2ed41fe
+- [x] 2.4 Type checking passes: `uv run mypy tools` — 2ed41fe
+- [x] 2.5 Docker image builds: `docker build -t korpotron-test .` — 2ed41fe
 
 #### Manual
 
-- [x] 2.6 `git diff | uv run korpo-review` matches the Phase 1 direct invocation
-- [x] 2.7 `CLAUDE.md` and `.env.example` read correctly and match actual behavior
-- [x] 2.8 GitHub issue for `agentic-review` updated/closed per lessons.md sync rule
+- [x] 2.6 `git diff | uv run korpo-review` matches the Phase 1 direct invocation — 2ed41fe
+- [x] 2.7 `CLAUDE.md` and `.env.example` read correctly and match actual behavior — 2ed41fe
+- [x] 2.8 GitHub issue for `agentic-review` updated/closed per lessons.md sync rule — 2ed41fe
