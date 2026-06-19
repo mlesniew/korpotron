@@ -40,6 +40,11 @@ In production (Fly.io) all variables are set as Fly secrets, not via `.env`.
 | Run tests        | `uv run pytest`                   |
 | Lint             | `uv run ruff check .`             |
 | Format           | `uv run ruff format .`            |
+| Review a diff    | `git diff \| uv run korpo-review` |
+
+`korpo-review` is a standalone dev utility (`tools/review.py`) — it uses the Claude Agent SDK and never imports Django.
+No `ANTHROPIC_API_KEY` is needed for local personal use (subscription login fallback); see `.env.example` for CI/shared
+use.
 
 ## Code conventions
 
