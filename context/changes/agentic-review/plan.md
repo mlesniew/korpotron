@@ -292,17 +292,17 @@ Django app runs (manage.py / gunicorn) or how Docker builds (both stages use `--
 
 #### Automated
 
-- [ ] 1.1 Dependencies resolve: `uv sync`
-- [ ] 1.2 Linting passes: `uv run ruff check tools`
-- [ ] 1.3 Formatting clean: `uv run ruff format --check tools`
-- [ ] 1.4 Type checking passes: `uv run mypy tools`
-- [ ] 1.5 Module imports without error: `uv run python -c "import tools.review"`
+- [x] 1.1 Dependencies resolve: `uv sync`
+- [x] 1.2 Linting passes: `uv run ruff check tools`
+- [x] 1.3 Formatting clean: `uv run ruff format --check tools`
+- [x] 1.4 Type checking passes: `uv run mypy tools`
+- [x] 1.5 Module imports without error: `uv run python -c "import tools.review"`
 
 #### Manual
 
-- [ ] 1.6 `git diff | uv run python tools/review.py` returns a populated Review as pretty JSON with stderr cost line
-- [ ] 1.7 Exit code is 0 on pass, non-zero on fail
-- [ ] 1.8 Empty/no diff fails cleanly with a readable stderr message (no traceback)
+- [x] 1.6 `git diff | uv run python tools/review.py` returns a populated Review as pretty JSON with stderr cost line
+- [x] 1.7 Exit code is 0 on pass, non-zero on fail
+- [x] 1.8 Empty/no diff fails cleanly with a readable stderr message (no traceback)
 
 ### Phase 2: Packaging & docs
 

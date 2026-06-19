@@ -18,10 +18,12 @@ DJANGO_SETTINGS_MODULE = "korpotron.settings"
 
 [dependency-groups]
 dev = [
+    "claude-agent-sdk>=0.2.105",
     "django-stubs>=6.0.4",
     "djlint>=1.39.0",
     "mypy>=2.1.0",
     "pre-commit>=4.6.0",
+    "pydantic>=2.13.4",
     "pytest>=9.0.3",
     "pytest-django>=4.12.0",
     "ruff>=0.15.13",
