@@ -292,30 +292,31 @@ Django app runs (manage.py / gunicorn) or how Docker builds (both stages use `--
 
 #### Automated
 
-- [x] 1.1 Dependencies resolve: `uv sync`
-- [x] 1.2 Linting passes: `uv run ruff check tools`
-- [x] 1.3 Formatting clean: `uv run ruff format --check tools`
-- [x] 1.4 Type checking passes: `uv run mypy tools`
-- [x] 1.5 Module imports without error: `uv run python -c "import tools.review"`
+- [x] 1.1 Dependencies resolve: `uv sync` — cccc9ce
+- [x] 1.2 Linting passes: `uv run ruff check tools` — cccc9ce
+- [x] 1.3 Formatting clean: `uv run ruff format --check tools` — cccc9ce
+- [x] 1.4 Type checking passes: `uv run mypy tools` — cccc9ce
+- [x] 1.5 Module imports without error: `uv run python -c "import tools.review"` — cccc9ce
 
 #### Manual
 
-- [x] 1.6 `git diff | uv run python tools/review.py` returns a populated Review as pretty JSON with stderr cost line
-- [x] 1.7 Exit code is 0 on pass, non-zero on fail
-- [x] 1.8 Empty/no diff fails cleanly with a readable stderr message (no traceback)
+- [x] 1.6 `git diff | uv run python tools/review.py` returns a populated Review as pretty JSON with stderr cost line —
+      cccc9ce
+- [x] 1.7 Exit code is 0 on pass, non-zero on fail — cccc9ce
+- [x] 1.8 Empty/no diff fails cleanly with a readable stderr message (no traceback) — cccc9ce
 
 ### Phase 2: Packaging & docs
 
 #### Automated
 
-- [ ] 2.1 Dependencies/install resolve: `uv sync`
-- [ ] 2.2 Console script wired: `uv run korpo-review < /dev/null` runs the tool
-- [ ] 2.3 Linting passes: `uv run ruff check .`
-- [ ] 2.4 Type checking passes: `uv run mypy tools`
-- [ ] 2.5 Docker image builds: `docker build -t korpotron-test .`
+- [x] 2.1 Dependencies/install resolve: `uv sync`
+- [x] 2.2 Console script wired: `uv run korpo-review < /dev/null` runs the tool
+- [x] 2.3 Linting passes: `uv run ruff check .`
+- [x] 2.4 Type checking passes: `uv run mypy tools`
+- [x] 2.5 Docker image builds: `docker build -t korpotron-test .`
 
 #### Manual
 
-- [ ] 2.6 `git diff | uv run korpo-review` matches the Phase 1 direct invocation
-- [ ] 2.7 `CLAUDE.md` and `.env.example` read correctly and match actual behavior
-- [ ] 2.8 GitHub issue for `agentic-review` updated/closed per lessons.md sync rule
+- [x] 2.6 `git diff | uv run korpo-review` matches the Phase 1 direct invocation
+- [x] 2.7 `CLAUDE.md` and `.env.example` read correctly and match actual behavior
+- [x] 2.8 GitHub issue for `agentic-review` updated/closed per lessons.md sync rule
