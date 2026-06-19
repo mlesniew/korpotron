@@ -146,7 +146,7 @@ Agent SDK, validate and return a typed `Review`, then print JSON + cost and exit
   `verdict: Literal["pass", "fail"]`, `summary: str`. No defaults on any field.
 - `SYSTEM_PROMPT` constant: a precise/constructive reviewer persona scoring the five criteria 1–10 and issuing a binding
   verdict + Markdown summary (custom prompt → avoids the `claude_code` preset).
-- `async def run_review(diff: str) -> Review`: builds
+- `async def run_review(diff: str) -> tuple[Review, ResultMessage]`: builds
   `ClaudeAgentOptions(system_prompt=SYSTEM_PROMPT, model="claude-sonnet-4-6", max_turns=2, allowed_tools=[], setting_sources=[], output_format={"type":"json_schema", "schema": Review.model_json_schema()}, max_budget_usd=<const>)`;
   iterates `async for message in query(...)` capturing the `ResultMessage`; raises `RuntimeError` if none returned or
   `subtype != "success"` (include `subtype` + joined `errors`); returns
@@ -319,4 +319,4 @@ Django app runs (manage.py / gunicorn) or how Docker builds (both stages use `--
 
 - [x] 2.6 `git diff | uv run korpo-review` matches the Phase 1 direct invocation — 2ed41fe
 - [x] 2.7 `CLAUDE.md` and `.env.example` read correctly and match actual behavior — 2ed41fe
-- [x] 2.8 GitHub issue for `agentic-review` updated/closed per lessons.md sync rule — 2ed41fe
+- [x] 2.8 GitHub issue sync: skipped — experimentation branch does not warrant a tracking issue — 2ed41fe

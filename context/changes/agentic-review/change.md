@@ -1,7 +1,7 @@
 ---
 change_id: agentic-review
 title: Automatic agentic CLI code review tool using the Claude Code SDK
-status: implemented
+status: impl_reviewed
 created: 2026-06-19
 updated: 2026-06-19
 archived_at: null
