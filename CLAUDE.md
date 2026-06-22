@@ -32,19 +32,26 @@ In production (Fly.io) all variables are set as Fly secrets, not via `.env`.
 
 ## Commands
 
-| Task             | Command                           |
-| ---------------- | --------------------------------- |
-| Run dev server   | `uv run manage.py runserver`      |
-| Make migrations  | `uv run manage.py makemigrations` |
-| Apply migrations | `uv run manage.py migrate`        |
-| Run tests        | `uv run pytest`                   |
-| Lint             | `uv run ruff check .`             |
-| Format           | `uv run ruff format .`            |
-| Review a diff    | `git diff \| uv run korpo-review` |
+| Task             | Command                               |
+| ---------------- | ------------------------------------- |
+| Run dev server   | `uv run manage.py runserver`          |
+| Make migrations  | `uv run manage.py makemigrations`     |
+| Apply migrations | `uv run manage.py migrate`            |
+| Run tests        | `uv run pytest`                       |
+| Lint             | `uv run ruff check .`                 |
+| Format           | `uv run ruff format .`                |
+| Review a diff    | `git diff \| uv run korpo-review`     |
+| Eval prompts     | `uv run python tools/eval_prompts.py` |
 
 `korpo-review` is a standalone dev utility (`tools/review.py`) — it uses the Claude Agent SDK and never imports Django.
 No `ANTHROPIC_API_KEY` is needed for local personal use (subscription login fallback); see `.env.example` for CI/shared
 use.
+
+`tools/eval_prompts.py` diffs a candidate `SYSTEM_PROMPT` against the current one over a synthetic corpus and appends a
+gitignored `eval_log.jsonl`. It bootstraps Django and makes **real** OpenRouter calls, so it needs `OPENROUTER_API_KEY`.
+Set `OPENROUTER_EVAL_MODEL` (or pass `--model`) to a **concrete** model — `openrouter/auto:free` routes unpredictably
+and makes the before/after diff unreliable. Use `--candidate-file <path>` to load a variant, or `--dry-run` to print the
+assembled messages without calling the API.
 
 ## Code conventions
 

@@ -402,25 +402,25 @@ a seed, not a migration). No schema change, no data migration.
 
 #### Automated
 
-- [x] 3.1 Fixture loads cleanly / onboarding-seed test passes
-- [x] 3.2 Full suite passes: `uv run pytest`
-- [x] 3.3 Linting passes: `uv run ruff check .`
+- [x] 3.1 Fixture loads cleanly / onboarding-seed test passes — 4dad757
+- [x] 3.2 Full suite passes: `uv run pytest` — 4dad757
+- [x] 3.3 Linting passes: `uv run ruff check .` — 4dad757
 
 #### Manual
 
-- [x] 3.4 Fresh seed shows no persona opener + visible preserve-information line
-- [x] 3.5 "Professional Email" reformats rather than inventing business context
+- [x] 3.4 Fresh seed shows no persona opener + visible preserve-information line — 4dad757
+- [x] 3.5 "Professional Email" reformats rather than inventing business context — 4dad757
 
 ### Phase 4: Standalone Eval Tool
 
 #### Automated
 
-- [ ] 4.1 Script imports / builds messages without a network call (exit 0)
-- [ ] 4.2 Linting passes: `uv run ruff check .`
-- [ ] 4.3 `eval_log.jsonl` is gitignored: `git check-ignore eval_log.jsonl`
+- [x] 4.1 Script imports / builds messages without a network call (exit 0)
+- [x] 4.2 Linting passes: `uv run ruff check .`
+- [x] 4.3 `eval_log.jsonl` is gitignored: `git check-ignore eval_log.jsonl`
 
 #### Manual
 
-- [ ] 4.4 Eval run prints per-input diffs and writes the JSONL log
-- [ ] 4.5 Diff visibly shows invented content suppressed on fact-dense inputs
-- [ ] 4.6 `OPENROUTER_EVAL_MODEL` override targets the chosen model
+- [x] 4.4 Eval run prints per-input diffs and writes the JSONL log
+- [x] 4.5 Diff visibly shows invented content suppressed on fact-dense inputs
+- [x] 4.6 `OPENROUTER_EVAL_MODEL` override targets the chosen model

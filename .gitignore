@@ -7,3 +7,5 @@ test.sqlite3
 .env
 staticfiles/
 .playwright-cli/
+eval_log.jsonl
+tools/*.jsonl
