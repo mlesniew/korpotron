@@ -1,7 +1,7 @@
 ---
 change_id: prompt-tuning
 title: Improve output quality by tuning prompt construction, example templates, and modifiers
-status: implementing
+status: implemented
 created: 2026-06-22
 updated: 2026-06-22
 archived_at: null

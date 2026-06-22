@@ -415,12 +415,12 @@ a seed, not a migration). No schema change, no data migration.
 
 #### Automated
 
-- [x] 4.1 Script imports / builds messages without a network call (exit 0)
-- [x] 4.2 Linting passes: `uv run ruff check .`
-- [x] 4.3 `eval_log.jsonl` is gitignored: `git check-ignore eval_log.jsonl`
+- [x] 4.1 Script imports / builds messages without a network call (exit 0) — 3a0d2c4
+- [x] 4.2 Linting passes: `uv run ruff check .` — 3a0d2c4
+- [x] 4.3 `eval_log.jsonl` is gitignored: `git check-ignore eval_log.jsonl` — 3a0d2c4
 
 #### Manual
 
-- [x] 4.4 Eval run prints per-input diffs and writes the JSONL log
-- [x] 4.5 Diff visibly shows invented content suppressed on fact-dense inputs
-- [x] 4.6 `OPENROUTER_EVAL_MODEL` override targets the chosen model
+- [x] 4.4 Eval run prints per-input diffs and writes the JSONL log — 3a0d2c4
+- [x] 4.5 Diff visibly shows invented content suppressed on fact-dense inputs — 3a0d2c4
+- [x] 4.6 `OPENROUTER_EVAL_MODEL` override targets the chosen model — 3a0d2c4
