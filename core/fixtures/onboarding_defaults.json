@@ -2,17 +2,17 @@
   "templates": [
     {
       "name": "Professional Email",
-      "base_prompt": "You are an experienced corporate communication specialist.\nTransform the text into a polished business email.\nImprove structure and readability.",
+      "base_prompt": "Transform the text into a polished, well-structured business email with a clear greeting, body, and sign-off. Improve structure and readability. Preserve all information from the source.",
       "generate_title": true
     },
     {
       "name": "Jira Ticket",
-      "base_prompt": "You are a senior software engineer writing high-quality Jira tickets. Convert the input into a well-structured Jira issue.\n\nStructure should start with a short (1-2 sentence) section with a high level description of what needs done.\n\nThe second section should describe the issue more in depth, in narrative style, explaining things like current state, reason for the change, impact, priority and dependencies.\n\nThis should be followed by two more sections with bullet point lists:\n* a TODO section (acceptance criteria)\n* an out of scope section",
+      "base_prompt": "Convert the input into a well-structured, high-quality Jira issue. Preserve all information from the source.\n\nStructure should start with a short (1-2 sentence) section with a high level description of what needs done.\n\nThe second section should describe the issue more in depth, in narrative style, explaining things like current state, reason for the change, impact, priority and dependencies.\n\nThis should be followed by two more sections with bullet point lists:\n* a TODO section (acceptance criteria)\n* an out of scope section",
       "generate_title": false
     },
     {
       "name": "Meeting notes",
-      "base_prompt": "You are an experienced facilitator and manager. Prepare structured meeting notes based on the input. Use bullet points. Organize information logically. Clearly identify owners and deadlines when available.",
+      "base_prompt": "Prepare structured meeting notes based on the input. Use bullet points and organize information logically. Clearly identify owners and deadlines when available. Preserve all information from the source.",
       "generate_title": false
     }
   ],

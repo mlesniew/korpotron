@@ -390,26 +390,26 @@ a seed, not a migration). No schema change, no data migration.
 
 #### Automated
 
-- [x] 2.1 Parser tests pass: `uv run pytest tests/test_llm.py -k parse_result`
-- [x] 2.2 Full suite passes: `uv run pytest`
-- [x] 2.3 Linting passes: `uv run ruff check .`
+- [x] 2.1 Parser tests pass: `uv run pytest tests/test_llm.py -k parse_result` — 0c2ee2c
+- [x] 2.2 Full suite passes: `uv run pytest` — 0c2ee2c
+- [x] 2.3 Linting passes: `uv run ruff check .` — 0c2ee2c
 
 #### Manual
 
-- [x] 2.4 Title-without-body response returns non-empty title and body
+- [x] 2.4 Title-without-body response returns non-empty title and body — 0c2ee2c
 
 ### Phase 3: Fixture Template De-personalization
 
 #### Automated
 
-- [ ] 3.1 Fixture loads cleanly / onboarding-seed test passes
-- [ ] 3.2 Full suite passes: `uv run pytest`
-- [ ] 3.3 Linting passes: `uv run ruff check .`
+- [x] 3.1 Fixture loads cleanly / onboarding-seed test passes
+- [x] 3.2 Full suite passes: `uv run pytest`
+- [x] 3.3 Linting passes: `uv run ruff check .`
 
 #### Manual
 
-- [ ] 3.4 Fresh seed shows no persona opener + visible preserve-information line
-- [ ] 3.5 "Professional Email" reformats rather than inventing business context
+- [x] 3.4 Fresh seed shows no persona opener + visible preserve-information line
+- [x] 3.5 "Professional Email" reformats rather than inventing business context
 
 ### Phase 4: Standalone Eval Tool
 
