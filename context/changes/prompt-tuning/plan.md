@@ -375,28 +375,28 @@ a seed, not a migration). No schema change, no data migration.
 
 #### Automated
 
-- [x] 1.1 Unit tests pass: `uv run pytest tests/test_llm.py`
-- [x] 1.2 Full suite passes: `uv run pytest`
-- [x] 1.3 Linting passes: `uv run ruff check .`
-- [x] 1.4 Formatting clean: `uv run ruff format --check .`
+- [x] 1.1 Unit tests pass: `uv run pytest tests/test_llm.py` — db4ceb7
+- [x] 1.2 Full suite passes: `uv run pytest` — db4ceb7
+- [x] 1.3 Linting passes: `uv run ruff check .` — db4ceb7
+- [x] 1.4 Formatting clean: `uv run ruff format --check .` — db4ceb7
 
 #### Manual
 
-- [x] 1.5 Fact-dense generation no longer invents extra facts
-- [x] 1.6 Creative modifier still transforms heavily (style not neutered)
-- [x] 1.7 Output reliably wraps in `<body>` (and `<title>` when requested)
+- [x] 1.5 Fact-dense generation no longer invents extra facts — db4ceb7
+- [x] 1.6 Creative modifier still transforms heavily (style not neutered) — db4ceb7
+- [x] 1.7 Output reliably wraps in `<body>` (and `<title>` when requested) — db4ceb7
 
 ### Phase 2: Parser Cascade Hardening
 
 #### Automated
 
-- [ ] 2.1 Parser tests pass: `uv run pytest tests/test_llm.py -k parse_result`
-- [ ] 2.2 Full suite passes: `uv run pytest`
-- [ ] 2.3 Linting passes: `uv run ruff check .`
+- [x] 2.1 Parser tests pass: `uv run pytest tests/test_llm.py -k parse_result`
+- [x] 2.2 Full suite passes: `uv run pytest`
+- [x] 2.3 Linting passes: `uv run ruff check .`
 
 #### Manual
 
-- [ ] 2.4 Title-without-body response returns non-empty title and body
+- [x] 2.4 Title-without-body response returns non-empty title and body
 
 ### Phase 3: Fixture Template De-personalization
 

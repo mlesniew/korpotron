@@ -125,18 +125,30 @@ def build_messages(
 def parse_result(raw: str) -> GenerateResult:
     """Extract <title>/<body> from the raw model output.
 
-    Graceful fallback: if no <body> tag is present, treat the entire raw
-    response as the body and the title as empty. Never error on a
-    malformed-but-present response.
+    Three-tier cascade, never raising on malformed-but-present output:
+
+    (a) ``<body>`` present -> use it, plus ``<title>`` if present.
+    (b) ``<title>`` present but no ``<body>`` -> title from the tag, body is
+        everything after ``</title>``; if that trailing text is blank, fall
+        back to the whole raw string so a title-only response is never empty.
+    (c) no tags -> the whole raw string is the body, title empty.
     """
     title_match = _TITLE_RE.search(raw)
     body_match = _BODY_RE.search(raw)
 
-    if body_match is None:
-        return GenerateResult(title="", body=raw.strip())
+    # (a) body tag present
+    if body_match is not None:
+        title = title_match.group(1).strip() if title_match else ""
+        return GenerateResult(title=title, body=body_match.group(1).strip())
 
-    title = title_match.group(1).strip() if title_match else ""
-    return GenerateResult(title=title, body=body_match.group(1).strip())
+    # (b) title tag present, body tag absent
+    if title_match is not None:
+        tail = raw[title_match.end() :].strip()
+        body = tail if tail else raw.strip()
+        return GenerateResult(title=title_match.group(1).strip(), body=body)
+
+    # (c) no tags
+    return GenerateResult(title="", body=raw.strip())
 
 
 def generate(

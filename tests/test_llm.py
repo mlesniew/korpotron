@@ -166,6 +166,22 @@ def test_parse_result_no_body_tag_falls_back_to_raw() -> None:
     assert result.body == "Some unstructured response with no tags."
 
 
+def test_parse_result_title_without_body_uses_trailing_text() -> None:
+    raw = "<title>My Title</title>\nThe body text after the title."
+    result = llm.parse_result(raw)
+    assert result.title == "My Title"
+    assert result.body == "The body text after the title."
+
+
+def test_parse_result_title_without_body_empty_tail_falls_back_to_raw() -> None:
+    raw = "<title>Only a title</title>   \n  "
+    result = llm.parse_result(raw)
+    assert result.title == "Only a title"
+    # blank tail -> body falls back to the whole raw string (non-empty)
+    assert result.body
+    assert "Only a title" in result.body
+
+
 @pytest.mark.django_db
 def test_generate_calls_create_with_model_and_messages(template: Template) -> None:
     fake_message = MagicMock()
