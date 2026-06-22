@@ -314,8 +314,8 @@ Note that it needs `OPENROUTER_API_KEY` (unlike `korpo-review`).
 
 #### Automated Verification:
 
-- Script imports and builds messages without a network call: `uv run python -c "import tools.eval_prompts"` (or a dry
-  `--no-call` path) exits 0
+- Script imports and builds messages without a network call: `uv run python -c "import tools.eval_prompts"` (or the
+  `--dry-run` path) exits 0
 - Linting passes: `uv run ruff check .`
 - `eval_log.jsonl` is gitignored: `git check-ignore eval_log.jsonl` succeeds
 

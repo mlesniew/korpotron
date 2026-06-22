@@ -44,6 +44,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "korpotron.settings")
 django.setup()
 
 from django.conf import settings  # noqa: E402
+from openai.types.chat import ChatCompletionMessageParam  # noqa: E402
 
 from core import llm  # noqa: E402
 from core.models import Template  # noqa: E402
@@ -171,7 +172,7 @@ def _patched_system_prompt(prompt: str) -> Iterator[None]:
         llm.SYSTEM_PROMPT = original
 
 
-def _build_for(case: Case, system_prompt: str) -> list:
+def _build_for(case: Case, system_prompt: str) -> list[ChatCompletionMessageParam]:
     """Build the messages list for a case under a given system prompt.
 
     Drives the real ``build_messages`` with an unsaved ``Template`` (no DB
@@ -186,7 +187,7 @@ def _build_for(case: Case, system_prompt: str) -> list:
         return llm.build_messages(template, [], case.input_text)
 
 
-def _call(model: str, messages: list) -> str:
+def _call(model: str, messages: list[ChatCompletionMessageParam]) -> str:
     """Run one eval completion at ``temperature=0`` and return the raw body.
 
     temperature=0 pins sampling so the diff is attributable to the prompt
