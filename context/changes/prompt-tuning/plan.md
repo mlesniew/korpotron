@@ -375,16 +375,16 @@ a seed, not a migration). No schema change, no data migration.
 
 #### Automated
 
-- [ ] 1.1 Unit tests pass: `uv run pytest tests/test_llm.py`
-- [ ] 1.2 Full suite passes: `uv run pytest`
-- [ ] 1.3 Linting passes: `uv run ruff check .`
-- [ ] 1.4 Formatting clean: `uv run ruff format --check .`
+- [x] 1.1 Unit tests pass: `uv run pytest tests/test_llm.py`
+- [x] 1.2 Full suite passes: `uv run pytest`
+- [x] 1.3 Linting passes: `uv run ruff check .`
+- [x] 1.4 Formatting clean: `uv run ruff format --check .`
 
 #### Manual
 
-- [ ] 1.5 Fact-dense generation no longer invents extra facts
-- [ ] 1.6 Creative modifier still transforms heavily (style not neutered)
-- [ ] 1.7 Output reliably wraps in `<body>` (and `<title>` when requested)
+- [x] 1.5 Fact-dense generation no longer invents extra facts
+- [x] 1.6 Creative modifier still transforms heavily (style not neutered)
+- [x] 1.7 Output reliably wraps in `<body>` (and `<title>` when requested)
 
 ### Phase 2: Parser Cascade Hardening
 

@@ -43,11 +43,26 @@ def test_build_messages_system_has_app_prompt_and_tag_contract(
 
 
 @pytest.mark.django_db
+def test_build_messages_system_has_editor_role_and_faithfulness(
+    template: Template,
+) -> None:
+    system = llm.build_messages(template, [], "hi")[0]["content"]
+    # style-transfer editor role
+    assert "style-transfer editor" in system
+    # faithfulness clause: protects facts, forbids adding/inventing
+    lowered = system.lower()
+    assert "facts" in lowered
+    assert "not add" in lowered or "invent" in lowered
+
+
+@pytest.mark.django_db
 def test_build_messages_requests_title_when_generate_title(
     title_template: Template,
 ) -> None:
-    messages = llm.build_messages(title_template, [], "hi")
-    assert "<title>" in messages[0]["content"]
+    system = llm.build_messages(title_template, [], "hi")[0]["content"]
+    assert "<title>" in system
+    # the title-contract example shows the title immediately before the body
+    assert "</title>\n<body>" in system
 
 
 @pytest.mark.django_db
